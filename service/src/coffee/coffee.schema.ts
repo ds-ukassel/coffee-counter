@@ -1,7 +1,7 @@
 import {Prop, Schema, SchemaFactory} from '@nestjs/mongoose';
 import {ApiProperty} from '@nestjs/swagger';
 import {Type} from 'class-transformer';
-import {IsUUID} from 'class-validator';
+import {IsMongoId} from 'class-validator';
 import {Document} from 'mongoose';
 
 @Schema({timestamps: {createdAt: true, updatedAt: false}})
@@ -11,8 +11,8 @@ export class Coffee {
 	createdAt: Date;
 
 	@Prop()
-	@ApiProperty({format: 'uuid'})
-	@IsUUID()
+	@ApiProperty({format: 'objectid'})
+	@IsMongoId()
 	userId: string;
 }
 
