@@ -35,4 +35,17 @@ export class HomeComponent implements OnInit {
       this.coffees = [coffee, ...this.coffees.slice(0, 9)];
     });
   }
+
+  deleteCoffee(coffee: Coffee) {
+    if (!confirm('Are you sure you want to delete this coffee?')) {
+      return;
+    }
+
+    this.coffeeService.remove(coffee._id).subscribe(() => {
+      const index = this.coffees.indexOf(coffee);
+      if (index >= 0) {
+        this.coffees.splice(index, 1);
+      }
+    });
+  }
 }

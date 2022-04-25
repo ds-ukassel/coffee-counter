@@ -25,6 +25,8 @@
       {{ userMap[coffee.userId]?.name }}
       &bull;
       {{ coffee.createdAt | date:'shortTime' }}
+      &bull;
+      <a href="#" class="link-danger bi-trash" (click)="deleteCoffee(coffee)"></a>
     </li>
   </ul>
 </div>
