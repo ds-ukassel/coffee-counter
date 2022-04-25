@@ -1,4 +1,4 @@
-<div class="text-center">
+<div class="container text-center">
   <h1>Coffee Counter</h1>
   <h3>Ultimate Edition</h3>
 
@@ -13,4 +13,14 @@
       </div>
     </div>
   </div>
+
+  <h4>Recent Coffees:</h4>
+
+  <ul class="list-group">
+    <li *ngFor="let coffee of coffees" class="list-group-item">
+      {{ userMap[coffee.userId]?.name }}
+      &bull;
+      {{ coffee.createdAt | date:'shortTime' }}
+    </li>
+  </ul>
 </div>
