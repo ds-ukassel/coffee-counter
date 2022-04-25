@@ -8,8 +8,12 @@
       <div class="card-body">
         <h5 class="card-title">{{ user.name }}</h5>
         <p class="card-text">123 coffees</p>
-        <button class="btn btn-primary stretched-link me-2" (click)="createCoffee(user)">One more!</button>
-        <a class="btn btn-secondary">Info</a>
+        <button class="btn btn-primary stretched-link me-2" (click)="createCoffee(user)">
+          One more!
+        </button>
+        <a class="btn btn-secondary" [routerLink]="['/users', user._id]" style="z-index: 2; position: relative">
+          Info
+        </a>
       </div>
     </div>
   </div>
