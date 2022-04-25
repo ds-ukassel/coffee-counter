@@ -27,10 +27,12 @@ export class HomeComponent implements OnInit {
         this.userMap[user._id] = user;
       }
     });
-    this.coffeeService.findAll().subscribe(coffees => this.coffees = coffees);
+    this.coffeeService.findAll().subscribe(coffees => this.coffees = coffees.slice(-10).reverse());
   }
 
   createCoffee(user: User) {
-    this.coffeeService.create({userId: user._id}).subscribe(coffee => this.coffees.push(coffee));
+    this.coffeeService.create({userId: user._id}).subscribe(coffee => {
+      this.coffees = [coffee, ...this.coffees.slice(0, 9)];
+    });
   }
 }
