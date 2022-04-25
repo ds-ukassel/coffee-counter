@@ -30,4 +30,7 @@ export class HomeComponent implements OnInit {
     this.coffeeService.findAll().subscribe(coffees => this.coffees = coffees);
   }
 
+  createCoffee(user: User) {
+    this.coffeeService.create({userId: user._id}).subscribe(coffee => this.coffees.push(coffee));
+  }
 }
