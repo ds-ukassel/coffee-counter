@@ -1,0 +1,16 @@
+<div class="text-center">
+  <h1>Coffee Counter</h1>
+  <h3>Ultimate Edition</h3>
+
+  <div class="d-flex flex-wrap justify-content-center">
+    <div *ngFor="let user of users" class="card m-2">
+      <img *ngIf="user.avatar" class="card-img-top" [src]="user.avatar" [alt]="user.name">
+      <div class="card-body">
+        <h5 class="card-title">{{ user.name }}</h5>
+        <p class="card-text">123 coffees</p>
+        <button class="btn btn-primary stretched-link me-2">One more!</button>
+        <a class="btn btn-secondary">Info</a>
+      </div>
+    </div>
+  </div>
+</div>
