@@ -1,6 +1,7 @@
 import {ValidationPipe} from '@nestjs/common';
 import {NestFactory} from '@nestjs/core';
 import {DocumentBuilder, SwaggerModule} from '@nestjs/swagger';
+import {ApiKeyGuard} from './api-key.guard';
 import {AppModule} from './app.module';
 import {environment} from './environment';
 
@@ -10,6 +11,7 @@ async function bootstrap() {
 	app.enableCors();
 	app.setGlobalPrefix(prefix);
 	app.useGlobalPipes(new ValidationPipe());
+	app.useGlobalGuards(new ApiKeyGuard());
 
 	const config = new DocumentBuilder()
 		.setTitle('Coffee Counter Ultimate')
