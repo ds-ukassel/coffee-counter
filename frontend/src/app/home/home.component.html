@@ -4,7 +4,7 @@
 
   <div class="d-flex flex-wrap justify-content-center">
     <div *ngFor="let user of users" class="card m-2">
-      <img *ngIf="user.avatar" class="card-img-top user-avatar" [src]="user.avatar" [alt]="user.name">
+      <img class="card-img-top user-avatar" [src]="user.avatar || '/assets/se.svg'" [alt]="user.name">
       <div class="card-body">
         <h5 class="card-title">{{ user.name }}</h5>
         <p class="card-text">123 coffees</p>
