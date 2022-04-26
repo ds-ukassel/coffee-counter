@@ -10,13 +10,18 @@
     <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link bi-house" routerLink="/" routerLinkActive="active">
+          <a class="nav-link bi-house" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
             Home
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link bi-gear" routerLink="/admin" routerLinkActive="admin">
+          <a class="nav-link bi-book" routerLink="/admin" routerLinkActive="active">
             Admin
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link bi-gear" routerLink="/settings" routerLinkActive="active">
+            Settings
           </a>
         </li>
         <li class="nav-item">
