@@ -51,7 +51,7 @@ jobs:
           project_id: ${{ secrets.RANCHER_PROJECT }}
           namespace: coffee-counter
           deployment: frontend
-          docker_image: ${{ secrets.DOCKER_REGISTRY }}/coffee-counter/frontend:${{ needs.deployment.outputs.version }}
+          docker_image: ${{ secrets.DOCKER_REGISTRY }}/coffee-counter/frontend:latest
   service:
     name: Service
     runs-on: ubuntu-latest
