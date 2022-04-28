@@ -1,13 +1,42 @@
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 
-.card:hover {
+$card-height: 10rem;
+$pi: 3.1415926535;
+
+.card-container:hover {
   box-shadow: $box-shadow;
 }
 
+.card-container {
+  position: relative;
+  margin-left: divide($card-height, 2) !important;
+}
+
+.card-container > .card {
+  height: $card-height;
+  padding-left: divide($card-height, 2);
+}
+
 .user-avatar {
-  width: 16rem;
-  height: 12rem;
+  overflow: visible;
+  position: absolute;
+  top: 0;
+  left: divide($card-height, -2);
+  width: $card-height;
+  height: $card-height;
   object-fit: cover;
   object-position: center;
 }
+
+.progress-ring {
+  stroke-dasharray: $card-height*$pi $card-height*$pi;
+  stroke-dashoffset: calc((1 - var(--progress)) * $pi * $card-height);
+}
+
+.progress-ring__circle {
+  transition: 0.35s stroke-dashoffset;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}
+

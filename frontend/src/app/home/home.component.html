@@ -3,18 +3,29 @@
   <h3>Ultimate Edition</h3>
 
   <div class="d-flex flex-wrap justify-content-center">
-    <div *ngFor="let user of users" class="card m-2">
-      <img class="card-img-top user-avatar" [src]="user.avatar || '/assets/se.svg'" [alt]="user.name">
-      <div class="card-body">
-        <h5 class="card-title">{{ user.name }}</h5>
-        <p class="card-text">123 coffees</p>
-        <button class="btn btn-primary stretched-link me-2" (click)="createCoffee(user)">
-          One more!
-        </button>
-        <a class="btn btn-secondary" [routerLink]="['/users', user._id]" style="z-index: 2; position: relative">
-          Info
-        </a>
+    <div *ngFor="let user of users" class="m-2 card-container">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">{{ user.name }}</h5>
+          <p class="card-text">123 coffees</p>
+          <button class="btn btn-primary stretched-link me-2" (click)="createCoffee(user)">
+            One more!
+          </button>
+          <a class="btn btn-secondary" [routerLink]="['/users', user._id]" style="z-index: 2; position: relative">
+            Info
+          </a>
+        </div>
       </div>
+      <img class="rounded-circle user-avatar" [src]="user.avatar || '/assets/se.svg'" [alt]="user.name">
+      <svg class="user-avatar progress-ring" [style.--progress]="0.4">
+        <circle class="progress-ring__circle"
+          stroke="gold"
+          stroke-width="10"
+          fill="transparent"
+          r="50%"
+          cx="50%"
+          cy="50%"/>
+      </svg>
     </div>
   </div>
 
