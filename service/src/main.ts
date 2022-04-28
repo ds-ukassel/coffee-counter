@@ -16,7 +16,12 @@ async function bootstrap() {
 	const config = new DocumentBuilder()
 		.setTitle('Coffee Counter Ultimate')
 		.setVersion(environment.version)
-		.addBearerAuth()
+		.addApiKey({
+			type: 'apiKey',
+			in: 'header',
+			name: 'X-Api-Key',
+		}, 'api-key')
+		.addSecurityRequirements('api-key', [])
 		.addServer(`http://localhost:${environment.port}`, 'Local')
 		.addServer('https://coffee.uniks.de', 'Production')
 		.build();
