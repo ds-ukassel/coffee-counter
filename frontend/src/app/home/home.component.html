@@ -1,19 +1,39 @@
-<div class="container text-center">
-  <h1>Coffee Counter</h1>
-  <h3>Ultimate Edition</h3>
+<div class="container">
+  <h1 class="text-center">Coffee Counter</h1>
+  <h3 class="text-center">Ultimate Edition</h3>
 
   <div class="d-flex flex-wrap justify-content-center">
-    <div *ngFor="let user of users" class="m-2 card-container">
+    <button *ngFor="let user of users" class="btn text-start m-2 card-container" (click)="createCoffee(user)">
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">{{ user.name }}</h5>
-          <p class="card-text">123 coffees</p>
-          <button class="btn btn-primary stretched-link me-2" (click)="createCoffee(user)">
-            One more!
-          </button>
-          <a class="btn btn-secondary" [routerLink]="['/users', user._id]" style="z-index: 2; position: relative">
-            Info
-          </a>
+          <p class="card-text">
+            <span class="bi-cup text-primary" ngbTooltip="Coffees">
+              123
+            </span>
+            <span class="bi-star text-info" ngbTooltip="Level">
+              5
+            </span>
+            <span class="bi-trophy text-warning" ngbTooltip="Trophies">
+              12
+            </span>
+          </p>
+          <button
+            class="btn btn-primary me-2 bi-cup"
+            (click)="createCoffee(user)"
+            ngbTooltip="Add Coffee"
+          ></button>
+          <a
+            class="btn btn-info me-2 bi-bar-chart"
+            [routerLink]="['/users', user._id]"
+            style="z-index: 2; position: relative"
+            ngbTooltip="Statistics"
+          ></a>
+          <button
+            class="btn btn-warning me-2 bi-arrow-counterclockwise"
+            (click)="createCoffee(user)"
+            ngbTooltip="Undo last Coffee"
+          ></button>
         </div>
       </div>
       <img class="rounded-circle user-avatar" [src]="user.avatar || '/assets/se.svg'" [alt]="user.name">
@@ -26,7 +46,7 @@
           cx="50%"
           cy="50%"/>
       </svg>
-    </div>
+    </button>
   </div>
 
   <h4>Recent Coffees:</h4>

@@ -4,6 +4,13 @@
 $card-height: 10rem;
 $pi: 3.1415926535;
 
+.card-container {
+  border: 0;
+  background: none;
+  padding: 0;
+  margin: 0;
+}
+
 .card-container:hover {
   box-shadow: $box-shadow;
 }
