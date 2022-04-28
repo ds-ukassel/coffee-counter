@@ -1,6 +1,8 @@
 import {Injectable} from '@nestjs/common';
 import {InjectModel} from '@nestjs/mongoose';
 import {FilterQuery, Model} from 'mongoose';
+import {UpdateUserDto} from '../user/user.dto';
+import {UserService} from '../user/user.service';
 import {CreateCoffeeDto} from './coffee.dto';
 import {Coffee, CoffeeDocument} from './coffee.schema';
 
@@ -8,11 +10,18 @@ import {Coffee, CoffeeDocument} from './coffee.schema';
 export class CoffeeService {
 	constructor(
 		@InjectModel('coffees') private model: Model<Coffee>,
+		private userService: UserService,
 	) {
 	}
 
 	async create(dto: CreateCoffeeDto): Promise<CoffeeDocument> {
-		return this.model.create(dto);
+		const coffee = await this.model.create(dto);
+		await this.userService.update(dto.userId, {
+			$inc: {
+				coffees: 1,
+			},
+		});
+		return coffee;
 	}
 
 	async findAll(where: FilterQuery<Coffee> = {}): Promise<Coffee[]> {
@@ -24,6 +33,12 @@ export class CoffeeService {
 	}
 
 	async remove(id: string): Promise<CoffeeDocument | null> {
-		return this.model.findByIdAndDelete(id).exec();
+		const coffee = await this.model.findByIdAndDelete(id).exec();
+		coffee && await this.userService.update(coffee.userId, {
+			$inc: {
+				coffees: -1,
+			},
+		});
+		return coffee;
 	}
 }

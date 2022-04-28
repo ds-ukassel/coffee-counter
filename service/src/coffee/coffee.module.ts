@@ -1,5 +1,6 @@
 import {Module} from '@nestjs/common';
 import {MongooseModule} from '@nestjs/mongoose';
+import {UserModule} from '../user/user.module';
 import {CoffeeController} from './coffee.controller';
 import {CoffeeSchema} from './coffee.schema';
 import {CoffeeService} from './coffee.service';
@@ -12,6 +13,7 @@ import {CoffeeService} from './coffee.service';
 				schema: CoffeeSchema,
 			},
 		]),
+		UserModule,
 	],
 	controllers: [
 		CoffeeController,

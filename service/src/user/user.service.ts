@@ -1,6 +1,6 @@
 import {Injectable} from '@nestjs/common';
 import {InjectModel} from '@nestjs/mongoose';
-import {FilterQuery, Model} from 'mongoose';
+import {FilterQuery, Model, UpdateQuery} from 'mongoose';
 import {CreateUserDto, UpdateUserDto} from './user.dto';
 import {User} from './user.schema';
 
@@ -26,7 +26,7 @@ export class UserService {
 		return created;
 	}
 
-	async update(id: string, dto: UpdateUserDto): Promise<User | undefined> {
+	async update(id: string, dto: UpdateUserDto | UpdateQuery<User>): Promise<User | undefined> {
 		const updated = await this.model.findByIdAndUpdate(id, dto, {new: true}).exec();
 		updated && this.emit('updated', updated);
 		return updated;
