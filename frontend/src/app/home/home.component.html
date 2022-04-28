@@ -9,10 +9,10 @@
           <h5 class="card-title">{{ user.name }}</h5>
           <p class="card-text">
             <span class="bi-cup text-primary" ngbTooltip="Coffees">
-              123
+              {{ user.coffees }}
             </span>
             <span class="bi-star text-info" ngbTooltip="Level">
-              5
+              {{ level(user.coffees) }}
             </span>
             <span class="bi-trophy text-warning" ngbTooltip="Trophies">
               12
@@ -38,7 +38,7 @@
         </div>
       </div>
       <img class="rounded-circle user-avatar" [src]="user.avatar || '/assets/se.svg'" [alt]="user.name">
-      <svg class="user-avatar progress-ring" [style.--progress]="0.4">
+      <svg class="user-avatar progress-ring" [style.--progress]="levelProgress(user.coffees)">
         <circle class="progress-ring__circle"
           stroke="gold"
           stroke-width="10"

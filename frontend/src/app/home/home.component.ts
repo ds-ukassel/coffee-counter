@@ -32,6 +32,7 @@ export class HomeComponent implements OnInit {
 
   createCoffee(user: User) {
     this.coffeeService.create({userId: user._id}).subscribe(coffee => {
+      user.coffees++;
       this.coffees = [coffee, ...this.coffees.slice(0, 9)];
     });
   }
@@ -46,6 +47,8 @@ export class HomeComponent implements OnInit {
       if (index >= 0) {
         this.coffees.splice(index, 1);
       }
+      const user = this.userMap[coffee.userId];
+      user && user.coffees--;
     });
   }
 
@@ -54,5 +57,13 @@ export class HomeComponent implements OnInit {
     if (coffee) {
       this.deleteCoffee(coffee);
     }
+  }
+
+  level(coffees: number): number {
+    return Math.log2(coffees) | 0;
+  }
+
+  levelProgress(coffees: number): number {
+    return Math.log2(coffees) % 1;
   }
 }
