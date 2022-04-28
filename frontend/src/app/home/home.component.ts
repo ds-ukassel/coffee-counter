@@ -48,4 +48,11 @@ export class HomeComponent implements OnInit {
       }
     });
   }
+
+  deleteLastCoffee(user: User) {
+    const coffee = this.coffees.find(c => c.userId === user._id);
+    if (coffee) {
+      this.deleteCoffee(coffee);
+    }
+  }
 }

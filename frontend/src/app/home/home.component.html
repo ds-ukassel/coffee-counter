@@ -20,18 +20,19 @@
           </p>
           <button
             class="btn btn-primary me-2 bi-cup"
-            (click)="createCoffee(user)"
+            (click)="createCoffee(user); $event.stopImmediatePropagation()"
             ngbTooltip="Add Coffee"
           ></button>
           <a
             class="btn btn-info me-2 bi-bar-chart"
             [routerLink]="['/users', user._id]"
+            (click)="$event.stopImmediatePropagation()"
             style="z-index: 2; position: relative"
             ngbTooltip="Statistics"
           ></a>
           <button
             class="btn btn-warning me-2 bi-arrow-counterclockwise"
-            (click)="createCoffee(user)"
+            (click)="deleteLastCoffee(user); $event.stopImmediatePropagation()"
             ngbTooltip="Undo last Coffee"
           ></button>
         </div>
