@@ -38,7 +38,11 @@
         </div>
       </div>
       <img class="rounded-circle user-avatar" [src]="user.avatar || '/assets/se.svg'" [alt]="user.name">
-      <svg class="user-avatar progress-ring" [style.--progress]="levelProgress(user.coffees)">
+      <svg
+        class="user-avatar progress-ring"
+        [style.--progress]="levelProgress(user.coffees)"
+        [ngbTooltip]="(levelProgress(user.coffees)|percent) + ' Progress'"
+      >
         <circle class="progress-ring__circle"
           stroke="gold"
           stroke-width="10"
