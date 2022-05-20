@@ -29,7 +29,7 @@ export class User {
 	@Prop({default: 0})
 	@IsOptional()
 	@IsNumber({maxDecimalPlaces: 2})
-	balance: number;
+	balance?: number;
 }
 
 export type UserDocument = User & Document;

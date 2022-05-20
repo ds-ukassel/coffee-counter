@@ -18,7 +18,7 @@ export class AdminComponent implements OnInit {
 
   constructor(
     private modalService: NgbModal,
-    private userService: UserService
+    private userService: UserService,
   ) {
   }
 
