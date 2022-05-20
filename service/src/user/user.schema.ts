@@ -27,6 +27,7 @@ export class User {
 	coffees: number;
 
 	@Prop({default: 0})
+	@IsOptional()
 	@IsNumber({maxDecimalPlaces: 2})
 	balance: number;
 }
