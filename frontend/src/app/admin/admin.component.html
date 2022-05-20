@@ -1,3 +1,25 @@
 <div class="container">
-  <p>admin works!</p>
+
+  <h4>User:</h4>
+  <ul class="list-group">
+    <li *ngFor="let user of users" class="list-group-item">
+      <div class="row align-items-center">
+        <div class="col-4">
+          <img class="rounded-circle user-avatar" [src]="user.avatar || '/assets/se.svg'" [alt]="user.name">
+          <span>{{ user.name }}</span>
+        </div>
+        <div class="col-4">
+          <span class="bi-cup-fill text-primary"></span><span> {{ user.coffees }}</span>
+        </div>
+        <div class="col-1 text-end">
+          <span [style.color]="tintBalance(user.balance)">{{ user.balance | number: '1.2' : 'de-DE'}}</span>
+          <span [style.color]="tintBalance(user.balance)" class="bi-currency-euro"></span>
+        </div>
+        <div class="col"></div>
+        <div class="col-1">
+          <a class="btn btn-success me-2 bi-pencil" ngbTooltip="Edit User"></a>
+        </div>
+      </div>
+    </li>
+  </ul>
 </div>

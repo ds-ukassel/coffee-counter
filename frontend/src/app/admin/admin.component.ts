@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {User} from '../model/user.interface';
+import {UserService} from '../user.service';
 
 @Component({
   selector: 'app-admin',
@@ -6,10 +8,20 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./admin.component.scss']
 })
 export class AdminComponent implements OnInit {
+  users: User[] = [];
 
-  constructor() { }
-
-  ngOnInit(): void {
+  constructor(
+    private userService: UserService
+  ) {
   }
 
+  ngOnInit(): void {
+    this.userService.findAll().subscribe(users => {
+      this.users = users;
+    });
+  }
+
+  tintBalance(balance: number) {
+    return balance < 0 ? 'red' : '';
+  }
 }

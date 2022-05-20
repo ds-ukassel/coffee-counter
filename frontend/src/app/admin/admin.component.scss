@@ -1,0 +1,15 @@
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+
+$avatar-dim: 5rem;
+
+.user-avatar {
+  width: $avatar-dim;
+  height: $avatar-dim;
+  object-fit: cover;
+  margin-right: 12px;
+}
+
+span {
+  font-size: 18px;
+}
