@@ -1,6 +1,6 @@
 import {Prop, Schema, SchemaFactory} from '@nestjs/mongoose';
 import {ApiProperty} from '@nestjs/swagger';
-import {IsByteLength, IsInt, IsNotEmpty, IsOptional, IsString, Matches, MaxLength} from 'class-validator';
+import {IsByteLength, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, Matches, MaxLength} from 'class-validator';
 import {Document} from 'mongoose';
 
 const MAX_AVATAR_LENGTH = 16 * 1024;
@@ -25,6 +25,11 @@ export class User {
 	@IsInt()
 	@ApiProperty({type: 'integer'})
 	coffees: number;
+
+	@Prop({default: 0})
+	@IsOptional()
+	@IsNumber({maxDecimalPlaces: 2})
+	balance?: number;
 }
 
 export type UserDocument = User & Document;
