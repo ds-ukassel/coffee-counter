@@ -18,6 +18,10 @@ export class UserService {
     return this.http.get<User[]>(environment.apiUrl + '/users');
   }
 
+  findOne(id: string): Observable<User> {
+    return this.http.get<User>(environment.apiUrl + '/users/' + id)
+  }
+
   createOne(user: User): Observable<User> {
     return this.http.post<User>(environment.apiUrl + '/users', user);
   }

@@ -1,0 +1,7 @@
+$avatar-dim: 12rem;
+
+.user-avatar {
+  width: $avatar-dim;
+  height: $avatar-dim;
+  object-fit: cover;
+}
