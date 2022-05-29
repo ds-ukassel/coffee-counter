@@ -7,12 +7,14 @@ import { AdminComponent } from './admin.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule} from '@angular/forms';
 import { NewUserModalComponent } from './new-user-modal/new-user-modal.component';
+import { PurchaseModalComponent } from './purchase-modal/purchase-modal.component';
 
 
 @NgModule({
   declarations: [
     AdminComponent,
     NewUserModalComponent,
+    PurchaseModalComponent,
   ],
   imports: [
     CommonModule,

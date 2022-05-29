@@ -18,6 +18,10 @@ export class UserService {
     return this.http.get<User[]>(environment.apiUrl + '/users');
   }
 
+  findOne(userId: string) {
+    return this.http.get<User>(environment.apiUrl + '/users/' + userId);
+  }
+
   createOne(user: CreateUserDto): Observable<User> {
     return this.http.post<User>(environment.apiUrl + '/users', user);
   }
@@ -25,5 +29,4 @@ export class UserService {
   updateOne(user: User): Observable<User> {
     return this.http.patch<User>(environment.apiUrl + '/users/' + user._id, user);
   }
-
 }
