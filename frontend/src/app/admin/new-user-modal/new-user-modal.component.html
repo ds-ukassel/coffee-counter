@@ -1,0 +1,36 @@
+<ngbx-modal #modal size="lg" [back]="['..']">
+  <ng-container modal-title>
+    New User
+  </ng-container>
+  <ng-container modal-body>
+    <div class="row">
+      <div class="col-3">
+        <img class="rounded-circle user-avatar-lg" [src]="user.avatar || '/assets/se.svg'">
+      </div>
+      <div class="col">
+        <div class="mb-3">
+          <label class="form-label" for="name">Name</label>
+          <input type="text" class="form-control" id="name" [(ngModel)]="user.name">
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="avatar">Avatar</label>
+          <div class="input-group">
+            <input type="url" class="form-control" id="avatar" [(ngModel)]="user.avatar">
+            <button class="btn btn-secondary" ngbTooltip="reset" (click)="user.avatar = ''">
+              <i class="bi bi-arrow-counterclockwise"></i>
+            </button>
+          </div>
+          <small class="form-text text-muted">Must be a valid url.</small>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container modal-footer>
+    <button class="btn btn-secondary" (click)="modal.close()">
+      Cancel
+    </button>
+    <button class="btn btn-success" (click)="create(); modal.close()">
+      Create
+    </button>
+  </ng-container>
+</ngbx-modal>
