@@ -1,10 +1,11 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-
-import { AdminRoutingModule } from './admin-routing.module';
-import { AdminComponent } from './admin.component';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {SharedModule} from '../shared/shared.module';
+
+import {AdminRoutingModule} from './admin-routing.module';
+import {AdminComponent} from './admin.component';
 
 
 @NgModule({
@@ -16,6 +17,8 @@ import {FormsModule} from '@angular/forms';
     NgbModule,
     AdminRoutingModule,
     FormsModule,
-  ]
+    SharedModule,
+  ],
 })
-export class AdminModule { }
+export class AdminModule {
+}

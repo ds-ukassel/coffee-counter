@@ -13,10 +13,22 @@
         </div>
         <div class="col">
           <h6>{{ user.name }}</h6>
+          <img class="rounded-circle level-icon" [src]="'/assets/levels/' + (user.coffees | level) + '.png'"
+               alt="Level Icon">
+          <i class="text-muted">
+            {{ levelNames[user.coffees | level] || levelNames[levelNames.length - 1] }}
+          </i>
         </div>
         <div class="col-auto">
-          <i class="bi-cup-fill text-primary"></i>
-          {{ user.coffees }}
+          <span class="bi-cup text-primary" ngbTooltip="Coffees">
+            {{ user.coffees }}
+          </span>
+          <span class="bi-star text-info" ngbTooltip="Level">
+            {{ user.coffees | level }}
+          </span>
+          <span class="bi-trophy text-warning" ngbTooltip="Trophies">
+            12
+          </span>
         </div>
         <div class="col-auto">
           <span [class.text-danger]="user.balance < 0" [ngbTooltip]="user.balance < 0 ? 'Negative credit balance!' : null">
