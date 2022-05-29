@@ -2,18 +2,11 @@
 @import "~bootstrap/scss/variables";
 
 $avatar-dim: 5rem;
-$avatar-lg-dim: 10rem;
 $level-icon-dim: 2rem;
 
 .user-avatar {
   width: $avatar-dim;
   height: $avatar-dim;
-  object-fit: cover;
-}
-
-.user-avatar-lg {
-  width: $avatar-lg-dim;
-  height: $avatar-lg-dim;
   object-fit: cover;
 }
 

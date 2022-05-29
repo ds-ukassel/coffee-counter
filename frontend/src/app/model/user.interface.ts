@@ -5,3 +5,5 @@ export interface User {
   coffees: number;
   balance: number;
 }
+
+export type CreateUserDto = Pick<User, 'name' | 'avatar'>

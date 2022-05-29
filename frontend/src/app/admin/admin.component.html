@@ -3,7 +3,7 @@
     <h1 class="me-auto">
       Users
     </h1>
-    <button class="btn btn-success bi-person-plus" ngbTooltip="Add User" (click)="openUserCreateModal()"></button>
+    <a class="btn btn-success bi-person-plus" ngbTooltip="Add User" routerLink="new"></a>
   </div>
   <ul class="list-group">
     <li *ngFor="let user of users" class="list-group-item">
@@ -42,36 +42,4 @@
     </li>
   </ul>
 </div>
-
-<ng-template #modalRef let-c='close' let-d='dismiss'>
-  <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Create User</h4>
-    <button type="button" class="btn-close" aria-label="Close" (click)="d()"></button>
-  </div>
-  <div class="modal-body">
-    <div class="row">
-      <div class="col-3">
-        <img class="rounded-circle user-avatar-lg" [src]="createAvatar || '/assets/se.svg'">
-      </div>
-      <div class="col">
-        <div class="mb-3">
-          <label class="form-label" for="name">Name</label>
-          <input type="text" class="form-control" id="name" [(ngModel)]="createName">
-        </div>
-        <div class="mb-3">
-          <label class="form-label" for="avatar">Avatar</label>
-          <div class="input-group">
-            <input type="url" class="form-control" id="avatar" [(ngModel)]="createAvatar">
-            <button class="btn btn-secondary" ngbTooltip="reset" (click)="createAvatar = ''">
-              <i class="bi bi-arrow-counterclockwise"></i>
-            </button>
-          </div>
-          <small class="form-text text-muted">Must be a valid url.</small>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-success" (click)="c()">Create</button>
-  </div>
-</ng-template>
+<router-outlet></router-outlet>
