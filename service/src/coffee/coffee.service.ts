@@ -1,7 +1,6 @@
 import {Injectable} from '@nestjs/common';
 import {InjectModel} from '@nestjs/mongoose';
 import {FilterQuery, Model} from 'mongoose';
-import {UpdateUserDto} from '../user/user.dto';
 import {UserService} from '../user/user.service';
 import {CreateCoffeeDto} from './coffee.dto';
 import {Coffee, CoffeeDocument} from './coffee.schema';
@@ -19,6 +18,7 @@ export class CoffeeService {
 		await this.userService.update(dto.userId, {
 			$inc: {
 				coffees: 1,
+				balance: -0.1,
 			},
 		});
 		return coffee;
@@ -37,6 +37,7 @@ export class CoffeeService {
 		coffee && await this.userService.update(coffee.userId, {
 			$inc: {
 				coffees: -1,
+				balance: 0.1,
 			},
 		});
 		return coffee;
