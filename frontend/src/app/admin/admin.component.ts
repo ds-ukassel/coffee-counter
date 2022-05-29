@@ -1,5 +1,4 @@
-import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {Component, OnInit} from '@angular/core';
 import {User} from '../model/user.interface';
 import {UserService} from '../user.service';
 
@@ -9,12 +8,9 @@ import {UserService} from '../user.service';
   styleUrls: ['./admin.component.scss'],
 })
 export class AdminComponent implements OnInit {
-  @ViewChild('modalRef') modalRef!: TemplateRef<any>;
-
   users: User[] = [];
 
   constructor(
-    private modalService: NgbModal,
     private userService: UserService,
   ) {
   }
