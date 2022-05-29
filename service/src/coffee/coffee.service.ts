@@ -18,7 +18,7 @@ export class CoffeeService {
 		await this.userService.update(dto.userId, {
 			$inc: {
 				coffees: 1,
-				balance: -0.1,
+				balance: -dto.price,
 			},
 		});
 		return coffee;
@@ -37,7 +37,7 @@ export class CoffeeService {
 		coffee && await this.userService.update(coffee.userId, {
 			$inc: {
 				coffees: -1,
-				balance: 0.1,
+				balance: coffee.price,
 			},
 		});
 		return coffee;
