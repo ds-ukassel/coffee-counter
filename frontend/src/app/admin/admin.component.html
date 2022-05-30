@@ -36,7 +36,8 @@
           </span>
         </div>
         <div class="col-auto">
-          <a class="btn btn-secondary bi-pencil" ngbTooltip="Edit User"></a>
+          <a class="btn btn-secondary me-2 bi-pencil" ngbTooltip="Edit User"></a>
+          <a class="btn btn-success me-2 bi-cart" ngbTooltip="Add Purchase" routerLink="purchase" [queryParams]="{user: user._id}"></a>
         </div>
       </div>
     </li>

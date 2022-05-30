@@ -8,12 +8,14 @@ import {SharedModule} from '../shared/shared.module';
 import {AdminRoutingModule} from './admin-routing.module';
 import {AdminComponent} from './admin.component';
 import {NewUserModalComponent} from './new-user-modal/new-user-modal.component';
+import {PurchaseModalComponent} from './purchase-modal/purchase-modal.component';
 
 
 @NgModule({
   declarations: [
     AdminComponent,
     NewUserModalComponent,
+    PurchaseModalComponent,
   ],
   imports: [
     CommonModule,
