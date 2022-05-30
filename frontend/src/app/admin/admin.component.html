@@ -1,27 +1,42 @@
 <div class="container">
-  <div class="d-flex flex-row">
-    <h4 class="m-2">Users:</h4>
-    <a class="btn btn-success btn-sm align-self-center bi-plus-lg" routerLink="new">
-    </a>
+  <div class="d-flex align-items-center mb-3">
+    <h1 class="me-auto">
+      Users
+    </h1>
+    <a class="btn btn-success bi-person-plus" ngbTooltip="Add User" routerLink="new"></a>
   </div>
   <ul class="list-group">
     <li *ngFor="let user of users" class="list-group-item">
       <div class="row align-items-center">
-        <div class="col-5">
+        <div class="col-1">
           <img class="rounded-circle user-avatar" [src]="user.avatar || '/assets/se.svg'" [alt]="user.name">
-          <span class="h6">{{ user.name }}</span>
         </div>
-        <div class="col-3">
-          <span class="h6 bi-cup-fill text-primary"></span><span class="h6"> {{ user.coffees }}</span>
+        <div class="col">
+          <h6>{{ user.name }}</h6>
+          <img class="rounded-circle level-icon" [src]="'/assets/levels/' + (user.coffees | level) + '.png'"
+               alt="Level Icon">
+          <i class="text-muted">
+            {{ levelNames[user.coffees | level] || levelNames[levelNames.length - 1] }}
+          </i>
         </div>
-        <div class="col-1 text-end">
-          <span [class.text-danger]="user.balance < 0" class="h6">
+        <div class="col-auto">
+          <span class="bi-cup text-primary" ngbTooltip="Coffees">
+            {{ user.coffees }}
+          </span>
+          <span class="bi-star text-info" ngbTooltip="Level">
+            {{ user.coffees | level }}
+          </span>
+          <span class="bi-trophy text-warning" ngbTooltip="Trophies">
+            12
+          </span>
+        </div>
+        <div class="col-auto">
+          <span [class.text-danger]="user.balance < 0" [ngbTooltip]="user.balance < 0 ? 'Negative credit balance!' : null">
             {{ user.balance | currency: 'EUR' : 'symbol': '1.': 'de-DE'}}
           </span>
         </div>
-        <div class="col"></div>
-        <div class="col-1 d-flex">
-          <a class="btn btn-success me-2 bi-pencil" ngbTooltip="Edit User"></a>
+        <div class="col-auto">
+          <a class="btn btn-secondary me-2 bi-pencil" ngbTooltip="Edit User"></a>
           <a class="btn btn-success me-2 bi-cart" ngbTooltip="Add Purchase" routerLink="purchase" [queryParams]="{user: user._id}"></a>
         </div>
       </div>
