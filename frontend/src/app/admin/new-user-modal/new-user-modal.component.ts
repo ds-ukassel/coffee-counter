@@ -8,7 +8,7 @@ import {UserService} from '../../user.service';
   styleUrls: ['./new-user-modal.component.scss'],
 })
 export class NewUserModalComponent implements OnInit {
-  user: CreateUserDto = {name: '', avatar: ''};
+  user: CreateUserDto = {name: '', balance: '0.00', coffees: 0};
 
   constructor(
     private userService: UserService,
@@ -19,6 +19,7 @@ export class NewUserModalComponent implements OnInit {
   }
 
   create() {
+    this.user.balance += '';
     this.userService.createOne(this.user).subscribe();
   }
 }

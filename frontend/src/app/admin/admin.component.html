@@ -31,7 +31,7 @@
           </span>
         </div>
         <div class="col-auto">
-          <span [class.text-danger]="user.balance < 0" [ngbTooltip]="user.balance < 0 ? 'Negative credit balance!' : null">
+          <span [class.text-danger]="+user.balance < 0" [ngbTooltip]="+user.balance < 0 ? 'Negative credit balance!' : null">
             {{ user.balance | currency: 'EUR' : 'symbol': '1.': 'de-DE'}}
           </span>
         </div>
