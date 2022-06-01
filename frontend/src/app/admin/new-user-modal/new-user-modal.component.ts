@@ -21,6 +21,9 @@ export class NewUserModalComponent implements OnInit {
   }
 
   create(modal: ModalComponent): void {
+    if (!this.user.avatar) {
+      delete this.user.avatar;
+    }
     this.user.balance += '';
     this.creating = true;
     this.userService.createOne(this.user).subscribe(() => {
