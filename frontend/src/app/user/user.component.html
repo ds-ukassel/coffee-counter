@@ -1,17 +1,20 @@
 <div *ngIf="user" class="container">
   <div class="row">
     <div class="col-3">
-      <img class="rounded-circle user-avatar border border-2 border-dark" [src]="user.avatar || '/assets/se.svg'"
-           [alt]="user.name">
-      <img class="rounded-circle level-icon border border-1 border-dark"
-           [src]="'/assets/levels/' + (user.coffees | level) + '.png'"
-           alt="Level Icon" [ngbTooltip]="user.coffees | level | levelName">
+      <div class="avatar-container">
+        <img class="rounded-circle user-avatar border border-2 border-dark" [src]="user.avatar || '/assets/se.svg'"
+             [alt]="user.name">
+        <img class="rounded-circle level-icon border border-1 border-dark"
+             [src]="'/assets/levels/' + (user.coffees | level) + '.png'"
+             alt="Level Icon" [ngbTooltip]="user.coffees | level | levelName">
+      </div>
       <div class="flex-row">
         <div class="mb-3">
           <label *ngIf="editMode" class="form-label" for="name">Name</label>
           <input type="text" id="name"
                  [readonly]="!editMode" [class]=" editMode ? 'form-control' : 'form-control-plaintext h3'"
                  [(ngModel)]="user.name">
+          <small class="form-text text-muted">{{ user.coffees | level | levelName }}</small>
         </div>
         <div *ngIf="editMode" class="mb-3">
           <label class="form-label" for="avatar">Avatar</label>
