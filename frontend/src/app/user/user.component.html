@@ -7,14 +7,23 @@
         <img class="rounded-circle level-icon border border-1 border-dark"
              [src]="'/assets/levels/' + (user.coffees | level) + '.png'"
              alt="Level Icon" [ngbTooltip]="user.coffees | level | levelName">
+        <button class="btn btn-success" (click)="editMode = !editMode"
+                ngbTooltip="Edit User">
+          <span class="bi bi-pencil"></span>
+        </button>
       </div>
       <div class="flex-row">
-        <div class="mb-3">
-          <label *ngIf="editMode" class="form-label" for="name">Name</label>
+        <div *ngIf="!editMode" class="mb-3">
+          <h3>{{user.name}}</h3>
+          <i class="text-muted">
+            - {{ user.coffees | level | levelName }}
+          </i>
+        </div>
+        <div *ngIf="editMode" class="mb-3">
+          <label  class="form-label" for="name">Name</label>
           <input type="text" id="name"
-                 [readonly]="!editMode" [class]=" editMode ? 'form-control' : 'form-control-plaintext h3'"
-                 [(ngModel)]="user.name">
-          <small class="form-text text-muted">{{ user.coffees | level | levelName }}</small>
+                    [readonly]="!editMode" [class]=" editMode ? 'form-control' : 'form-control-plaintext h3'"
+                    [(ngModel)]="user.name">
         </div>
         <div *ngIf="editMode" class="mb-3">
           <label class="form-label" for="avatar">Avatar</label>
@@ -26,24 +35,21 @@
           </div>
           <small class="form-text text-muted">Must be a valid url.</small>
         </div>
+        <div *ngIf="editMode" class="d-flex justify-content-end">
+          <button class="btn btn-success" (click)="updateUser()"><span></span> save</button>
+        </div>
       </div>
       <hr>
-      <div class="flex-row">
-        <span class="bi-star text-info h3" ngbTooltip="Level"> {{ user.coffees | level }}</span>
-        <span class="text-info h5"> ( {{ user.coffees }} / {{user.coffees | nextLevel}})</span>
+      <div class="row">
+        <div class="col">
+          <span class="bi-star text-info h2" ngbTooltip="Level"> {{ user.coffees | level }}</span>
+          <span class="text-info h5"> / {{user.coffees | nextLevel}}</span>
+        </div>
+        <div class="col">
+          <span class="bi-trophy text-warning h2" ngbTooltip="Trophies"> 12</span>
+        </div>
       </div>
-      <div class="flex-row">
-        <span class="bi-cup text-primary h3" ngbTooltip="Coffees"> {{ user.coffees }}</span>
-      </div>
-      <div class="flex-row">
-        <span class="bi-trophy text-warning h3" ngbTooltip="Trophies"> 12</span>
-      </div>
-      <div class="d-flex justify-content-end">
-        <button *ngIf="!editMode" class="btn btn-success" (click)="editMode = !editMode">
-          <span class="bi bi-pencil"></span>
-        </button>
-        <button *ngIf="editMode" class="btn btn-success" (click)="updateUser()"><span></span> save</button>
-      </div>
+      <hr>
     </div>
     <div class="col">
       <div class="mb-3">
@@ -53,10 +59,6 @@
             {{ user.balance | currency: 'EUR' : 'symbol': '1.': 'de-DE'}}
           </span>
           <input type="number" class="form-control form-control-lg" id="balance" [(ngModel)]="balanceCorrection">
-          <button class="btn btn-success" ngbTooltip="reset"
-                  (click)="user.balance = user.balance + balanceCorrection; balanceCorrection = 0">
-            <i class="bi bi-plus-lg"></i>
-          </button>
         </div>
       </div>
     </div>
