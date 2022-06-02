@@ -14,7 +14,7 @@ export class UserComponent implements OnInit {
   user!: User;
   balanceCorrection!: number;
 
-  edited = false;
+  editing = false;
 
   constructor(
     private userService: UserService,
@@ -34,7 +34,7 @@ export class UserComponent implements OnInit {
   updateUser() {
     this.userService.updateOne(this.user).subscribe( res => {
       this.user = res;
-      this.edited = false;
+      this.editing = false;
     });
   }
 }

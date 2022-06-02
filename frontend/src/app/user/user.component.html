@@ -1,13 +1,10 @@
 <div *ngIf="user" class="container">
   <div class="row">
     <div class="col-3">
-      <div class="avatar-container">
+      <div class="mb-3 avatar-container">
         <img class="rounded-circle user-avatar border border-2 border-dark" [src]="user.avatar || '/assets/se.svg'"
              [alt]="user.name">
-        <img class="rounded-circle level-icon border border-1 border-dark"
-             [src]="'/assets/levels/' + (user.coffees | level) + '.png'"
-             alt="Level Icon" [ngbTooltip]="user.coffees | level | levelName">
-        <button class="btn btn-link bi-person-circle" ngbTooltip="Edit Avatar"
+        <button class="btn btn-primary bi-person-circle text-light" ngbTooltip="Edit Avatar"
                 [ngbPopover]="editAvatar" container="body" placement="right bottom" autoClose="outside">
         </button>
         <ng-template #editAvatar>
@@ -19,14 +16,24 @@
         </ng-template>
       </div>
       <div>
-        <h3 class="d-flex">
-          <input type="text" class="form-control-plaintext" [(ngModel)]="user.name" #editName (ngModelChange)="edited = true">
-          <button *ngIf="!edited" class="btn btn-link bi-pencil" ngbTooltip="Edit Username" (click)="editName.focus()"></button>
-          <button *ngIf="edited" class="btn btn-link bi-check-circle" ngbTooltip="Save" (click)="updateUser()"></button>
-        </h3>
-        <i class="text-muted">
-          - {{ user.coffees | level | levelName }}
-        </i>
+        <div class="d-flex">
+          <h3 *ngIf="!editing" class="flex-fill">{{user.name}}</h3>
+          <input *ngIf="editing" type="text" class="form-control-lg" [(ngModel)]="user.name">
+          <button *ngIf="!editing" class="btn btn-link bi-pencil"
+                  ngbTooltip="Edit Username" placement="right bottom"
+                  (click)="editing = true;">
+          </button>
+          <button *ngIf="editing" class="btn btn-link bi-check-circle"
+                  ngbTooltip="Save" placement="right bottom"
+                  (click)="updateUser()"></button>
+        </div>
+        <div>
+          <img class="rounded-circle level-icon border border-1 border-dark"
+               [src]="'/assets/levels/' + (user.coffees | level) + '.png'" alt="Level Icon">
+          <i class="text-muted">
+            {{ user.coffees | level | levelName }}
+          </i>
+        </div>
       </div>
       <hr>
       <div class="row">
