@@ -27,3 +27,12 @@ export class LevelProgressPipe implements PipeTransform {
   }
 
 }
+
+@Pipe({
+  name: 'nextLevel'
+})
+export class NextLevelPipe implements PipeTransform {
+  transform(value: number): number {
+    return nextPowerOfTwo(value);
+  }
+}

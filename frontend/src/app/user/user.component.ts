@@ -30,21 +30,6 @@ export class UserComponent implements OnInit {
     })
   }
 
-  level(coffees: number): number {
-    return Math.log2(coffees) | 0;
-  }
-
-  nextPowerOfTwo(n: number) {
-    if (n === 0) return 1
-    n--;
-    n |= n >> 1;
-    n |= n >> 2;
-    n |= n >> 4;
-    n |= n >> 8;
-    n |= n >> 16;
-    return n + 1;
-  }
-
   updateUser() {
     this.userService.updateOne(this.user).subscribe( res => {
       this.user = res;

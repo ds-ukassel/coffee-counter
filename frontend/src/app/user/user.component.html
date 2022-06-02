@@ -3,6 +3,9 @@
     <div class="col-3">
       <img class="rounded-circle user-avatar border border-2 border-dark" [src]="user.avatar || '/assets/se.svg'"
            [alt]="user.name">
+      <img class="rounded-circle level-icon border border-1 border-dark"
+           [src]="'/assets/levels/' + (user.coffees | level) + '.png'"
+           alt="Level Icon" [ngbTooltip]="user.coffees | level | levelName">
       <div class="flex-row">
         <div class="mb-3">
           <label *ngIf="editMode" class="form-label" for="name">Name</label>
@@ -23,8 +26,8 @@
       </div>
       <hr>
       <div class="flex-row">
-        <span class="bi-star text-info h3" ngbTooltip="Level"> {{ level(user.coffees) }}</span>
-        <span class="text-info h5"> ( {{ user.coffees }} / {{nextPowerOfTwo(user.coffees)}})</span>
+        <span class="bi-star text-info h3" ngbTooltip="Level"> {{ user.coffees | level }}</span>
+        <span class="text-info h5"> ( {{ user.coffees }} / {{user.coffees | nextLevel}})</span>
       </div>
       <div class="flex-row">
         <span class="bi-cup text-primary h3" ngbTooltip="Coffees"> {{ user.coffees }}</span>
