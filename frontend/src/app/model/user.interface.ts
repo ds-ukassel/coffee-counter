@@ -1,9 +1,9 @@
 export interface User {
   _id: string;
   name: string;
-  avatar: string;
+  avatar?: string;
   coffees: number;
-  balance: number;
+  balance: string;
 }
 
-export type CreateUserDto = Pick<User, 'name' | 'avatar'>
+export type CreateUserDto = Omit<User, '_id'>;

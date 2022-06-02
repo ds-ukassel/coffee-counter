@@ -7,7 +7,7 @@ import {
 	IsNumberString,
 	IsOptional,
 	IsString,
-	Matches,
+	IsUrl,
 	MaxLength,
 } from 'class-validator';
 import {Document, SchemaTypes, Types} from 'mongoose';
@@ -25,7 +25,7 @@ export class User {
 
 	@Prop()
 	@IsOptional()
-	@Matches(/^\w+:/, {message: 'avatar must be a valid URI'})
+	@IsUrl()
 	@IsByteLength(0, MAX_AVATAR_LENGTH)
 	@ApiProperty({format: 'url', required: false, maxLength: MAX_AVATAR_LENGTH})
 	avatar?: string;

@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {ModalComponent} from 'ng-bootstrap-ext';
 import {CreateUserDto} from '../../model/user.interface';
 import {UserService} from '../../user.service';
 
@@ -8,7 +9,8 @@ import {UserService} from '../../user.service';
   styleUrls: ['./new-user-modal.component.scss'],
 })
 export class NewUserModalComponent implements OnInit {
-  user: CreateUserDto = {name: '', avatar: ''};
+  user: CreateUserDto = {name: '', balance: '0.00', coffees: 0};
+  creating = false;
 
   constructor(
     private userService: UserService,
@@ -18,7 +20,18 @@ export class NewUserModalComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  create() {
-    this.userService.createOne(this.user).subscribe();
+  create(modal: ModalComponent): void {
+    if (!this.user.avatar) {
+      delete this.user.avatar;
+    }
+    this.user.balance += '';
+    this.creating = true;
+    this.userService.createOne(this.user).subscribe(() => {
+      this.creating = false;
+      modal.close();
+    }, error => {
+      this.creating = false;
+      console.error(error);
+    });
   }
 }
