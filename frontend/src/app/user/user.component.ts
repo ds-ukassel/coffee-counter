@@ -44,4 +44,11 @@ export class UserComponent implements OnInit {
     n |= n >> 16;
     return n + 1;
   }
+
+  updateUser() {
+    this.userService.updateOne(this.user).subscribe( res => {
+      this.user = res;
+      this.editMode = false;
+    });
+  }
 }

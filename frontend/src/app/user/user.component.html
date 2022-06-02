@@ -34,16 +34,16 @@
       </div>
       <div class="d-flex justify-content-end">
         <button *ngIf="!editMode" class="btn btn-success" (click)="editMode = !editMode">
-          <span class="bi bi-pen"></span>
+          <span class="bi bi-pencil"></span>
         </button>
-        <button *ngIf="editMode" class="btn btn-success"><span></span> save</button>
+        <button *ngIf="editMode" class="btn btn-success" (click)="updateUser()"><span></span> save</button>
       </div>
     </div>
     <div class="col">
       <div class="mb-3">
         <label class="form-label fs-5" for="balance">Balance</label>
         <div class="input-group">
-          <span class="input-group-text" [class.text-danger]="user.balance < 0">
+          <span class="input-group-text" [class.text-danger]="user.balance">
             {{ user.balance | currency: 'EUR' : 'symbol': '1.': 'de-DE'}}
           </span>
           <input type="number" class="form-control form-control-lg" id="balance" [(ngModel)]="balanceCorrection">
