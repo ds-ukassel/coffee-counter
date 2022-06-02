@@ -13,6 +13,8 @@ export class UserComponent implements OnInit {
   user!: User;
   balanceCorrection!: number;
 
+  editMode = false;
+
   constructor(
     private userService: UserService,
     private activatedRoute: ActivatedRoute,

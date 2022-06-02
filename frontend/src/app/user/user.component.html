@@ -1,38 +1,45 @@
 <div *ngIf="user" class="container">
   <div class="row">
-    <div class="col-2">
+    <div class="col-3">
       <img class="rounded-circle user-avatar border border-2 border-dark" [src]="user.avatar || '/assets/se.svg'"
            [alt]="user.name">
       <div class="flex-row">
-        <span class="bi-star text-info h1" ngbTooltip="Level"> {{ level(user.coffees) }}</span>
+        <div class="mb-3">
+          <label *ngIf="editMode" class="form-label" for="name">Name</label>
+          <input type="text" id="name"
+                 [readonly]="!editMode" [class]=" editMode ? 'form-control' : 'form-control-plaintext h3'"
+                 [(ngModel)]="user.name">
+        </div>
+        <div *ngIf="editMode" class="mb-3">
+          <label class="form-label" for="avatar">Avatar</label>
+          <div class="input-group">
+            <input type="url" class="form-control" id="avatar" [(ngModel)]="user.avatar">
+            <button class="btn btn-secondary" ngbTooltip="reset" (click)="user.avatar = ''">
+              <i class="bi bi-arrow-counterclockwise"></i>
+            </button>
+          </div>
+          <small class="form-text text-muted">Must be a valid url.</small>
+        </div>
+      </div>
+      <hr>
+      <div class="flex-row">
+        <span class="bi-star text-info h3" ngbTooltip="Level"> {{ level(user.coffees) }}</span>
         <span class="text-info h5"> ( {{ user.coffees }} / {{nextPowerOfTwo(user.coffees)}})</span>
       </div>
       <div class="flex-row">
-        <span class="bi-cup text-primary h1" ngbTooltip="Coffees"> {{ user.coffees }}</span>
+        <span class="bi-cup text-primary h3" ngbTooltip="Coffees"> {{ user.coffees }}</span>
       </div>
       <div class="flex-row">
-        <span class="bi-trophy text-warning h1" ngbTooltip="Trophies"> 12</span>
+        <span class="bi-trophy text-warning h3" ngbTooltip="Trophies"> 12</span>
       </div>
       <div class="d-flex justify-content-end">
-        <button class="btn btn-success"><span></span> save</button>
+        <button *ngIf="!editMode" class="btn btn-success" (click)="editMode = !editMode">
+          <span class="bi bi-pen"></span>
+        </button>
+        <button *ngIf="editMode" class="btn btn-success"><span></span> save</button>
       </div>
     </div>
     <div class="col">
-      <div class="mb-3">
-        <label class="form-label" for="name">Name</label>
-        <input type="text" class="form-control" id="name" [(ngModel)]="user.name">
-      </div>
-      <div class="mb-3">
-        <label class="form-label" for="avatar">Avatar</label>
-        <div class="input-group">
-          <input type="url" class="form-control" id="avatar" [(ngModel)]="user.avatar">
-          <button class="btn btn-secondary" ngbTooltip="reset" (click)="user.avatar = ''">
-            <i class="bi bi-arrow-counterclockwise"></i>
-          </button>
-        </div>
-        <small class="form-text text-muted">Must be a valid url.</small>
-      </div>
-      <hr>
       <div class="mb-3">
         <label class="form-label fs-5" for="balance">Balance</label>
         <div class="input-group">
