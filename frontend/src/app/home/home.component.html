@@ -4,9 +4,7 @@
 
   <div class="d-flex flex-wrap justify-content-center">
     <button *ngFor="let user of users" class="btn text-start m-3 card-container" (click)="createCoffee(user)">
-      <div class="card bg-light bg-darkmode-dark position-relative">
-        <img class="background-image" [src]="'/assets/levels/' + (user.coffees | level) + '.png'"
-             alt="Level Icon">
+      <div class="card bg-light bg-darkmode-dark">
         <div class="card-body">
           <h5 class="card-title">{{ user.name }}</h5>
           <p class="card-text">
@@ -63,8 +61,13 @@
       {{ userMap[coffee.userId]?.name }}
       &bull;
       {{ coffee.createdAt | date:'shortTime' }}
-      &bull;
-      <a href="#" class="link-danger bi-trash" (click)="deleteCoffee(coffee)"></a>
+      <button class="btn btn-link link-danger bi-trash" [ngbPopover]="confirmDelete"></button>
+      <ng-template #confirmDelete>
+        <p>
+          Are you sure you want to delete this coffee?
+        </p>
+        <button class="btn btn-danger" (click)="deleteCoffee(coffee)">Yes</button>
+      </ng-template>
     </li>
   </ul>
 </div>

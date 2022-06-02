@@ -16,7 +16,7 @@
           <img class="rounded-circle level-icon" [src]="'/assets/levels/' + (user.coffees | level) + '.png'"
                alt="Level Icon">
           <i class="text-muted">
-            {{ levelNames[user.coffees | level] || levelNames[levelNames.length - 1] }}
+            {{ user.coffees | level | levelName }}
           </i>
         </div>
         <div class="col-auto">
