@@ -3,8 +3,10 @@
   <h3 class="text-center">Ultimate Edition</h3>
 
   <div class="d-flex flex-wrap justify-content-center">
-    <button *ngFor="let user of users" class="btn text-start m-2 card-container" (click)="createCoffee(user)">
-      <div class="card bg-light bg-darkmode-dark">
+    <button *ngFor="let user of users" class="btn text-start m-3 card-container" (click)="createCoffee(user)">
+      <div class="card bg-light bg-darkmode-dark position-relative">
+        <img class="background-image" [src]="'/assets/levels/' + (user.coffees | level) + '.png'"
+             alt="Level Icon">
         <div class="card-body">
           <h5 class="card-title">{{ user.name }}</h5>
           <p class="card-text">
@@ -12,7 +14,7 @@
               {{ user.coffees }}
             </span>
             <span class="bi-star text-info" ngbTooltip="Level">
-              {{ level(user.coffees) }}
+              {{ user.coffees | level }}
             </span>
             <span class="bi-trophy text-warning" ngbTooltip="Trophies">
               12
@@ -40,8 +42,8 @@
       <img class="rounded-circle user-avatar" [src]="user.avatar || '/assets/se.svg'" [alt]="user.name">
       <svg
         class="user-avatar progress-ring"
-        [style.--progress]="levelProgress(user.coffees)"
-        [ngbTooltip]="(levelProgress(user.coffees)|percent) + ' Progress'"
+        [style.--progress]="user.coffees | levelProgress"
+        [ngbTooltip]="(user.coffees | levelProgress | percent) + ' Progress'"
       >
         <circle class="progress-ring__circle"
           stroke="gold"

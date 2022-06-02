@@ -14,6 +14,11 @@ export class HomeComponent implements OnInit {
   coffees: Coffee[] = [];
   userMap: Record<string, User> = {};
 
+  // TODO this needs to be configured somewhere.
+  // TODO Maybe we should even offer different types of coffees with different prices.
+  //      Perhaps in a dropdown in the coffee button.
+  price = 0.1;
+
   constructor(
     private userService: UserService,
     private coffeeService: CoffeeService,
@@ -31,7 +36,10 @@ export class HomeComponent implements OnInit {
   }
 
   createCoffee(user: User) {
-    this.coffeeService.create({userId: user._id}).subscribe(coffee => {
+    this.coffeeService.create({
+      userId: user._id,
+      price: this.price,
+    }).subscribe(coffee => {
       user.coffees++;
       this.coffees = [coffee, ...this.coffees.slice(0, 9)];
     });
@@ -57,25 +65,5 @@ export class HomeComponent implements OnInit {
     if (coffee) {
       this.deleteCoffee(coffee);
     }
-  }
-
-  level(coffees: number): number {
-    return Math.log2(coffees) | 0;
-  }
-
-  levelProgress(coffees: number): number {
-    const nextLevelAt = this.nextPowerOfTwo(coffees);
-    return 2 * coffees / nextLevelAt - 1;
-  }
-
-  nextPowerOfTwo(n: number) {
-    if (n === 0) return 1
-    n--;
-    n |= n >> 1;
-    n |= n >> 2;
-    n |= n >> 4;
-    n |= n >> 8;
-    n |= n >> 16;
-    return n + 1;
   }
 }

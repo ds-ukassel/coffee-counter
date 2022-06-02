@@ -1,0 +1,6 @@
+$avatar-lg-dim: 10rem;
+.user-avatar-lg {
+  width: $avatar-lg-dim;
+  height: $avatar-lg-dim;
+  object-fit: cover;
+}
