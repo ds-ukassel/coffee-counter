@@ -1,4 +1,5 @@
-import {Component} from '@angular/core';
+import {DOCUMENT} from '@angular/common';
+import {Component, Inject} from '@angular/core';
 
 @Component({
   selector: 'app-navbar',
@@ -7,4 +8,17 @@ import {Component} from '@angular/core';
 })
 export class NavbarComponent {
   isMenuCollapsed = false;
+
+  constructor(
+    @Inject(DOCUMENT) public document: Document,
+  ) {
+  }
+
+  toggleFullscreen() {
+    if (this.document.fullscreenElement) {
+      this.document.exitFullscreen();
+    } else {
+      this.document.documentElement.requestFullscreen();
+    }
+  }
 }
