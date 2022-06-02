@@ -7,37 +7,26 @@
         <img class="rounded-circle level-icon border border-1 border-dark"
              [src]="'/assets/levels/' + (user.coffees | level) + '.png'"
              alt="Level Icon" [ngbTooltip]="user.coffees | level | levelName">
-        <button class="btn btn-success" (click)="editMode = !editMode"
-                ngbTooltip="Edit User">
-          <span class="bi bi-pencil"></span>
+        <button class="btn btn-link bi-person-circle" ngbTooltip="Edit Avatar"
+                [ngbPopover]="editAvatar" container="body" placement="right bottom" autoClose="outside">
         </button>
-      </div>
-      <div class="flex-row">
-        <div *ngIf="!editMode" class="mb-3">
-          <h3>{{user.name}}</h3>
-          <i class="text-muted">
-            - {{ user.coffees | level | levelName }}
-          </i>
-        </div>
-        <div *ngIf="editMode" class="mb-3">
-          <label  class="form-label" for="name">Name</label>
-          <input type="text" id="name"
-                    [readonly]="!editMode" [class]=" editMode ? 'form-control' : 'form-control-plaintext h3'"
-                    [(ngModel)]="user.name">
-        </div>
-        <div *ngIf="editMode" class="mb-3">
-          <label class="form-label" for="avatar">Avatar</label>
-          <div class="input-group">
+        <ng-template #editAvatar>
+          <div class="mb-3">
+            <label class="form-label" for="avatar">URL</label>
             <input type="url" class="form-control" id="avatar" [(ngModel)]="user.avatar">
-            <button class="btn btn-secondary" ngbTooltip="reset" (click)="user.avatar = ''">
-              <i class="bi bi-arrow-counterclockwise"></i>
-            </button>
           </div>
-          <small class="form-text text-muted">Must be a valid url.</small>
-        </div>
-        <div *ngIf="editMode" class="d-flex justify-content-end">
-          <button class="btn btn-success" (click)="updateUser()"><span></span> save</button>
-        </div>
+          <button class="btn btn-success" (click)="updateUser()">Save</button>
+        </ng-template>
+      </div>
+      <div>
+        <h3 class="d-flex">
+          <input type="text" class="form-control-plaintext" [(ngModel)]="user.name" #editName (ngModelChange)="edited = true">
+          <button *ngIf="!edited" class="btn btn-link bi-pencil" ngbTooltip="Edit Username" (click)="editName.focus()"></button>
+          <button *ngIf="edited" class="btn btn-link bi-check-circle" ngbTooltip="Save" (click)="updateUser()"></button>
+        </h3>
+        <i class="text-muted">
+          - {{ user.coffees | level | levelName }}
+        </i>
       </div>
       <hr>
       <div class="row">

@@ -1,4 +1,5 @@
-import {Component, OnInit} from '@angular/core';
+import {DOCUMENT} from '@angular/common';
+import {Component, Inject, OnInit} from '@angular/core';
 import {User} from '../model/user.interface';
 import {UserService} from '../user.service';
 import {ActivatedRoute, Params} from '@angular/router';
@@ -13,7 +14,7 @@ export class UserComponent implements OnInit {
   user!: User;
   balanceCorrection!: number;
 
-  editMode = false;
+  edited = false;
 
   constructor(
     private userService: UserService,
@@ -33,7 +34,7 @@ export class UserComponent implements OnInit {
   updateUser() {
     this.userService.updateOne(this.user).subscribe( res => {
       this.user = res;
-      this.editMode = false;
+      this.edited = false;
     });
   }
 }
