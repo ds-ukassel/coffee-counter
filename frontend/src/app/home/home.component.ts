@@ -46,10 +46,6 @@ export class HomeComponent implements OnInit {
   }
 
   deleteCoffee(coffee: Coffee) {
-    if (!confirm('Are you sure you want to delete this coffee?')) {
-      return;
-    }
-
     this.coffeeService.remove(coffee._id).subscribe(() => {
       const index = this.coffees.indexOf(coffee);
       if (index >= 0) {
