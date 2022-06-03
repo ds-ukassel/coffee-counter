@@ -1,8 +1,9 @@
-import {DOCUMENT} from '@angular/common';
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {User} from '../model/user.interface';
 import {UserService} from '../user.service';
 import {ActivatedRoute, Params} from '@angular/router';
+import {CoffeeService} from '../coffee.service';
+import {Purchase} from '../admin/model/purchase.interface';
 
 @Component({
   selector: 'app-user',
@@ -12,12 +13,17 @@ import {ActivatedRoute, Params} from '@angular/router';
 export class UserComponent implements OnInit {
   id!: string;
   user!: User;
-  balanceCorrection!: number;
+  purchases!: Purchase[];
 
   edited = false;
+  // TODO this needs to be configured somewhere.
+  // TODO Maybe we should even offer different types of coffees with different prices.
+  //      Perhaps in a dropdown in the coffee button.
+  price = 0.1;
 
   constructor(
     private userService: UserService,
+    private coffeeService: CoffeeService,
     private activatedRoute: ActivatedRoute,
   ) {
   }
@@ -31,8 +37,19 @@ export class UserComponent implements OnInit {
     })
   }
 
+  // TODO This implementation is temporary, later-on pure coffees will be replaced by purchases
+  createCoffee() {
+    this.coffeeService.create({
+      userId: this.user._id,
+      price: this.price,
+    }).subscribe(coffee => {
+      this.user.coffees++;
+      this.purchases = [{ description:'One coffee please!', total: -this.price} as Purchase, ...this.purchases.slice(0, 9)];
+    });
+  }
+
   updateUser() {
-    this.userService.updateOne(this.user).subscribe( res => {
+    this.userService.updateOne(this.user).subscribe(res => {
       this.user = res;
       this.edited = false;
     });

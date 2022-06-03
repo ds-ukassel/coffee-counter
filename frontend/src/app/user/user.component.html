@@ -20,8 +20,10 @@
       </div>
       <div>
         <h3 class="d-flex">
-          <input type="text" class="form-control-plaintext" [(ngModel)]="user.name" #editName (ngModelChange)="edited = true">
-          <button *ngIf="!edited" class="btn btn-link bi-pencil" ngbTooltip="Edit Username" (click)="editName.focus()"></button>
+          <input type="text" class="form-control-plaintext" [(ngModel)]="user.name" #editName
+                 (ngModelChange)="edited = true">
+          <button *ngIf="!edited" class="btn btn-link bi-pencil" ngbTooltip="Edit Username"
+                  (click)="editName.focus()"></button>
           <button *ngIf="edited" class="btn btn-link bi-check-circle" ngbTooltip="Save" (click)="updateUser()"></button>
         </h3>
         <i class="text-muted">
@@ -49,15 +51,23 @@
       </div>
     </div>
     <div class="col">
-      <div class="mb-3">
-        <label class="form-label fs-5" for="balance">Balance</label>
-        <div class="input-group">
-          <span class="input-group-text" [class.text-danger]="user.balance">
-            {{ user.balance | currency: 'EUR' : 'symbol': '1.': 'de-DE'}}
-          </span>
-          <input type="number" class="form-control form-control-lg" id="balance" [(ngModel)]="balanceCorrection">
-        </div>
+      <div class="d-flex mb-3">
+        <h3 class="flex-fill">Coffee:</h3>
+        <h3 class="bi-cup mx-1"> {{ user.coffees }}</h3>
+        <button class="btn btn-success me-2 bi-plus-lg" ngbTooltip="Add Coffee"
+                (click)="createCoffee()">
+        </button>
+      </div>
+      <div class="d-flex mb-3">
+        <h3 class="flex-fill">Balance:</h3>
+        <h3 class="mx-1" [class.text-danger]="+user.balance < 0"
+            [ngbTooltip]="+user.balance < 0 ? 'Negative credit balance!' : null">
+          {{ user.balance | currency: 'EUR' : 'symbol': '1.': 'de-DE'}}
+        </h3>
+        <a class="btn btn-success me-2 bi-cart" ngbTooltip="Add Purchase" routerLink="purchase"
+           [queryParams]="{user: user._id}"></a>
       </div>
     </div>
   </div>
 </div>
+<router-outlet></router-outlet>
