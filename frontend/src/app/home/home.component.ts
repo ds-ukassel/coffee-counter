@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CoffeeService} from '../core/service/coffee.service';
-import {Coffee} from '../model/coffee.interface';
-import {User} from '../model/user.interface';
+import {Coffee} from '../core/model/coffee.interface';
+import {User} from '../core/model/user.interface';
 import {UserService} from '../core/service/user.service';
 
 @Component({

@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
-import {CreatePurchaseDto, FindAllPurchaseDto, Purchase} from '../../model/purchase.interface';
+import {CreatePurchaseDto, FindAllPurchaseDto, Purchase} from '../model/purchase.interface';
 
 @Injectable({
   providedIn: 'root',

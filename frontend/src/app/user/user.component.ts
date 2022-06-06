@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {User} from '../model/user.interface';
+import {User} from '../core/model/user.interface';
 import {UserService} from '../core/service/user.service';
 import {ActivatedRoute, Params} from '@angular/router';
 import {CoffeeService} from '../core/service/coffee.service';
-import {FindAllPurchaseDto, Purchase} from '../model/purchase.interface';
+import {FindAllPurchaseDto, Purchase} from '../core/model/purchase.interface';
 import {PurchaseService} from '../core/service/purchase.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
