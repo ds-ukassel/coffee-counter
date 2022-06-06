@@ -6,6 +6,7 @@ import { UserComponent } from './user.component';
 import {FormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {SharedModule} from '../shared/shared.module';
+import {ModalModule} from 'ng-bootstrap-ext';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import {SharedModule} from '../shared/shared.module';
         UserRoutingModule,
         FormsModule,
         NgbModule,
-        SharedModule
+        SharedModule,
+        ModalModule
     ]
 })
 export class UserModule { }
