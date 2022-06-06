@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ApiKeyService} from '../api-key.service';
+import {ApiKeyService} from '../core/service/api-key.service';
 
 @Component({
   selector: 'app-settings',

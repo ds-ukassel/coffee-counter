@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from '../model/user.interface';
-import {UserService} from '../user.service';
+import {UserService} from '../core/service/user.service';
 import {ActivatedRoute, Params} from '@angular/router';
-import {CoffeeService} from '../coffee.service';
+import {CoffeeService} from '../core/service/coffee.service';
 import {FindAllPurchaseDto, Purchase} from '../model/purchase.interface';
-import {PurchaseService} from '../purchase.service';
+import {PurchaseService} from '../core/service/purchase.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
