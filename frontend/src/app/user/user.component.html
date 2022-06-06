@@ -51,21 +51,32 @@
       </div>
     </div>
     <div class="col">
-      <div class="d-flex mb-3">
-        <h3 class="flex-fill">Coffee:</h3>
-        <h3 class="bi-cup mx-1"> {{ user.coffees }}</h3>
-        <button class="btn btn-success me-2 bi-plus-lg" ngbTooltip="Add Coffee"
-                (click)="createCoffee()">
-        </button>
-      </div>
-      <div class="d-flex mb-3">
-        <h3 class="flex-fill">Balance:</h3>
-        <h3 class="mx-1" [class.text-danger]="+user.balance < 0"
-            [ngbTooltip]="+user.balance < 0 ? 'Negative credit balance!' : null">
-          {{ user.balance | currency: 'EUR' : 'symbol': '1.': 'de-DE'}}
-        </h3>
-        <a class="btn btn-success me-2 bi-cart" ngbTooltip="Add Purchase" routerLink="purchase"
-           [queryParams]="{user: user._id}"></a>
+      <div class="row my-5 justify-content-evenly">
+        <div class="col-4 justify-content-center">
+          <div class="d-flex mb-2 justify-content-center">
+            <h1>{{ user.coffees }}&nbsp;</h1>
+            <h1 class="bi-cup text-primary"></h1>
+          </div>
+          <div class="d-flex justify-content-center">
+            <h3 class="me-2">Coffee</h3>
+            <button class="btn btn-success bi-plus-lg" ngbTooltip="Add Coffee"
+                    (click)="createCoffee()">
+            </button>
+          </div>
+        </div>
+        <div class="col-4 justify-content-center">
+          <div class="d-flex mb-2 justify-content-center">
+            <h1 [class.text-danger]="+user.balance < 0"
+                [ngbTooltip]="+user.balance < 0 ? 'Negative credit balance!' : null">
+              {{ user.balance | currency: 'EUR' : 'symbol': '1.': 'de-DE'}}
+            </h1>
+          </div>
+          <div class="d-flex justify-content-center">
+            <h3 class="me-2">Balance</h3>
+            <a class="btn btn-success me-2 bi-cart" ngbTooltip="Add Purchase" routerLink="purchase"
+               [queryParams]="{user: user._id}"></a>
+          </div>
+        </div>
       </div>
       <hr>
       <div class="d-flex mb-3">
