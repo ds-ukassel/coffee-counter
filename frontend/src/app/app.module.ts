@@ -7,9 +7,9 @@ import {ApiKeyInterceptor} from './core/service/api-key.interceptor';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {HomeComponent} from './home/home.component';
 import {NavbarComponent} from './navbar/navbar.component';
-import {SettingsComponent} from './settings/settings.component';
+import {HomeComponent} from './module/home/home.component';
+import {SettingsComponent} from './module/settings/settings.component';
 import {SharedModule} from './shared/shared.module';
 
 @NgModule({

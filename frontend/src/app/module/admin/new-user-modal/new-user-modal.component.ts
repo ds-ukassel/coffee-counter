@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ModalComponent} from 'ng-bootstrap-ext';
-import {CreateUserDto} from '../../core/model/user.interface';
-import {UserService} from '../../core/service/user.service';
+import {CreateUserDto} from '../../../core/model/user.interface';
+import {UserService} from '../../../core/service/user.service';
 
 @Component({
   selector: 'app-new-user-modal',

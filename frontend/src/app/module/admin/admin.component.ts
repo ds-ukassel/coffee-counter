@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {User} from '../core/model/user.interface';
-import {UserService} from '../core/service/user.service';
+import {User} from '../../core/model/user.interface';
+import {UserService} from '../../core/service/user.service';
 
 @Component({
   selector: 'app-admin',
