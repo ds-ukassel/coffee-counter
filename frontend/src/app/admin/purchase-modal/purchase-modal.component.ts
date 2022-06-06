@@ -3,8 +3,8 @@ import {ActivatedRoute} from '@angular/router';
 import {switchMap} from 'rxjs';
 import {User} from '../../model/user.interface';
 import {UserService} from '../../user.service';
-import {CreatePurchaseDto} from '../model/purchase.interface';
-import {PurchaseService} from '../purchase.service';
+import {CreatePurchaseDto} from '../../model/purchase.interface';
+import {PurchaseService} from '../../purchase.service';
 
 @Component({
   selector: 'app-purchase-modal',

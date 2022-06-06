@@ -3,7 +3,8 @@ import {User} from '../model/user.interface';
 import {UserService} from '../user.service';
 import {ActivatedRoute, Params} from '@angular/router';
 import {CoffeeService} from '../coffee.service';
-import {Purchase} from '../admin/model/purchase.interface';
+import {FindAllPurchaseDto, Purchase} from '../model/purchase.interface';
+import {PurchaseService} from '../purchase.service';
 
 @Component({
   selector: 'app-user',
@@ -25,6 +26,7 @@ export class UserComponent implements OnInit {
     private userService: UserService,
     private coffeeService: CoffeeService,
     private activatedRoute: ActivatedRoute,
+    private purchaseService: PurchaseService,
   ) {
   }
 
@@ -35,6 +37,13 @@ export class UserComponent implements OnInit {
         this.user = user;
       });
     })
+    this.findAllPurchases();
+  }
+
+  findAllPurchases() {
+    this.purchaseService.findAll({userId: this.id} as FindAllPurchaseDto).subscribe(res => {
+      this.purchases = res;
+    })
   }
 
   // TODO This implementation is temporary, later-on pure coffees will be replaced by purchases
@@ -44,7 +53,10 @@ export class UserComponent implements OnInit {
       price: this.price,
     }).subscribe(coffee => {
       this.user.coffees++;
-      this.purchases = [{ description:'One coffee please!', total: -this.price} as Purchase, ...this.purchases.slice(0, 9)];
+      this.purchases = [{
+        description: 'One coffee please!',
+        total: -this.price
+      } as Purchase, ...this.purchases.slice(0, 9)];
     });
   }
 

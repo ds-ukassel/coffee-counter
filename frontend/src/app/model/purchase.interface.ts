@@ -8,3 +8,4 @@ export interface Purchase {
 }
 
 export type CreatePurchaseDto = Omit<Purchase, '_id' | 'createdAt'>;
+export type FindAllPurchaseDto = Omit<Purchase, '_id'>;

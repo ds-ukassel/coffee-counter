@@ -1,8 +1,8 @@
-import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {environment} from '../../environments/environment';
-import {Purchase, CreatePurchaseDto} from './model/purchase.interface';
+import {environment} from '../environments/environment';
+import {CreatePurchaseDto, FindAllPurchaseDto, Purchase} from './model/purchase.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -14,8 +14,8 @@ export class PurchaseService {
   ) {
   }
 
-  findAll(): Observable<Purchase[]> {
-    return this.http.get<Purchase[]>(environment.apiUrl + '/purchases');
+  findAll(dto: FindAllPurchaseDto): Observable<Purchase[]> {
+    return this.http.get<Purchase[]>(environment.apiUrl + '/purchases', {params: dto});
   }
 
   create(purchase: CreatePurchaseDto): Observable<Purchase> {

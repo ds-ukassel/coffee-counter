@@ -1,7 +1,7 @@
-import {Body, Controller, Delete, Get, Param, Post} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, Query} from '@nestjs/common';
 import {ApiCreatedResponse, ApiOkResponse, ApiTags} from '@nestjs/swagger';
 
-import {CreatePurchaseDto} from './purchase.dto';
+import {CreatePurchaseDto, FindAllPurchaseDto} from './purchase.dto';
 import {Purchase} from './purchase.schema';
 import {PurchaseService} from './purchase.service';
 
@@ -23,8 +23,10 @@ export class PurchaseController {
 
 	@Get()
 	@ApiOkResponse({type: [Purchase]})
-	async findAll(): Promise<Purchase[]> {
-		return this.purchaseService.findAll();
+	async findAll(
+		@Query() dto: FindAllPurchaseDto,
+	): Promise<Purchase[]> {
+		return this.purchaseService.findAll(dto);
 	}
 
 	@Get(':id')
