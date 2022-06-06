@@ -34,7 +34,6 @@
       <div class="row">
         <div class="col">
           <span class="bi-star text-info h2" ngbTooltip="Level"> {{ user.coffees | level }}</span>
-          <span class="text-info h5"> / {{user.coffees | nextLevel}}</span>
         </div>
         <div class="col">
           <span class="bi-trophy text-warning h2" ngbTooltip="Trophies"> 12</span>
@@ -52,7 +51,8 @@
       <div class="row my-5 justify-content-evenly">
         <div class="col-4 justify-content-center">
           <div class="d-flex mb-2 justify-content-center">
-            <h1>{{ user.coffees }}&nbsp;</h1>
+            <h1>{{ user.coffees }}</h1>
+            <h5 class="text-muted align-self-end">/{{user.coffees | nextLevel}}&nbsp;</h5>
             <h1 class="bi-cup text-primary"></h1>
           </div>
           <div class="d-flex justify-content-center">
