@@ -66,4 +66,10 @@ export class UserComponent implements OnInit {
       this.edited = false;
     });
   }
+
+  deletePurchase(purchase: Purchase) {
+    this.purchaseService.remove(purchase._id).subscribe( res => {
+      this.purchases = this.purchases.filter(purchase => purchase._id != res._id);
+    });
+  }
 }
