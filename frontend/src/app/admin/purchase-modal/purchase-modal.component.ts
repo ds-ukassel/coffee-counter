@@ -12,12 +12,12 @@ import {PurchaseService} from '../purchase.service';
   styleUrls: ['./purchase-modal.component.scss'],
 })
 export class PurchaseModalComponent implements OnInit {
-  user!: User;
+  user?: User;
 
   purchase: CreatePurchaseDto = {userId: '', total: 1};
 
   constructor(
-    private route: ActivatedRoute,
+    public route: ActivatedRoute,
     private userService: UserService,
     private purchaseService: PurchaseService,
   ) {
@@ -30,6 +30,9 @@ export class PurchaseModalComponent implements OnInit {
   }
 
   create(): void {
+    if (!this.user) {
+      return;
+    }
     this.purchase.userId = this.user._id;
     this.purchaseService.create(this.purchase).subscribe();
   }
