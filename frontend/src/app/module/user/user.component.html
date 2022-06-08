@@ -1,0 +1,156 @@
+<div *ngIf="user" class="container">
+  <div class="row">
+    <div class="col-3">
+      <div class="avatar-container">
+        <img class="rounded-circle user-avatar border border-2 border-dark" [src]="user.avatar || '/assets/se.svg'"
+             [alt]="user.name">
+        <button class="btn btn-primary bi-person-circle text-light" ngbTooltip="Edit Avatar"
+                [ngbPopover]="editAvatar" container="body" placement="right bottom" autoClose="outside">
+        </button>
+        <ng-template #editAvatar>
+          <div class="mb-3">
+            <label class="form-label" for="avatar">URL</label>
+            <input type="url" class="form-control" id="avatar" [(ngModel)]="user.avatar">
+          </div>
+          <button class="btn btn-success" (click)="updateUser()">Save</button>
+        </ng-template>
+      </div>
+      <div>
+        <div class="d-flex">
+          <h3 *ngIf="!editing" class="flex-fill">{{user.name}}</h3>
+          <input *ngIf="editing" type="text" class="form-control-lg" [(ngModel)]="user.name">
+          <button *ngIf="!editing" class="btn btn-link bi-pencil"
+                  ngbTooltip="Edit Username" placement="right bottom"
+                  (click)="editing = true;">
+          </button>
+          <button *ngIf="editing" class="btn btn-link bi-check-circle"
+                  ngbTooltip="Save" placement="right bottom"
+                  (click)="updateUser()"></button>
+        </div>
+        <div class="d-flex">
+          <img class="rounded-circle level-icon border border-1 border-dark me-2"
+               [src]="'/assets/levels/' + (user.coffees | level) + '.png'" alt="Level Icon">
+          <i class="text-muted h5 align-self-center">
+            {{ user.coffees | level | levelName }}
+          </i>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col">
+          <span class="bi-star text-info h2" ngbTooltip="Level"> {{ user.coffees | level }}</span>
+        </div>
+        <div class="col">
+          <span class="bi-trophy text-warning h2" ngbTooltip="Trophies"> 12</span>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <a *ngFor="let achievement of achievements" class="col-3"
+           style="cursor: pointer" (click)="open(achievement, achievementModal)">
+          <img [src]="achievement.image" [alt]="achievement.name">
+        </a>
+      </div>
+    </div>
+    <div class="col">
+      <div class="row my-5 justify-content-evenly">
+        <div class="col-4 justify-content-center">
+          <div class="d-flex mb-2 justify-content-center">
+            <h1>{{ user.coffees }}</h1>
+            <h5 class="text-muted align-self-end">/{{user.coffees | nextLevel}}&nbsp;</h5>
+            <h1 class="bi-cup text-primary"></h1>
+          </div>
+          <div class="d-flex justify-content-center">
+            <h3 class="me-2">Coffee</h3>
+            <button class="btn btn-success bi-plus-lg" ngbTooltip="Add Coffee"
+                    (click)="createCoffee()">
+            </button>
+          </div>
+        </div>
+        <div class="col-4 justify-content-center">
+          <div class="d-flex mb-2 justify-content-center">
+            <h1 [class.text-danger]="+user.balance < 0"
+                [ngbTooltip]="+user.balance < 0 ? 'Negative credit balance!' : null">
+              {{ user.balance | currency: 'EUR' : 'symbol': '1.': 'de-DE'}}
+            </h1>
+          </div>
+          <div class="d-flex justify-content-center">
+            <h3 class="me-2">Balance</h3>
+            <a class="btn btn-success me-2 bi-cart" ngbTooltip="Add Purchase" routerLink="purchase"
+               [queryParams]="{user: user._id}"></a>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="d-flex mb-3">
+        <div class="card flex-fill justify-content-center" style="height: 5rem; background: lightgrey">
+          <div class="d-flex justify-content-center align-items-center">
+            <h4 class="text-danger bi-bar-chart-fill"></h4>
+            <h4 class="text-danger mx-2">Diagramms comming soon</h4>
+            <h4 class="text-danger bi-bar-chart-fill"></h4>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <h3>Recent Purchases</h3>
+      <ul class="list-group">
+        <li *ngFor="let purchase of purchases"
+            class="list-group-item d-flex justify-content-between align-items-center">
+          <span class="bi bi-shop"></span>
+          <div class="ms-2 me-auto">
+            <span>{{purchase.description}}</span>
+            &bull;
+            <span class="text-muted">{{ purchase.createdAt | date:'shortTime' }}</span>
+          </div>
+          <span [class.text-danger]="+user.balance < 0">
+            {{purchase.total | currency: 'EUR' : 'symbol': '1.': 'de-DE'}}
+          </span>
+          <button class="btn btn-sm btn-link link-danger bi-trash" [ngbPopover]="confirmDelete"></button>
+          <ng-template #confirmDelete>
+            <p>
+              Are you sure you want to delete this purchase?
+            </p>
+            <button class="btn btn-danger" (click)="deletePurchase(purchase)">Yes</button>
+          </ng-template>
+        </li>
+      </ul>
+      <hr>
+      <div class="row">
+        <div *ngFor="let achievement of achievements" class="col-2">
+          <a style="cursor: pointer" (click)="open(achievement, achievementModal)">
+            <img [src]="achievement.image" [alt]="achievement.name">
+          </a>
+          <h4 class="text-center">{{achievement.name}}</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<router-outlet></router-outlet>
+<!-- TODO move to own component when achievements are implemented properly-->
+<ng-template #achievementModal let-c='close'>
+  <div class="modal-header d-flex">
+    <img [src]="currentAchievement.image" [alt]="currentAchievement.name" width="100" height="100">
+    <div class="flex-fill mx-3">
+      <h4 class="modal-title">{{currentAchievement.name}}</h4>
+      <h6 class="card-subtitle text-muted"> {{currentAchievement.receivedAt | date:'mediumDate' }}</h6>
+    </div>
+    <span class="bi-trophy-fill" [class]="currentAchievement.tier | trophyTier" [ngbTooltip]="currentAchievement.tier"
+          style="font-size: 50px"></span>
+  </div>
+  <div class="modal-body">
+    <div class="d-flex mb-3">
+      <span class="lead">{{currentAchievement.description}}</span>
+    </div>
+    <div class="d-flex">
+      <button class="btn btn-sm btn-info me-3" (click)="showHint = !showHint">
+        <span class="bi-question">hint</span>
+      </button>
+      <span *ngIf="!showHint" class="placeholder col"></span>
+      <span *ngIf="showHint">{{currentAchievement.hint}}</span>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-secondary" (click)="c()">Close</button>
+  </div>
+</ng-template>

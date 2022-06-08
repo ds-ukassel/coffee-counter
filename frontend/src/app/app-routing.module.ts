@@ -1,11 +1,11 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {HomeComponent} from './home/home.component';
-import {SettingsComponent} from './settings/settings.component';
+import {SettingsComponent} from './module/settings/settings.component';
+import {HomeComponent} from './module/home/home.component';
 
 const routes: Routes = [
-  {path: 'users/:id', loadChildren: () => import('./user/user.module').then((m) => m.UserModule)},
-  {path: 'admin', loadChildren: () => import('./admin/admin.module').then((m) => m.AdminModule)},
+  {path: 'users/:id', loadChildren: () => import('./module/user/user.module').then((m) => m.UserModule)},
+  {path: 'users', loadChildren: () => import('./module/admin/admin.module').then((m) => m.AdminModule)},
   {path: 'settings', component: SettingsComponent},
   {path: '', component: HomeComponent},
 ];

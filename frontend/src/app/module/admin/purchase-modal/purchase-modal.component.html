@@ -1,0 +1,46 @@
+<ngbx-modal #modal [back]="['..']">
+  <ng-container modal-title>
+    Add Purchase
+    <span *ngIf="user" class="text-muted">for {{ user.name }}</span>
+  </ng-container>
+  <ng-container modal-body>
+    <div class="mb-3">
+      <label class="form-label" for="description">Description</label>
+      <input type="text" class="form-control" id="description" [(ngModel)]="purchase.description">
+      <div class="form-text">Optional.</div>
+    </div>
+    <div class="mb-3">
+      <label class="form-label" for="oldBalance">Current Balance</label>
+      <div class="input-group">
+        <input type="number" class="form-control text-end" id="oldBalance" readonly
+               [ngModel]="user?.balance | currency:'EUR':''">
+        <span class="input-group-text">€</span>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label class="form-label" for="total">Total</label>
+      <div class="input-group">
+        <input type="number" class="form-control text-end" id="total" min="0.01" step="0.01"
+               [(ngModel)]="purchase.total">
+        <span class="input-group-text">€</span>
+      </div>
+    </div>
+    <hr/>
+    <div class="mb-3">
+      <label class="form-label" for="newBalance">Final Balance</label>
+      <div class="input-group">
+        <input type="number" class="form-control text-end" id="newBalance" readonly
+               [ngModel]="(user ? +user.balance : 0) + +purchase.total | currency:'EUR':''">
+        <span class="input-group-text">€</span>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container modal-footer>
+    <button class="btn btn-secondary" (click)="modal.close()">
+      Cancel
+    </button>
+    <button [disabled]="!user" class="btn btn-success" (click)="create(); modal.close()">
+      Confirm
+    </button>
+  </ng-container>
+</ngbx-modal>
