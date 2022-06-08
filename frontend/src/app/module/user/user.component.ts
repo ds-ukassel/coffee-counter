@@ -1,14 +1,14 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Params} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {User} from '../../core/model/user.interface';
-import {FindAllPurchaseDto, Purchase} from '../../core/model/purchase.interface';
+import {Purchase} from '../../core/model/purchase.interface';
 import {UserService} from '../../core/service/user.service';
 import {CoffeeService} from '../../core/service/coffee.service';
 import {PurchaseService} from '../../core/service/purchase.service';
+import {switchMap} from 'rxjs';
 import Achievement from '../../core/model/achievement.interface';
 import {TrophyTier} from '../../shared/pipe/trophy-tier.pipe';
-import {switchMap} from 'rxjs';
 
 @Component({
   selector: 'app-user',
@@ -92,7 +92,7 @@ export class UserComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.params.pipe(
-      switchMap(({ id }) => this.userService.findOne(id)),
+      switchMap(({id}) => this.userService.findOne(id)),
     ).subscribe(user => {
       this.user = user;
     });
@@ -101,7 +101,7 @@ export class UserComponent implements OnInit {
 
   findAllPurchases() {
     this.activatedRoute.params.pipe(
-      switchMap(({ id }) => this.purchaseService.findAll({userId: id})),
+      switchMap(({id}) => this.purchaseService.findAll({userId: id})),
     ).subscribe(purchases => this.purchases = purchases);
   }
 
