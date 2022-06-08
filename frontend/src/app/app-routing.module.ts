@@ -5,7 +5,7 @@ import {HomeComponent} from './module/home/home.component';
 
 const routes: Routes = [
   {path: 'users/:id', loadChildren: () => import('./module/user/user.module').then((m) => m.UserModule)},
-  {path: 'admin', loadChildren: () => import('./module/admin/admin.module').then((m) => m.AdminModule)},
+  {path: 'users', loadChildren: () => import('./module/admin/admin.module').then((m) => m.AdminModule)},
   {path: 'settings', component: SettingsComponent},
   {path: '', component: HomeComponent},
 ];
