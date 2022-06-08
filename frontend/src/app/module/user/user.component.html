@@ -130,7 +130,7 @@
       <h4 class="modal-title">{{currentAchievement.name}}</h4>
       <h6 class="card-subtitle text-muted"> {{currentAchievement.receivedAt | date:'mediumDate' }}</h6>
     </div>
-    <span class="bi-trophy-fill" [class]="trophyStyle()" [ngbTooltip]="currentAchievement.tier"
+    <span class="bi-trophy-fill" [class]="currentAchievement.tier | trophyTier" [ngbTooltip]="currentAchievement.tier"
           style="font-size: 50px"></span>
   </div>
   <div class="modal-body">
