@@ -1,0 +1,17 @@
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+
+$avatar-dim: 5rem;
+$level-icon-dim: 2rem;
+
+.user-avatar {
+  width: $avatar-dim;
+  height: $avatar-dim;
+  object-fit: cover;
+}
+
+.level-icon {
+  width: $level-icon-dim;
+  height: $level-icon-dim;
+  object-fit: cover;
+}
