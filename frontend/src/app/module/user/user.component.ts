@@ -8,6 +8,7 @@ import {CoffeeService} from '../../core/service/coffee.service';
 import {PurchaseService} from '../../core/service/purchase.service';
 import Achievement from '../../core/model/achievement.interface';
 import {TrophyTier} from '../../shared/pipe/trophy-tier.pipe';
+import {switchMap} from 'rxjs';
 
 @Component({
   selector: 'app-user',
@@ -15,7 +16,6 @@ import {TrophyTier} from '../../shared/pipe/trophy-tier.pipe';
   styleUrls: ['./user.component.scss']
 })
 export class UserComponent implements OnInit {
-  id!: string;
   user!: User;
   purchases!: Purchase[];
 
@@ -91,19 +91,18 @@ export class UserComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe((params: Params) => {
-      this.id = params['id'];
-      this.userService.findOne(this.id).subscribe(user => {
-        this.user = user;
-      });
-    })
+    this.activatedRoute.params.pipe(
+      switchMap(({ id }) => this.userService.findOne(id)),
+    ).subscribe(user => {
+      this.user = user;
+    });
     this.findAllPurchases();
   }
 
   findAllPurchases() {
-    this.purchaseService.findAll({userId: this.id} as FindAllPurchaseDto).subscribe(res => {
-      this.purchases = res;
-    })
+    this.activatedRoute.params.pipe(
+      switchMap(({ id }) => this.purchaseService.findAll({userId: id})),
+    ).subscribe(purchases => this.purchases = purchases);
   }
 
   createCoffee() {
