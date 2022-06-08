@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {CoffeeService} from '../coffee.service';
-import {Coffee} from '../model/coffee.interface';
-import {User} from '../model/user.interface';
-import {UserService} from '../user.service';
+import {User} from '../../core/model/user.interface';
+import {Coffee} from '../../core/model/coffee.interface';
+import {UserService} from '../../core/service/user.service';
+import {CoffeeService} from '../../core/service/coffee.service';
 
 @Component({
   selector: 'app-home',

@@ -1,8 +1,8 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {environment} from '../environments/environment';
-import {Coffee, CreateCoffeeDto} from './model/coffee.interface';
+import {environment} from '../../../environments/environment';
+import {Coffee, CreateCoffeeDto} from '../model/coffee.interface';
 
 @Injectable({
   providedIn: 'root',

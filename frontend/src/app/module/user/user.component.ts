@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {User} from '../model/user.interface';
-import {UserService} from '../user.service';
 import {ActivatedRoute, Params} from '@angular/router';
-import {CoffeeService} from '../coffee.service';
-import {FindAllPurchaseDto, Purchase} from '../model/purchase.interface';
-import {PurchaseService} from '../purchase.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {User} from '../../core/model/user.interface';
+import {FindAllPurchaseDto, Purchase} from '../../core/model/purchase.interface';
+import {UserService} from '../../core/service/user.service';
+import {CoffeeService} from '../../core/service/coffee.service';
+import {PurchaseService} from '../../core/service/purchase.service';
 
 @Component({
   selector: 'app-user',

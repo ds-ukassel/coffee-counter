@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {ApiKeyService} from '../api-key.service';
+import {Component, OnInit} from '@angular/core';
+import {ApiKeyService} from '../../core/service/api-key.service';
 
 @Component({
   selector: 'app-settings',
@@ -11,7 +11,8 @@ export class SettingsComponent implements OnInit {
 
   constructor(
     private apiKeyService: ApiKeyService,
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.apiKey = this.apiKeyService.apiKey || '';
