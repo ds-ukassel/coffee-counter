@@ -8,7 +8,7 @@
              [src]="'/assets/levels/' + (user.coffees | level) + '.png'"
              alt="Level Icon" [ngbTooltip]="user.coffees | level | levelName">
         <button class="btn btn-link bi-person-circle" ngbTooltip="Edit Avatar"
-                [ngbPopover]="editAvatar" container="body" placement="right bottom" autoClose="outside">
+                [ngbPopover]="editAvatar" container="body" placement="right bottom-right" autoClose="outside">
         </button>
         <ng-template #editAvatar>
           <div class="mb-3">
@@ -32,10 +32,10 @@
       </div>
       <hr>
       <div class="row">
-        <div class="col-md">
+        <div class="col">
           <span class="bi-star text-info h2" ngbTooltip="Level"> {{ user.coffees | level }}</span>
         </div>
-        <div class="col-md">
+        <div class="col">
           <span class="bi-trophy text-warning h2" ngbTooltip="Trophies"> 12</span>
         </div>
       </div>
