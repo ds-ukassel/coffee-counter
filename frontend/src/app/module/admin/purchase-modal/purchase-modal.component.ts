@@ -16,6 +16,8 @@ export class PurchaseModalComponent implements OnInit {
 
   purchase: CreatePurchaseDto = {userId: '', total: 1};
 
+  descriptions: string[] = [];
+
   constructor(
     public route: ActivatedRoute,
     private userService: UserService,
@@ -27,6 +29,10 @@ export class PurchaseModalComponent implements OnInit {
     this.route.queryParams.pipe(
       switchMap(({user}) => this.userService.findOne(user)),
     ).subscribe(user => this.user = user);
+
+    this.purchaseService.findUnique('description').subscribe(descriptions => {
+      this.descriptions = descriptions.filter((s): s is string => !!s);
+    });
   }
 
   create(): void {
