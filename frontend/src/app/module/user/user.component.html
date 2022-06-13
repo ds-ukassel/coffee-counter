@@ -18,7 +18,7 @@
       <div>
         <div class="d-flex">
           <h3 *ngIf="!editing" class="flex-fill">{{user.name}}</h3>
-          <input *ngIf="editing" type="text" class="form-control form-control-lg" [(ngModel)]="user.name">
+          <input *ngIf="editing" type="text" class="flex-fill form-control form-control-lg" [(ngModel)]="user.name">
           <button *ngIf="!editing" class="btn btn-link bi-pencil"
                   ngbTooltip="Edit Username" placement="right bottom"
                   (click)="editing = true;">
