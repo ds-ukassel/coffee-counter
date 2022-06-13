@@ -49,7 +49,12 @@ $pi: 3.1415926535;
   object-position: center;
 }
 
+.progress-ring:active, .progress-ring:focus {
+  outline: 0 !important;
+}
+
 .progress-ring {
+  border-radius: 50% !important;
   stroke-dasharray: $card-height*$pi $card-height*$pi;
   stroke-dashoffset: calc((1 - var(--progress)) * $pi * $card-height);
 }
@@ -59,4 +64,3 @@ $pi: 3.1415926535;
   transform: rotate(-90deg);
   transform-origin: 50% 50%;
 }
-

@@ -3,7 +3,7 @@
   <h3 class="text-center">Ultimate Edition</h3>
 
   <div class="d-flex flex-wrap justify-content-center">
-    <button *ngFor="let user of users" class="btn text-start m-3 card-container" (click)="createCoffee(user)">
+    <div *ngFor="let user of users" class="text-start m-3 card-container">
       <div class="card bg-light bg-darkmode-dark">
         <div class="card-body">
           <h5 class="card-title">{{ user.name }}</h5>
@@ -37,21 +37,22 @@
           ></button>
         </div>
       </div>
-      <img class="rounded-circle user-avatar" [src]="user.avatar || '/assets/se.svg'" [alt]="user.name">
+      <img class="rounded-circle user-avatar border border-2 border-dark" [src]="user.avatar || '/assets/se.svg'" [alt]="user.name">
       <svg
         class="user-avatar progress-ring"
         [style.--progress]="user.coffees | levelProgress"
         [ngbTooltip]="(user.coffees | levelProgress | percent) + ' Progress'"
+        (click)="createCoffee(user)" clickPulseAnimation
       >
         <circle class="progress-ring__circle"
-          stroke="gold"
-          stroke-width="10"
-          fill="transparent"
-          r="50%"
-          cx="50%"
-          cy="50%"/>
+                stroke="gold"
+                stroke-width="10"
+                fill="transparent"
+                r="50%"
+                cx="50%"
+                cy="50%"/>
       </svg>
-    </button>
+    </div>
   </div>
 
   <h4>Recent Coffees:</h4>
