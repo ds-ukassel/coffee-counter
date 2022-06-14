@@ -1,6 +1,6 @@
 <div *ngIf="user" class="container">
   <div class="row">
-    <div class="col-lg-4">
+    <div class="col-lg-3">
       <div class="avatar-container">
         <img class="rounded-circle user-avatar border border-2 border-dark" [src]="user.avatar || '/assets/se.svg'"
              [alt]="user.name">
@@ -48,8 +48,9 @@
       <div class="d-flex flex-wrap">
         <a
           *ngFor="let achievement of achievements"
-           style="cursor: pointer; width: 4rem"
-           (click)="open(achievement, achievementModal)"
+          class="achievement-icon me-2 mb-2"
+          style="cursor: pointer"
+          (click)="open(achievement, achievementModal)"
           [ngbTooltip]="achievement.name"
         >
           <img [src]="achievement.image" [alt]="achievement.name">
