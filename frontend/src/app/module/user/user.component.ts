@@ -19,7 +19,7 @@ export class UserComponent implements OnInit {
   user!: User;
   purchases!: Purchase[];
 
-  edited = false;
+  editing = false;
   // TODO this needs to be configured somewhere.
   // TODO Maybe we should even offer different types of coffees with different prices.
   //      Perhaps in a dropdown in the coffee button.
@@ -117,7 +117,7 @@ export class UserComponent implements OnInit {
   updateUser() {
     this.userService.updateOne(this.user).subscribe(res => {
       this.user = res;
-      this.edited = false;
+      this.editing = false;
     });
   }
 
