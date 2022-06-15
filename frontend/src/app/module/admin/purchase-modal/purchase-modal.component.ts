@@ -15,6 +15,7 @@ export class PurchaseModalComponent implements OnInit {
   user?: User;
 
   purchase: CreatePurchaseDto = {userId: '', total: 1};
+  multiplier = 0.01;
 
   descriptions: string[] = [];
 

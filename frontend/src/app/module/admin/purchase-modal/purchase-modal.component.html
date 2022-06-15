@@ -24,22 +24,10 @@
     <div class="mb-3">
       <label class="form-label" for="total">Total</label>
       <div class="input-group">
-        <button class="btn btn-outline-secondary bi-cash-coin" [ngbPopover]="coinPopover" autoClose="outside" placement="left bottom-left">
-        </button>
         <input type="number" class="form-control text-end" id="total" min="0.01" step="0.01"
                [(ngModel)]="purchase.total">
         <span class="input-group-text">€</span>
       </div>
-      <ng-template #coinPopover>
-        <button *ngFor="let amount of [0.01, 0.1, 1, 10]"
-                class="btn btn-secondary me-2 mb-2"
-                (click)="purchase.total = purchase.total + amount">
-          + {{ amount|currency:'EUR':'' }} €
-        </button>
-        <button class="btn btn-warning" (click)="purchase.total = 0">
-          Reset
-        </button>
-      </ng-template>
     </div>
     <hr/>
     <div class="mb-3">
