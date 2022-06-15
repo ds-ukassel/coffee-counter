@@ -1,8 +1,8 @@
 @use "sass:math";
 
 $avatar-dim: 18rem;
-$level-icon-dim: 4rem;
-$edit-button-dim: 4rem;
+$level-icon-dim: 3rem;
+$edit-button-dim: 3rem;
 
 .user-avatar {
   width: $avatar-dim;
@@ -20,16 +20,11 @@ $edit-button-dim: 4rem;
   position: relative;
 }
 
-.avatar-container img:nth-of-type(2) {
-  position: absolute;
-  // Base trigonometry https://stackoverflow.com/questions/839899/how-do-i-calculate-a-point-on-a-circle-s-circumference
-  // Center + Radius + cos/sin - Radius of level
-  left: ($avatar-dim / 2) + (($avatar-dim / 2) * math.cos(45deg)) - ($level-icon-dim / 2);
-  top: ($avatar-dim / 2) + (($avatar-dim / 2) * math.sin(45deg))  - ($level-icon-dim / 2);
-}
-
 .avatar-container button {
   position: absolute;
-  top: 0;
-  right: 0;
+  width: $edit-button-dim;
+  height: $edit-button-dim;
+  border-radius: 50px;
+  left: ($avatar-dim / 2) + (($avatar-dim / 2) * math.cos(45deg)) - ($edit-button-dim / 2);
+  top: ($avatar-dim / 2) + (($avatar-dim / 2) * math.sin(45deg))  - ($edit-button-dim / 2);
 }
