@@ -7,7 +7,7 @@ import {Component, Inject} from '@angular/core';
   styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent {
-  isMenuCollapsed = false;
+  isMenuCollapsed = true;
 
   constructor(
     @Inject(DOCUMENT) public document: Document,
