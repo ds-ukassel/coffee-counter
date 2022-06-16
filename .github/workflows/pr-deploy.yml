@@ -49,5 +49,4 @@ jobs:
         with:
           issue-number: ${{ github.event.number }}
           body: |
-            Deployed to https://sekassel-research.github.io/coffee-counter-ultimate/preview/${{ github.ref }}/
-          reactions: '+1'
+            Deployed [#${{ github.event.number}}](https://sekassel-research.github.io/coffee-counter-ultimate/preview/${{ github.ref }}) :rocket:
