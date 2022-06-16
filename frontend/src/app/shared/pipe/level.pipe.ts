@@ -8,7 +8,7 @@ export function level(coffees: number): number {
   name: 'level',
 })
 export class LevelPipe implements PipeTransform {
-  transform(value: number): number {
-    return level(value);
+  transform(value: number, balance?: number): number {
+    return balance && balance < 0 ? -1 : level(value);
   }
 }
