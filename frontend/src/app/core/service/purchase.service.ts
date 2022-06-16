@@ -18,6 +18,10 @@ export class PurchaseService {
     return this.http.get<Purchase[]>(environment.apiUrl + '/purchases', {params: dto});
   }
 
+  findUnique<K extends keyof Purchase>(field: K, dto: FindAllPurchaseDto = {}): Observable<Purchase[K][]> {
+    return this.http.get<Purchase[K][]>(environment.apiUrl + '/purchases/unique/' + field, {params: dto});
+  }
+
   create(purchase: CreatePurchaseDto): Observable<Purchase> {
     return this.http.post<Purchase>(environment.apiUrl + '/purchases', purchase);
   }
