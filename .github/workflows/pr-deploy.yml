@@ -37,17 +37,17 @@ jobs:
       - name: Install packages
         run: pnpm install
       - name: Build Angular
-        run: pnpm build --configuration production --base-href /coffee-counter-ultimate/pr/${{ github.pull_request.number }}/
+        run: pnpm build --configuration production --base-href /coffee-counter-ultimate/preview/${{ github.ref }}/
       - name: Publish to Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: dist/frontend/
-          destination_dir: pr/{{ github.pull_request.number }}/
+          destination_dir: preview/${{ github.ref }}/
       - name: Add PR Comment
         uses: peter-evans/create-or-update-comment@v2
         with:
-          issue-number: ${{ github.pull_request.number }}
+          issue-number: ${{ github.event.number }}
           body: |
-            Deployed to https://sekassel-research.github.io/pr/${{ github.pull_request.number }}/
+            Deployed to https://sekassel-research.github.io/coffee-counter-ultimate/preview/${{ github.ref }}/
           reactions: '+1'
