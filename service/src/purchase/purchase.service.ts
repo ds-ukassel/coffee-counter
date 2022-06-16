@@ -27,6 +27,10 @@ export class PurchaseService {
 		return this.model.find(where).exec();
 	}
 
+	async unique(field: string, where: FilterQuery<Purchase>): Promise<any[]> {
+		return this.model.distinct(field, where).exec();
+	}
+
 	async findOne(id: string): Promise<PurchaseDocument | null> {
 		return this.model.findById(id).exec();
 	}

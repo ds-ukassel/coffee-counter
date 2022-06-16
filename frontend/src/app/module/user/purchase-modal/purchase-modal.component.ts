@@ -15,6 +15,9 @@ export class PurchaseModalComponent implements OnInit {
   user?: User;
 
   purchase: CreatePurchaseDto = {userId: '', total: 1};
+  multiplier = 0.01;
+
+  descriptions: string[] = [];
 
   constructor(
     public route: ActivatedRoute,
@@ -24,9 +27,13 @@ export class PurchaseModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.queryParams.pipe(
-      switchMap(({user}) => this.userService.findOne(user)),
+    this.route.params.pipe(
+      switchMap(({id}) => this.userService.findOne(id)),
     ).subscribe(user => this.user = user);
+
+    this.purchaseService.findUnique('description').subscribe(descriptions => {
+      this.descriptions = descriptions.filter((s): s is string => !!s);
+    });
   }
 
   create(): void {

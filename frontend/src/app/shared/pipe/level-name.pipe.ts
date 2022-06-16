@@ -17,7 +17,7 @@ export const LEVEL_NAMES = [
 ];
 
 export function levelName(level: number): string {
-  return level < LEVEL_NAMES.length ? LEVEL_NAMES[level] : LEVEL_NAMES[LEVEL_NAMES.length - 1];
+  return level < 0 ? 'Geringverdiener - pay your debt!' : level < LEVEL_NAMES.length ? LEVEL_NAMES[level] : LEVEL_NAMES[LEVEL_NAMES.length - 1];
 }
 
 @Pipe({

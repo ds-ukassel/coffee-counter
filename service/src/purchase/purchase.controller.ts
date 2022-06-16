@@ -29,6 +29,15 @@ export class PurchaseController {
 		return this.purchaseService.findAll(dto);
 	}
 
+	@Get('unique/:field')
+	@ApiOkResponse({type: Array})
+	async findUnique(
+		@Query() dto: FindAllPurchaseDto,
+		@Param('field') field: string,
+	): Promise<any[]> {
+		return this.purchaseService.unique(field, dto);
+	}
+
 	@Get(':id')
 	// TODO @NotFound()
 	@ApiOkResponse({type: Purchase})
