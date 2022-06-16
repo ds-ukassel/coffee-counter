@@ -44,7 +44,10 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: dist/frontend/
           destination_dir: pr/{{ github.pull_request.number }}/
-      - name: Post PR Comment
-        uses: actions/create-pull-request-comment@v2
+      - name: Add PR Comment
+        uses: peter-evans/create-or-update-comment@v2
         with:
-          message: "Deployed to https://sekassel-research.github.io/pr/{{ github.pull_request.number }}/"
+          issue-number: ${{ github.pull_request.number }}
+          body: |
+            Deployed to https://sekassel-research.github.io/pr/${{ github.pull_request.number }}/
+          reactions: '+1'
