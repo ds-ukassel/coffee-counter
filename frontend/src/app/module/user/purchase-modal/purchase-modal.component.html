@@ -6,7 +6,11 @@
   <ng-container modal-body>
     <div class="mb-3">
       <label class="form-label" for="description">Description</label>
-      <input type="text" class="form-control" id="description" [(ngModel)]="purchase.description">
+      <input type="text" class="form-control" id="description" list="descriptionOptions"
+             [(ngModel)]="purchase.description">
+      <datalist id="descriptionOptions">
+        <option *ngFor="let description of descriptions" [value]="description"></option>
+      </datalist>
       <div class="form-text">Optional.</div>
     </div>
     <div class="mb-3">

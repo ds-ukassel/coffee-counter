@@ -13,10 +13,10 @@
         </div>
         <div class="col">
           <h6>{{ user.name }}</h6>
-          <img class="rounded-circle level-icon" [src]="'/assets/levels/' + (user.coffees | level) + '.png'"
+          <img class="rounded-circle level-icon" [src]="'/assets/levels/' + (user.coffees | level:+user.balance) + '.png'"
                alt="Level Icon">
           <i class="text-muted">
-            {{ user.coffees | level | levelName }}
+            {{ user.coffees | level:+user.balance | levelName }}
           </i>
         </div>
         <div class="col-auto">
