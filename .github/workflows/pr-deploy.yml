@@ -37,7 +37,7 @@ jobs:
       - name: Install packages
         run: pnpm install
       - name: Build Angular
-        run: pnpm build --configuration production --base-href /coffee-counter-ultimate/pr/{{ github.pull_request.number }}/
+        run: pnpm build --configuration production --base-href /coffee-counter-ultimate/pr/${{ github.pull_request.number }}/
       - name: Publish to Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
