@@ -28,3 +28,8 @@ $edit-button-dim: 3rem;
   left: ($avatar-dim / 2) + (($avatar-dim / 2) * math.cos(45deg)) - ($edit-button-dim / 2);
   top: ($avatar-dim / 2) + (($avatar-dim / 2) * math.sin(45deg))  - ($edit-button-dim / 2);
 }
+
+.achievement-icon {
+  width: $level-icon-dim;
+  height: $level-icon-dim;
+}

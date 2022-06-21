@@ -1,83 +1,87 @@
 <div *ngIf="user" class="container">
   <div class="row">
-    <div class="col-3">
-      <div class="avatar-container">
-        <img class="rounded-circle user-avatar border border-2 border-dark" [src]="user.avatar || '/assets/se.svg'"
-             [alt]="user.name">
-        <button class="btn btn-primary bi-person-circle text-light" ngbTooltip="Edit Avatar"
-                [ngbPopover]="editAvatar" container="body" placement="right bottom" autoClose="outside">
-        </button>
-        <ng-template #editAvatar>
-          <div class="mb-3">
-            <label class="form-label" for="avatar">URL</label>
-            <input type="url" class="form-control" id="avatar" [(ngModel)]="user.avatar">
-          </div>
-          <button class="btn btn-success" (click)="updateUser()">Save</button>
-        </ng-template>
-      </div>
-      <div>
-        <div class="d-flex">
-          <h3 *ngIf="!editing" class="flex-fill">{{user.name}}</h3>
-          <input *ngIf="editing" type="text" class="flex-fill form-control form-control-lg" [(ngModel)]="user.name">
-          <button *ngIf="!editing" class="btn btn-link bi-pencil"
-                  ngbTooltip="Edit Username" placement="right bottom"
-                  (click)="editing = true;">
+    <div class="col-xl-3">
+      <div class="row">
+        <div class="col-lg-6 col-xl-12 avatar-container">
+          <img class="rounded-circle user-avatar border border-2 border-dark" [src]="user.avatar || '/assets/se.svg'"
+               [alt]="user.name">
+          <button class="btn btn-primary bi-person-circle text-light" ngbTooltip="Edit Avatar"
+                  [ngbPopover]="editAvatar" container="body" placement="right bottom-right" autoClose="outside">
           </button>
-          <button *ngIf="editing" class="btn btn-link bi-check-circle"
-                  ngbTooltip="Save" placement="right bottom"
-                  (click)="updateUser()"></button>
+          <ng-template #editAvatar>
+            <div class="mb-3">
+              <label class="form-label" for="avatar">URL</label>
+              <input type="url" class="form-control" id="avatar" [(ngModel)]="user.avatar">
+            </div>
+            <button class="btn btn-success" (click)="updateUser()">Save</button>
+          </ng-template>
         </div>
-        <div class="d-flex">
-          <img class="rounded-circle level-icon border border-1 border-dark me-2"
-               [src]="'/assets/levels/' + (user.coffees | level) + '.png'" alt="Level Icon">
-          <i class="text-muted h5 align-self-center">
-            {{ user.coffees | level | levelName }}
-          </i>
+        <div class="col-lg-6 col-xl-12">
+          <div class="d-flex">
+            <h3 *ngIf="!editing" class="flex-fill">{{user.name}}</h3>
+            <input *ngIf="editing" type="text" class="flex-fill form-control form-control-lg" [(ngModel)]="user.name">
+            <button *ngIf="!editing" class="btn btn-link bi-pencil"
+                    ngbTooltip="Edit Username" placement="right bottom"
+                    (click)="editing = true;">
+            </button>
+            <button *ngIf="editing" class="btn btn-link bi-check-circle"
+                    ngbTooltip="Save" placement="right bottom"
+                    (click)="updateUser()"></button>
+          </div>
+          <div class="d-flex">
+            <img class="rounded-circle level-icon border border-1 border-dark me-2"
+                 [src]="'/assets/levels/' + (user.coffees | level) + '.png'" alt="Level Icon">
+            <i class="text-muted h5 align-self-center">
+              {{ user.coffees | level | levelName }}
+            </i>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col">
+              <span class="bi-star text-info h2" ngbTooltip="Level"> {{ user.coffees | level }}</span>
+            </div>
+            <div class="col">
+              <span class="bi-trophy text-warning h2" ngbTooltip="Trophies"> 12</span>
+            </div>
+          </div>
+          <hr>
+          <div class="d-flex flex-wrap">
+            <a
+              *ngFor="let achievement of achievements"
+              class="achievement-icon me-2 mb-2"
+              style="cursor: pointer"
+              (click)="open(achievement, achievementModal)"
+              [ngbTooltip]="achievement.name"
+            >
+              <img [src]="achievement.image" [alt]="achievement.name">
+            </a>
+          </div>
         </div>
-      </div>
-      <hr>
-      <div class="row">
-        <div class="col">
-          <span class="bi-star text-info h2" ngbTooltip="Level"> {{ user.coffees | level }}</span>
-        </div>
-        <div class="col">
-          <span class="bi-trophy text-warning h2" ngbTooltip="Trophies"> 12</span>
-        </div>
-      </div>
-      <hr>
-      <div class="row">
-        <a *ngFor="let achievement of achievements" class="col-3"
-           style="cursor: pointer" (click)="open(achievement, achievementModal)">
-          <img [src]="achievement.image" [alt]="achievement.name">
-        </a>
+
       </div>
     </div>
     <div class="col">
-      <div class="row my-5 justify-content-evenly">
-        <div class="col-4 justify-content-center">
-          <div class="d-flex mb-2 justify-content-center">
-            <h1>{{ user.coffees }}</h1>
-            <h5 class="text-muted align-self-end">/{{user.coffees | nextLevel}}&nbsp;</h5>
-            <h1 class="bi-cup text-primary"></h1>
-          </div>
-          <div class="d-flex justify-content-center">
-            <h3 class="me-2">Coffee</h3>
-            <button class="btn btn-success bi-plus-lg" ngbTooltip="Add Coffee"
-                    (click)="createCoffee()">
-            </button>
-          </div>
+      <div class="row justify-content-evenly">
+        <div class="col-auto text-center">
+          <h1>
+            {{ user.coffees }}
+            <span class="h3 text-muted">/ {{user.coffees | nextLevel}}</span>
+            <i class="bi-cup text-primary"></i>
+          </h1>
+          <h3>
+            Coffees
+            <button class="btn btn-success bi-plus-lg" ngbTooltip="Add Coffee" (click)="createCoffee()"></button>
+          </h3>
         </div>
-        <div class="col-4 justify-content-center">
-          <div class="d-flex mb-2 justify-content-center">
-            <h1 [class.text-danger]="+user.balance < 0"
-                [ngbTooltip]="+user.balance < 0 ? 'Negative credit balance!' : null">
-              {{ user.balance | currency: 'EUR' : 'symbol': '1.': 'de-DE'}}
-            </h1>
-          </div>
-          <div class="d-flex justify-content-center">
-            <h3 class="me-2">Balance</h3>
+        <div class="col-auto text-center">
+          <h1 [class.text-danger]="+user.balance < 0"
+              [ngbTooltip]="+user.balance < 0 ? 'Negative credit balance!' : null">
+            {{ user.balance | currency: 'EUR' : 'symbol': '1.': 'de-DE'}}
+          </h1>
+          <h3>
+            Balance
             <a class="btn btn-success me-2 bi-cart" ngbTooltip="Add Purchase" routerLink="purchase"></a>
-          </div>
+          </h3>
         </div>
       </div>
       <hr>
@@ -113,15 +117,6 @@
           </ng-template>
         </li>
       </ul>
-      <hr>
-      <div class="row">
-        <div *ngFor="let achievement of achievements" class="col-2">
-          <a style="cursor: pointer" (click)="open(achievement, achievementModal)">
-            <img [src]="achievement.image" [alt]="achievement.name">
-          </a>
-          <h4 class="text-center">{{achievement.name}}</h4>
-        </div>
-      </div>
     </div>
   </div>
 </div>
