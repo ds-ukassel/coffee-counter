@@ -1,6 +1,7 @@
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 
+$card-min-width: 20rem;
 $card-height: 10rem;
 $pi: 3.1415926535;
 
@@ -21,6 +22,7 @@ $pi: 3.1415926535;
 }
 
 .card-container > .card {
+  min-width: $card-min-width;
   height: $card-height;
   padding-left: divide($card-height, 2);
 }
