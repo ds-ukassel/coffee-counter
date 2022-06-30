@@ -1,8 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {User} from '../../core/model/user.interface';
 import {Coffee} from '../../core/model/coffee.interface';
 import {UserService} from '../../core/service/user.service';
 import {CoffeeService} from '../../core/service/coffee.service';
+import {NgbOffcanvas} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-home',
@@ -10,6 +11,8 @@ import {CoffeeService} from '../../core/service/coffee.service';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
+  @ViewChild('purchaseList') private purchaseList!: TemplateRef<any>;
+
   users: User[] = [];
   coffees: Coffee[] = [];
   userMap: Record<string, User> = {};
@@ -22,6 +25,7 @@ export class HomeComponent implements OnInit {
   constructor(
     private userService: UserService,
     private coffeeService: CoffeeService,
+    private offcanvasService: NgbOffcanvas,
   ) {
   }
 
@@ -61,5 +65,9 @@ export class HomeComponent implements OnInit {
     if (coffee) {
       this.deleteCoffee(coffee);
     }
+  }
+
+  openPurchaseList() {
+    this.offcanvasService.open(this.purchaseList, {position: 'end'});
   }
 }

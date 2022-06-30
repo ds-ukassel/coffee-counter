@@ -11,6 +11,7 @@ import {NavbarComponent} from './navbar/navbar.component';
 import {HomeComponent} from './module/home/home.component';
 import {SettingsComponent} from './module/settings/settings.component';
 import {SharedModule} from './shared/shared.module';
+import { PulseDirective } from './module/home/pulse.directive';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import {SharedModule} from './shared/shared.module';
     NavbarComponent,
     HomeComponent,
     SettingsComponent,
+    PulseDirective,
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,7 @@
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 
+$card-min-width: 20rem;
 $card-height: 10rem;
 $pi: 3.1415926535;
 
@@ -21,6 +22,7 @@ $pi: 3.1415926535;
 }
 
 .card-container > .card {
+  min-width: $card-min-width;
   height: $card-height;
   padding-left: divide($card-height, 2);
 }
@@ -49,7 +51,12 @@ $pi: 3.1415926535;
   object-position: center;
 }
 
+.progress-ring:active, .progress-ring:focus {
+  outline: 0 !important;
+}
+
 .progress-ring {
+  border-radius: 50% !important;
   stroke-dasharray: $card-height*$pi $card-height*$pi;
   stroke-dashoffset: calc((1 - var(--progress)) * $pi * $card-height);
 }
@@ -60,3 +67,10 @@ $pi: 3.1415926535;
   transform-origin: 50% 50%;
 }
 
+.btn-offcanvas {
+  position: fixed;
+  right: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: 0;
+}
