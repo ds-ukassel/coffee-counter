@@ -22,22 +22,22 @@
         </div>
         <div class="col-3 col-md-auto">
           <div class="row">
-            <div class="col-md">
+            <div class="col-md-auto">
               <span class="bi-cup text-primary" ngbTooltip="Coffees">
                 {{ user.coffees }}
               </span>
             </div>
-            <div class="col-md">
+            <div class="col-md-auto">
               <span class="bi-star text-info" ngbTooltip="Level">
                 {{ user.coffees | level }}
               </span>
             </div>
-            <div class="col-md">
+            <div class="col-md-auto">
               <span class="bi-trophy text-warning" ngbTooltip="Trophies">
                 12
               </span>
             </div>
-            <div class="col-md">
+            <div class="col-md-auto">
               <span [class]="['bi-cash-coin', +user.balance < 0 ? 'text-danger' : 'text-success']"
                     [ngbTooltip]="+user.balance < 0 ? 'Negative Balance!' : 'Balance'">
                 {{ user.balance | currency: 'EUR' : 'symbol': '1.': 'de-DE' }}
