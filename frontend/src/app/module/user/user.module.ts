@@ -10,6 +10,7 @@ import {UserListComponent} from './user-list/user-list.component';
 
 import {UserRoutingModule} from './user-routing.module';
 import {UserComponent} from './user.component';
+import { AchievementModalComponent } from './achievement-modal/achievement-modal.component';
 
 
 @NgModule({
@@ -18,6 +19,7 @@ import {UserComponent} from './user.component';
     UserListComponent,
     NewUserModalComponent,
     PurchaseModalComponent,
+    AchievementModalComponent,
   ],
   imports: [
     CommonModule,
