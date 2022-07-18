@@ -46,7 +46,7 @@ export class UserComponent implements OnInit {
     this.activatedRoute.params.pipe(
       switchMap(({user}) => this.achievementService.getAll(user)),
     ).subscribe(achievements => {
-      this.achievements = achievements.map(a => this.achievementService.getInfo(a.id)).filter((a): a is AchievementInfo => !!a);
+      this.achievements = achievements.map(a => this.achievementService.getInfo(a.id));
     });
     this.findAllPurchases();
   }

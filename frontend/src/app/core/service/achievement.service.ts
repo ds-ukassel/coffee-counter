@@ -74,7 +74,14 @@ export class AchievementService {
     return this.http.get<Achievement>(`${environment.apiUrl}/users/${user}/achievements/${id}`);
   }
 
-  getInfo(id: string): AchievementInfo | undefined {
-    return achievements.find(achievementInfo => achievementInfo.id === id);
+  getInfo(id: string): AchievementInfo {
+    return achievements.find(achievementInfo => achievementInfo.id === id) ?? {
+      id,
+      name: id.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
+      description: 'This achievement keeps an ominous aura of mystery around it 🔮✨',
+      hint: 'The inner machinations of my mind are an enigma 🥛🫗',
+      image: '/assets/trophies/mystery.svg',
+      tier: TrophyTier.silver,
+    };
   }
 }
