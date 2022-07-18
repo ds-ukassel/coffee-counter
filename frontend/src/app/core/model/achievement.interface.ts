@@ -10,7 +10,7 @@ export type UpdateAchievementDto = Partial<CreateAchievementDto>;
 
 export interface AchievementInfo {
   id: string;
-  image?: string,
+  image: string,
   name: string,
   description: string,
   tier: TrophyTier,
