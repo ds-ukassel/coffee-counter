@@ -6,3 +6,9 @@ export interface Coffee {
 }
 
 export type CreateCoffeeDto = Omit<Coffee, '_id' | 'createdAt'>;
+
+
+export type CoffeeDiagramData = {
+  _id : number,
+  total: number
+}

@@ -5,3 +5,8 @@ export class CreateCoffeeDto extends OmitType(Coffee, [
 	'createdAt',
 ] as const) {
 }
+
+export interface CoffeeDiagramData {
+	_id: number;
+	total: number;
+}

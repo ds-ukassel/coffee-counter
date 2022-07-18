@@ -9,8 +9,7 @@ import {PurchaseService} from '../../core/service/purchase.service';
 import {switchMap} from 'rxjs';
 import Achievement from '../../core/model/achievement.interface';
 import {TrophyTier} from '../../shared/pipe/trophy-tier.pipe';
-import {ChartConfiguration, ChartData} from 'chart.js';
-import {formatDate} from '@angular/common';
+import {ChartData} from 'chart.js';
 import {BaseChartDirective} from 'ng2-charts';
 
 @Component({
@@ -180,17 +179,14 @@ export class UserComponent implements OnInit {
   }
 
   findAllCoffee() {
-    this.activatedRoute.params.subscribe(({id}) => {
-        this.coffeeService.findAll().subscribe(coffee => {
-          const userCoffee = coffee.filter(cofefe => cofefe.userId === id)
-          userCoffee.forEach(c => {
-            const index: number = +formatDate(c.createdAt, 'H', 'DE-de')
-            this.coffeeData.datasets[0].data[index]++;
-          });
-          this.coffeeChart?.update();
-        })
-      }
-    );
+    this.activatedRoute.params.pipe(
+      switchMap(({id}) => this.coffeeService.findDiagramData(id)),
+    ).subscribe(userCoffeeData => {
+      userCoffeeData.forEach((coffeeDate) => {
+        this.coffeeData.datasets[0].data[coffeeDate._id] = coffeeDate.total
+      });
+      this.coffeeChart?.update();
+    });
   }
 
   createCoffee() {

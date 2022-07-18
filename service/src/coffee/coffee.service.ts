@@ -2,7 +2,7 @@ import {Injectable} from '@nestjs/common';
 import {InjectModel} from '@nestjs/mongoose';
 import {FilterQuery, Model} from 'mongoose';
 import {UserService} from '../user/user.service';
-import {CreateCoffeeDto} from './coffee.dto';
+import {CoffeeDiagramData, CreateCoffeeDto} from './coffee.dto';
 import {Coffee, CoffeeDocument} from './coffee.schema';
 
 @Injectable()
@@ -41,5 +41,19 @@ export class CoffeeService {
 			},
 		});
 		return coffee;
+	}
+
+	async findDiagramData(id: string): Promise<CoffeeDiagramData[] | null> {
+		return await this.model.aggregate([
+			{
+				$match: { userId: id },
+			},
+			{
+				$group: {
+					_id: { $hour: '$createdAt' },
+					total: { $sum: 1 },
+				},
+			},
+		]).exec();
 	}
 }
