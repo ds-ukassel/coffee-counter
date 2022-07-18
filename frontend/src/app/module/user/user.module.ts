@@ -10,6 +10,7 @@ import {UserListComponent} from './user-list/user-list.component';
 
 import {UserRoutingModule} from './user-routing.module';
 import {UserComponent} from './user.component';
+import {NgChartsModule} from 'ng2-charts';
 
 
 @NgModule({
@@ -19,14 +20,15 @@ import {UserComponent} from './user.component';
     NewUserModalComponent,
     PurchaseModalComponent,
   ],
-  imports: [
-    CommonModule,
-    UserRoutingModule,
-    FormsModule,
-    NgbModule,
-    SharedModule,
-    ModalModule,
-  ],
+    imports: [
+        CommonModule,
+        UserRoutingModule,
+        FormsModule,
+        NgbModule,
+        SharedModule,
+        ModalModule,
+        NgChartsModule,
+    ],
 })
 export class UserModule {
 }

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {User} from '../../core/model/user.interface';
@@ -9,6 +9,9 @@ import {PurchaseService} from '../../core/service/purchase.service';
 import {switchMap} from 'rxjs';
 import Achievement from '../../core/model/achievement.interface';
 import {TrophyTier} from '../../shared/pipe/trophy-tier.pipe';
+import {ChartConfiguration, ChartData} from 'chart.js';
+import {formatDate} from '@angular/common';
+import {BaseChartDirective} from 'ng2-charts';
 
 @Component({
   selector: 'app-user',
@@ -16,6 +19,8 @@ import {TrophyTier} from '../../shared/pipe/trophy-tier.pipe';
   styleUrls: ['./user.component.scss']
 })
 export class UserComponent implements OnInit {
+  @ViewChild(BaseChartDirective) coffeeChart: BaseChartDirective | undefined;
+
   user!: User;
   purchases!: Purchase[];
 
@@ -81,6 +86,70 @@ export class UserComponent implements OnInit {
   currentAchievement!: Achievement;
   showHint: boolean = false;
 
+  coffeeData: ChartData<'bar'> = {
+    labels: [
+      '0 Uhr',
+      '1 Uhr',
+      '2 Uhr',
+      '3 Uhr',
+      '4 Uhr',
+      '5 Uhr',
+      '6 Uhr',
+      '7 Uhr',
+      '8 Uhr',
+      '9 Uhr',
+      '10 Uhr',
+      '11 Uhr',
+      '12 Uhr',
+      '13 Uhr',
+      '14 Uhr',
+      '15 Uhr',
+      '16 Uhr',
+      '17 Uhr',
+      '18 Uhr',
+      '19 Uhr',
+      '20 Uhr',
+      '21 Uhr',
+      '22 Uhr',
+      '23 Uhr',
+    ],
+    datasets: [
+      {
+        label: '#Kaffee',
+        backgroundColor: '#a07150',
+        borderColor: 'none',
+        hoverBackgroundColor: '#a0715099',
+        data: [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+        ],
+      }
+    ]
+  }
+
+
   constructor(
     private modalService: NgbModal,
     private userService: UserService,
@@ -91,18 +160,37 @@ export class UserComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.findOneUser();
+    this.findAllPurchases();
+    this.findAllCoffee()
+  }
+
+  private findOneUser() {
     this.activatedRoute.params.pipe(
       switchMap(({id}) => this.userService.findOne(id)),
     ).subscribe(user => {
       this.user = user;
     });
-    this.findAllPurchases();
   }
 
   findAllPurchases() {
     this.activatedRoute.params.pipe(
       switchMap(({id}) => this.purchaseService.findAll({userId: id})),
     ).subscribe(purchases => this.purchases = purchases);
+  }
+
+  findAllCoffee() {
+    this.activatedRoute.params.subscribe(({id}) => {
+        this.coffeeService.findAll().subscribe(coffee => {
+          const userCoffee = coffee.filter(cofefe => cofefe.userId === id)
+          userCoffee.forEach(c => {
+            const index: number = +formatDate(c.createdAt, 'H', 'DE-de')
+            this.coffeeData.datasets[0].data[index]++;
+          });
+          this.coffeeChart?.update();
+        })
+      }
+    );
   }
 
   createCoffee() {
@@ -131,4 +219,5 @@ export class UserComponent implements OnInit {
     this.currentAchievement = achievement;
     this.modalService.open(modal, {size: 'lg', centered: true}).result.then();
   }
+
 }

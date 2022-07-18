@@ -85,15 +85,7 @@
         </div>
       </div>
       <hr>
-      <div class="d-flex mb-3">
-        <div class="card flex-fill justify-content-center" style="height: 5rem; background: lightgrey">
-          <div class="d-flex justify-content-center align-items-center">
-            <h4 class="text-danger bi-bar-chart-fill"></h4>
-            <h4 class="text-danger mx-2">Diagramms comming soon</h4>
-            <h4 class="text-danger bi-bar-chart-fill"></h4>
-          </div>
-        </div>
-      </div>
+      <canvas type="bar" [data]="coffeeData" baseChart></canvas>
       <hr>
       <h3>Recent Purchases</h3>
       <ul class="list-group">
