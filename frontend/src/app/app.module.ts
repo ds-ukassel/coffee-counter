@@ -11,7 +11,8 @@ import {NavbarComponent} from './navbar/navbar.component';
 import {HomeComponent} from './module/home/home.component';
 import {SettingsComponent} from './module/settings/settings.component';
 import {SharedModule} from './shared/shared.module';
-import { PulseDirective } from './module/home/pulse.directive';
+import {PulseDirective} from './module/home/pulse.directive';
+import {NgChartsModule} from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { PulseDirective } from './module/home/pulse.directive';
     HttpClientModule,
     FormsModule,
     SharedModule,
+    NgChartsModule,
   ],
   providers: [
     {
