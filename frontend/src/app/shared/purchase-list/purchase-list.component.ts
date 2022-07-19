@@ -28,15 +28,10 @@ export class PurchaseListComponent implements OnInit {
     const userId$ = this.route.params.pipe(map(({user}): string => user));
 
     userId$.pipe(
-      switchMap(userId => {
-        const coffees$ = this.coffeeService.findAll();
-        const userCoffees$ = userId ? coffees$.pipe(map(coffees => coffees.filter(coffee => coffee.userId == userId))) : coffees$;
-        const purchases$ = this.purchaseService.findAll(userId ? {userId} : {});
-        return forkJoin([
-          userCoffees$,
-          purchases$,
-        ]);
-      }),
+      switchMap(userId => forkJoin([
+        this.coffeeService.findAll(userId ? {userId} : {}),
+        this.purchaseService.findAll(userId ? {userId} : {}),
+      ])),
     ).subscribe(([coffees, purchases]) => {
       this.items = [...coffees, ...purchases].sort((a, b) => +new Date(b.createdAt) - +new Date(a.createdAt)).slice(0, 20);
     });
