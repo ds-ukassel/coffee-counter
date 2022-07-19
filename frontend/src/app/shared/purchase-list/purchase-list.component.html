@@ -3,10 +3,10 @@
     <div class="me-2" [class.bi-shop]="$any(item).total" [class.bi-cup]="$any(item).price"></div>
     <div class="ms-2 me-auto">
       <div *ngIf="users?.[item.userId] as user">{{user.name}}</div>
-      <span>{{$any(item).description ?? 'Coffee'}}</span>
+      <span [class.text-muted]="users">{{$any(item).description ?? 'Coffee'}}</span>
       <span class="text-muted"> &bull; {{ item.createdAt | date:'shortTime' }}</span>
     </div>
-    <div>
+    <div *ngIf="!users" class="me-2">
       {{($any(item).total ?? -$any(item).price) | currency: 'EUR' : 'symbol': '1.': 'de-DE'}}
     </div>
     <button class="btn btn-sm btn-link link-danger bi-trash" [ngbPopover]="confirmDelete"></button>
@@ -14,7 +14,10 @@
       <p>
         Are you sure you want to delete this?
       </p>
-      <button class="btn btn-danger" (click)="delete(item)">Yes</button>
+      <div class="text-end">
+        <button class="btn btn-secondary me-2">No</button>
+        <button class="btn btn-danger" (click)="delete(item)">Yes</button>
+      </div>
     </ng-template>
   </li>
 </ul>
