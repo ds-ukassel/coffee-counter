@@ -17,11 +17,6 @@ export class HomeComponent implements OnInit {
   coffees: Coffee[] = [];
   userMap: Record<string, User> = {};
 
-  // TODO this needs to be configured somewhere.
-  // TODO Maybe we should even offer different types of coffees with different prices.
-  //      Perhaps in a dropdown in the coffee button.
-  price = 0.1;
-
   constructor(
     private userService: UserService,
     private coffeeService: CoffeeService,
@@ -42,9 +37,10 @@ export class HomeComponent implements OnInit {
   createCoffee(user: User) {
     this.coffeeService.create({
       userId: user._id,
-      price: this.price,
+      price: this.coffeeService.price,
     }).subscribe(coffee => {
       user.coffees++;
+      user.balance = (+user.balance - coffee.price).toFixed(2);
       this.coffees = [coffee, ...this.coffees.slice(0, 9)];
     });
   }

@@ -20,10 +20,6 @@ export class UserComponent implements OnInit {
   purchases!: Purchase[];
 
   editing = false;
-  // TODO this needs to be configured somewhere.
-  // TODO Maybe we should even offer different types of coffees with different prices.
-  //      Perhaps in a dropdown in the coffee button.
-  price = 0.1;
 
   achievements: AchievementInfo[] = [];
 
@@ -62,9 +58,10 @@ export class UserComponent implements OnInit {
   createCoffee() {
     this.coffeeService.create({
       userId: this.user._id,
-      price: this.price,
+      price: this.coffeeService.price,
     }).subscribe(coffee => {
       this.user.coffees++;
+      this.user.balance = (+this.user.balance - coffee.price).toFixed(2);
     });
   }
 
