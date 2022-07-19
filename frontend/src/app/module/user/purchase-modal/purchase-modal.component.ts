@@ -28,7 +28,7 @@ export class PurchaseModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.pipe(
-      switchMap(({id}) => this.userService.findOne(id)),
+      switchMap(({user}) => this.userService.findOne(user)),
     ).subscribe(user => this.user = user);
 
     this.purchaseService.findUnique('description').subscribe(descriptions => {
