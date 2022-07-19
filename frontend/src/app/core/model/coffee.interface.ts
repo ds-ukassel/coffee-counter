@@ -6,3 +6,4 @@ export interface Coffee {
 }
 
 export type CreateCoffeeDto = Omit<Coffee, '_id' | 'createdAt'>;
+export type FilterCoffeeDto = Partial<Coffee>;
