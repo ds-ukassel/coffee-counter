@@ -1,8 +1,11 @@
+import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
+import {NgbPopoverModule} from '@ng-bootstrap/ng-bootstrap';
 import {LevelNamePipe} from './pipe/level-name.pipe';
 import {LevelProgressPipe, NextLevelPipe} from './pipe/level-progress.pipe';
 import {LevelPipe} from './pipe/level.pipe';
 import {TrophyTierPipe} from './pipe/trophy-tier.pipe';
+import {PurchaseListComponent} from './purchase-list/purchase-list.component';
 
 const declarations = [
   LevelPipe,
@@ -13,9 +16,18 @@ const declarations = [
 ];
 
 @NgModule({
-  imports: [],
-  declarations,
-  exports: declarations,
+  imports: [
+    CommonModule,
+    NgbPopoverModule,
+  ],
+  declarations: [
+    declarations,
+    PurchaseListComponent,
+  ],
+  exports: [
+    declarations,
+    PurchaseListComponent,
+  ],
 })
 export class SharedModule {
 }

@@ -96,27 +96,7 @@
       </div>
       <hr>
       <h3>Recent Purchases</h3>
-      <ul class="list-group">
-        <li *ngFor="let purchase of purchases"
-            class="list-group-item d-flex justify-content-between align-items-center">
-          <span class="bi bi-shop"></span>
-          <div class="ms-2 me-auto">
-            <span>{{purchase.description}}</span>
-            &bull;
-            <span class="text-muted">{{ purchase.createdAt | date:'shortTime' }}</span>
-          </div>
-          <span [class.text-danger]="+user.balance < 0">
-            {{purchase.total | currency: 'EUR' : 'symbol': '1.': 'de-DE'}}
-          </span>
-          <button class="btn btn-sm btn-link link-danger bi-trash" [ngbPopover]="confirmDelete"></button>
-          <ng-template #confirmDelete>
-            <p>
-              Are you sure you want to delete this purchase?
-            </p>
-            <button class="btn btn-danger" (click)="deletePurchase(purchase)">Yes</button>
-          </ng-template>
-        </li>
-      </ul>
+      <app-purchase-list></app-purchase-list>
     </div>
   </div>
 </div>

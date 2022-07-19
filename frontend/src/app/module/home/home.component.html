@@ -42,27 +42,7 @@
     <button class="btn btn-outline-secondary bi-arrow-bar-right fs-3" (click)="offcanvas.dismiss()"></button>
   </div>
   <div class="offcanvas-body">
-    <ul class="list-group">
-      <li *ngFor="let coffee of coffees" class="list-group-item">
-        <div class="d-flex justify-content-between">
-          <span>
-            {{ userMap[coffee.userId]?.name }} <br>
-            <small class="text-muted">{{ coffee.createdAt | date:'shortTime' }}</small>
-          </span>
-          <button class="btn btn-link link-danger bi-trash fs-5" [ngbPopover]="confirmDelete"
-                  placement="bottom-right"></button>
-        </div>
-
-        <ng-template #confirmDelete>
-          <div class="d-flex">
-            <p>
-              Are you sure you want to delete this coffee?
-            </p>
-            <button class="btn btn-danger fs-4" (click)="deleteCoffee(coffee)">Yes</button>
-          </div>
-        </ng-template>
-      </li>
-    </ul>
+    <app-purchase-list [users]="userMap"></app-purchase-list>
   </div>
 </ng-template>
 

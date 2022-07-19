@@ -3,7 +3,6 @@ import {ActivatedRoute} from '@angular/router';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {map, switchMap} from 'rxjs';
 import {AchievementInfo} from '../../core/model/achievement.interface';
-import {Purchase} from '../../core/model/purchase.interface';
 import {User} from '../../core/model/user.interface';
 import {AchievementService} from '../../core/service/achievement.service';
 import {CoffeeService} from '../../core/service/coffee.service';
@@ -17,7 +16,6 @@ import {UserService} from '../../core/service/user.service';
 })
 export class UserComponent implements OnInit {
   user!: User;
-  purchases!: Purchase[];
 
   editing = false;
 
@@ -48,11 +46,6 @@ export class UserComponent implements OnInit {
       this.achievements = achievements.map(a => this.achievementService.getInfo(a.id));
     });
 
-    userId$.pipe(
-      switchMap(userId => this.purchaseService.findAll({userId})),
-    ).subscribe(purchases => {
-      this.purchases = purchases;
-    });
   }
 
   createCoffee() {
@@ -69,12 +62,6 @@ export class UserComponent implements OnInit {
     this.userService.updateOne(this.user).subscribe(res => {
       this.user = res;
       this.editing = false;
-    });
-  }
-
-  deletePurchase(purchase: Purchase) {
-    this.purchaseService.remove(purchase._id).subscribe(res => {
-      this.purchases = this.purchases.filter(purchase => purchase._id != res._id);
     });
   }
 }
