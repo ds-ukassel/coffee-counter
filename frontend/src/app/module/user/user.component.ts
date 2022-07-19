@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {switchMap} from 'rxjs';
+import {map, switchMap} from 'rxjs';
 import {AchievementInfo} from '../../core/model/achievement.interface';
 import {Purchase} from '../../core/model/purchase.interface';
 import {User} from '../../core/model/user.interface';
@@ -38,23 +38,25 @@ export class UserComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.activatedRoute.params.pipe(
-      switchMap(({user}) => this.userService.findOne(user)),
+    const userId$ = this.activatedRoute.params.pipe(map(({user}): string => user));
+
+    userId$.pipe(
+      switchMap(id => this.userService.findOne(id)),
     ).subscribe(user => {
       this.user = user;
     });
-    this.activatedRoute.params.pipe(
-      switchMap(({user}) => this.achievementService.getAll(user)),
+
+    userId$.pipe(
+      switchMap(id => this.achievementService.getAll(id)),
     ).subscribe(achievements => {
       this.achievements = achievements.map(a => this.achievementService.getInfo(a.id));
     });
-    this.findAllPurchases();
-  }
 
-  findAllPurchases() {
-    this.activatedRoute.params.pipe(
-      switchMap(({id}) => this.purchaseService.findAll({userId: id})),
-    ).subscribe(purchases => this.purchases = purchases);
+    userId$.pipe(
+      switchMap(userId => this.purchaseService.findAll({userId})),
+    ).subscribe(purchases => {
+      this.purchases = purchases;
+    });
   }
 
   createCoffee() {
