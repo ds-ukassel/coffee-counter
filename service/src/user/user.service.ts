@@ -9,7 +9,7 @@ import {User, UserDocument} from './user.schema';
 export class UserService {
 	constructor(
 		private eventEmitter: EventEmitter2,
-		@InjectModel('users') private model: Model<User>,
+		@InjectModel('users') public model: Model<User>,
 	) {
 	}
 

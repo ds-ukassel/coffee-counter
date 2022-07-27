@@ -2,12 +2,14 @@ import {Injectable} from '@nestjs/common';
 import {OnEvent} from '@nestjs/event-emitter';
 import {Coffee} from '../coffee/coffee.schema';
 import {Purchase} from '../purchase/purchase.schema';
+import {UserService} from '../user/user.service';
 import {AchievementService} from './achievement.service';
 
 @Injectable()
 export class AchievementHandler {
 	constructor(
 		private achievementService: AchievementService,
+		private userService: UserService,
 	) {
 	}
 
@@ -19,6 +21,11 @@ export class AchievementHandler {
 		}
 		if (hours >= 5 && hours <= 8) {
 			await this.awardRepeatable(coffee.userId, 'early-bird', coffee.createdAt);
+		}
+
+		const bestUser = await this.userService.model.find().sort({coffees: -1}).limit(1).exec();
+		if (bestUser.length) {
+			await this.awardOnce(bestUser[0]._id.toString(), 'most-addicted', coffee.createdAt);
 		}
 	}
 
@@ -37,6 +44,14 @@ export class AchievementHandler {
 		if (notMilk.some(x => desc.includes(x))) {
 			await this.awardRepeatable(purchase.userId, 'buyer-of-non-milk', purchase.createdAt);
 		}
+	}
+
+	private async awardOnce(userId: string, id: string, unlockedAt: Date = new Date()) {
+		await this.achievementService.create(userId, id, {
+			$setOnInsert: {
+				unlockedAt,
+			},
+		});
 	}
 
 	private async awardRepeatable(userId: string, id: string, unlockedAt: Date = new Date()) {
