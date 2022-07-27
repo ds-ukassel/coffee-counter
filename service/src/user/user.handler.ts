@@ -40,4 +40,14 @@ export class UserHandler {
 			},
 		});
 	}
+	
+	@OnEvent('users.*.purchases.*.created')
+	async onPurchaseCreated(purchase: Coffee): Promise<void> {
+		await this.userService.update(purchase.userId, {$inc: {balance: +purchase.price}});
+	}
+
+	@OnEvent('users.*.purchases.*.deleted')
+	async onPurchaseDeleted(purchase: Coffee): Promise<void> {
+		await this.userService.update(purchase.userId, {$inc: {balance: -purchase.price}});
+	}
 }
