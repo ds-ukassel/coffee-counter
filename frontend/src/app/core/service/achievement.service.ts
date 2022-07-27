@@ -37,6 +37,7 @@ export const achievements: AchievementInfo[] = [
     description: 'Milk is good for your bones! - Skeletor',
     tier: TrophyTier.silver,
     hint: 'Register 5 milk purchases',
+    goal: 5,
   },
   {
     id: 'buyer-of-non-milk',
@@ -45,6 +46,7 @@ export const achievements: AchievementInfo[] = [
     description: 'By the way, i\'m vegan - Every vegan, ever',
     tier: TrophyTier.silver,
     hint: 'Register 5 milk-alternative purchases',
+    goal: 5,
   },
   {
     id: 'buyer-of-coffee',
@@ -53,6 +55,7 @@ export const achievements: AchievementInfo[] = [
     description: 'In germany we call it: "Irgendwer muss ja den Laden am Laufen halten."',
     tier: TrophyTier.gold,
     hint: 'Register 10 coffee purchases',
+    goal: 10,
   },
 ];
 
