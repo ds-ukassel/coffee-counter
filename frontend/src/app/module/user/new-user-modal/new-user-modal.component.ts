@@ -9,7 +9,7 @@ import {UserService} from '../../../core/service/user.service';
   styleUrls: ['./new-user-modal.component.scss'],
 })
 export class NewUserModalComponent implements OnInit {
-  user: CreateUserDto = {name: '', balance: '0.00', coffees: 0};
+  user: CreateUserDto = {name: '', balance: '0.00', coffees: 0, achievements: 0};
   creating = false;
 
   constructor(
