@@ -1,6 +1,7 @@
 import {Injectable} from '@nestjs/common';
 import {InjectModel} from '@nestjs/mongoose';
 import {FilterQuery, Model} from 'mongoose';
+import {UserService} from '../user/user.service';
 
 import {CreateAchievementDto, UpdateAchievementDto} from './achievement.dto';
 import {Achievement} from './achievement.schema';
@@ -8,6 +9,7 @@ import {Achievement} from './achievement.schema';
 @Injectable()
 export class AchievementService {
 	constructor(
+		private userService: UserService,
 		@InjectModel('achievements') private model: Model<Achievement>,
 	) {
 	}
@@ -18,6 +20,7 @@ export class AchievementService {
 			new: true,
 		}).exec();
 		this.emit('created', created);
+		await this.userService.update(userId, {$inc: {achievements: 1}});
 		return created;
 	}
 
@@ -38,6 +41,7 @@ export class AchievementService {
 	async delete(userId: string, id: string): Promise<Achievement | null> {
 		const deleted = await this.model.findOneAndDelete({userId, id}).exec();
 		deleted && this.emit('deleted', deleted);
+		deleted && await this.userService.update(userId, {$inc: {achievements: -1}});
 		return deleted;
 	}
 

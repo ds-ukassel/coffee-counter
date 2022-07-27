@@ -35,6 +35,11 @@ export class User {
 	@ApiProperty({type: 'integer'})
 	coffees: number;
 
+	@Prop({default: 0})
+	@IsInt()
+	@ApiProperty({type: 'integer'})
+	achievements: number;
+
 	@Prop({
 		default: 0,
 		type: SchemaTypes.Decimal128, // going for that overkill
