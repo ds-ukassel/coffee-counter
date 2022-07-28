@@ -1,14 +1,15 @@
 import {Injectable} from '@nestjs/common';
+import {EventEmitter2} from '@nestjs/event-emitter';
 import {InjectModel} from '@nestjs/mongoose';
 import {FilterQuery, Model, UpdateQuery} from 'mongoose';
 import {CreateUserDto, UpdateUserDto} from './user.dto';
-import {User} from './user.schema';
+import {User, UserDocument} from './user.schema';
 
 @Injectable()
 export class UserService {
 	constructor(
-		@InjectModel('users') private model: Model<User>,
-		// TODO private eventEmitter: EventService,
+		private eventEmitter: EventEmitter2,
+		@InjectModel('users') public model: Model<User>,
 	) {
 	}
 
@@ -38,7 +39,7 @@ export class UserService {
 		return deleted;
 	}
 
-	private emit(event: string, user: User) {
-		// TODO this.eventEmitter.emit(`users.${user._id}.${event}`, user);
+	private emit(event: string, user: UserDocument) {
+		this.eventEmitter.emit(`users.${user._id}.${event}`, user);
 	}
 }

@@ -2,6 +2,7 @@ import {TrophyTier} from '../../shared/pipe/trophy-tier.pipe';
 
 export interface Achievement {
   id: string;
+  progress: number;
   unlockedAt?: Date;
 }
 
@@ -15,4 +16,5 @@ export interface AchievementInfo {
   description: string,
   tier: TrophyTier,
   hint: string,
+  goal?: number;
 }

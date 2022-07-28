@@ -10,7 +10,7 @@
           <h5 class="card-title h5">{{ user.name }}</h5>
           <span class="bi-cup text-primary h5" ngbTooltip="Coffees"> {{ user.coffees }}</span><br>
           <span class="bi-star text-info h5" ngbTooltip="Level"> {{ user.coffees | level }}</span><br>
-          <span class="bi-trophy text-warning h5" ngbTooltip="Trophies"> 12</span>
+          <span class="bi-trophy text-warning h5" ngbTooltip="Trophies"> {{ user.achievements }}</span>
           <button
             class="btn btn-warning bi-arrow-counterclockwise fs-3 position-absolute bottom-0 end-0 me-2 mb-2"
             (click)="deleteLastCoffee(user)" ngbTooltip="Undo last Coffee">

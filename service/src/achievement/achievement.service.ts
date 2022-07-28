@@ -1,6 +1,8 @@
 import {Injectable} from '@nestjs/common';
+import {EventEmitter2} from '@nestjs/event-emitter';
 import {InjectModel} from '@nestjs/mongoose';
-import {FilterQuery, Model} from 'mongoose';
+import {FilterQuery, Model, UpdateQuery} from 'mongoose';
+import {User} from '../user/user.schema';
 
 import {CreateAchievementDto, UpdateAchievementDto} from './achievement.dto';
 import {Achievement} from './achievement.schema';
@@ -8,11 +10,12 @@ import {Achievement} from './achievement.schema';
 @Injectable()
 export class AchievementService {
 	constructor(
+		private eventEmitter: EventEmitter2,
 		@InjectModel('achievements') private model: Model<Achievement>,
 	) {
 	}
 
-	async create(userId: string, id: string, achievement: CreateAchievementDto): Promise<Achievement> {
+	async create(userId: string, id: string, achievement: CreateAchievementDto | UpdateQuery<Achievement>): Promise<Achievement> {
 		const created = await this.model.findOneAndUpdate({userId, id}, {...achievement, userId, id}, {
 			upsert: true,
 			new: true,
@@ -42,6 +45,6 @@ export class AchievementService {
 	}
 
 	private emit(event: string, achievement: Achievement): void {
-		// TODO this.eventEmitter.emit(`users.${achievement.userId}.achievements.${achievement.id}.${event}`, achievement);
+		this.eventEmitter.emit(`users.${achievement.userId}.achievements.${achievement.id}.${event}`, achievement);
 	}
 }

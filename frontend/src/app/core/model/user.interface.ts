@@ -4,6 +4,7 @@ export interface User {
   avatar?: string;
   coffees: number;
   balance: string;
+  achievements: number;
 }
 
 export type CreateUserDto = Omit<User, '_id'>;
