@@ -23,9 +23,12 @@ export class AchievementHandler {
 			await this.awardRepeatable(coffee.userId, 'early-bird', coffee.createdAt);
 		}
 
-		const bestUser = await this.userService.model.find().sort({coffees: -1}).limit(1).exec();
-		if (bestUser.length) {
-			await this.awardOnce(bestUser[0]._id.toString(), 'most-addicted', coffee.createdAt);
+		const bestUsers = await this.userService.model.find().sort({coffees: -1}).limit(1).exec();
+		if (bestUsers.length) {
+			const bestUserId = bestUsers[0]._id.toString();
+			if (bestUserId === coffee.userId) { // no point in updating if their count did not change
+				await this.awardOnce(bestUserId, 'most-addicted', coffee.createdAt);
+			}
 		}
 	}
 
