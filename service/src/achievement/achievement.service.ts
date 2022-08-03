@@ -2,10 +2,9 @@ import {Injectable} from '@nestjs/common';
 import {EventEmitter2} from '@nestjs/event-emitter';
 import {InjectModel} from '@nestjs/mongoose';
 import {FilterQuery, Model, UpdateQuery} from 'mongoose';
-import {User} from '../user/user.schema';
 
 import {CreateAchievementDto, UpdateAchievementDto} from './achievement.dto';
-import {Achievement, AchievementDocument} from './achievement.schema';
+import {Achievement} from './achievement.schema';
 
 @Injectable()
 export class AchievementService {
