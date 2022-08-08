@@ -29,7 +29,7 @@ export class UserComponent implements OnInit {
     labels: Array(24).fill(0).map((x, i) => `${i} Uhr`),
     datasets: [
       {
-        label: '#Kaffee',
+        label: 'Coffees',
         backgroundColor: '#a07150',
         borderColor: 'none',
         hoverBackgroundColor: '#a0715099',
