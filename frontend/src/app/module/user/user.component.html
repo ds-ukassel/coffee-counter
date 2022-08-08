@@ -85,7 +85,8 @@
         </div>
       </div>
       <hr>
-      <canvas type="bar" [data]="coffeeData" baseChart></canvas>
+      <h3>Coffees by Hour of Day</h3>
+      <canvas type="bar" [data]="coffeeData" [legend]="false" baseChart></canvas>
       <hr>
       <h3>Recent Purchases</h3>
       <app-purchase-list></app-purchase-list>
