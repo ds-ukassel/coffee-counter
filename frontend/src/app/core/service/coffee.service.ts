@@ -2,7 +2,7 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
-import {Coffee, CreateCoffeeDto, FilterCoffeeDto} from '../model/coffee.interface';
+import {Coffee, CoffeeDiagramData, CreateCoffeeDto, FilterCoffeeDto} from '../model/coffee.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -28,5 +28,9 @@ export class CoffeeService {
 
   remove(id: string) {
     return this.http.delete<Coffee>(environment.apiUrl + '/coffees/' + id);
+  }
+
+  findDiagramData(userId: string): Observable<CoffeeDiagramData[]> {
+    return this.http.get<CoffeeDiagramData[]>(environment.apiUrl + '/coffees/' + userId + '/diagram');
   }
 }

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {map, switchMap} from 'rxjs';
@@ -8,6 +8,8 @@ import {AchievementService} from '../../core/service/achievement.service';
 import {CoffeeService} from '../../core/service/coffee.service';
 import {PurchaseService} from '../../core/service/purchase.service';
 import {UserService} from '../../core/service/user.service';
+import {ChartData} from 'chart.js';
+import {BaseChartDirective} from 'ng2-charts';
 
 @Component({
   selector: 'app-user',
@@ -15,11 +17,26 @@ import {UserService} from '../../core/service/user.service';
   styleUrls: ['./user.component.scss'],
 })
 export class UserComponent implements OnInit {
+  @ViewChild(BaseChartDirective) coffeeChart: BaseChartDirective | undefined;
+
   user!: User;
 
   editing = false;
 
   achievements: AchievementInfo[] = [];
+
+  coffeeData: ChartData<'bar'> = {
+    labels: Array(24).fill(0).map((x, i) => `${i} Uhr`),
+    datasets: [
+      {
+        label: 'Coffees',
+        backgroundColor: '#a07150',
+        borderColor: 'none',
+        hoverBackgroundColor: '#a0715099',
+        data: Array(24).fill(0),
+      },
+    ],
+  };
 
   constructor(
     private modalService: NgbModal,
@@ -46,6 +63,14 @@ export class UserComponent implements OnInit {
       this.achievements = achievements.map(a => this.achievementService.getInfo(a.id));
     });
 
+    userId$.pipe(
+      switchMap(id => this.coffeeService.findDiagramData(id)),
+    ).subscribe(userCoffeeData => {
+      for (const {hour, total} of userCoffeeData) {
+        this.coffeeData.datasets[0].data[hour] = total;
+      }
+      this.coffeeChart?.update();
+    });
   }
 
   createCoffee() {
@@ -55,6 +80,9 @@ export class UserComponent implements OnInit {
     }).subscribe(coffee => {
       this.user.coffees++;
       this.user.balance = (+this.user.balance - coffee.price).toFixed(2);
+      const hour = new Date(coffee.createdAt).getHours();
+      this.coffeeData.datasets[0].data[hour]++;
+      this.coffeeChart?.update();
     });
   }
 

@@ -2,7 +2,7 @@ import {Injectable} from '@nestjs/common';
 import {EventEmitter2} from '@nestjs/event-emitter';
 import {InjectModel} from '@nestjs/mongoose';
 import {FilterQuery, Model} from 'mongoose';
-import {CreateCoffeeDto} from './coffee.dto';
+import {CoffeeDiagramData, CreateCoffeeDto} from './coffee.dto';
 import {Coffee, CoffeeDocument} from './coffee.schema';
 
 @Injectable()
@@ -35,5 +35,29 @@ export class CoffeeService {
 
 	private emit(event: string, coffee: CoffeeDocument): void {
 		this.eventEmitter.emit(`users.${coffee.userId}.coffees.${coffee._id}.${event}`, coffee);
+	}
+
+	async findDiagramData(id: string): Promise<CoffeeDiagramData[] | null> {
+		return await this.model.aggregate([
+			{
+				$match: { userId: id },
+			},
+			{
+				$group: {
+					_id: {$hour: {date: '$createdAt', timezone: 'Europe/Berlin'}},
+					total: {$sum: 1},
+				},
+			},
+			{
+				$addFields: {
+					hour: '$_id',
+				},
+			},
+			{
+				$project: {
+					_id: 0,
+				},
+			},
+		]).exec();
 	}
 }
