@@ -7,7 +7,11 @@
     <div *ngFor="let user of users" class="text-start m-3 card-container">
       <div class="card bg-light bg-darkmode-dark">
         <div class="card-body position-relative">
-          <h5 class="card-title h5">{{ user.name }}</h5>
+          <h5 class="card-title">
+            <a class="text-body" [routerLink]="['/users', user._id]">
+              {{ user.name }}
+            </a>
+          </h5>
           <span class="bi-cup text-primary h5" ngbTooltip="Coffees"> {{ user.coffees }}</span><br>
           <span class="bi-star text-info h5" ngbTooltip="Level"> {{ user.coffees | level }}</span><br>
           <span class="bi-trophy text-warning h5" ngbTooltip="Trophies"> {{ user.achievements }}</span>
