@@ -80,6 +80,9 @@ export class UserComponent implements OnInit {
     }).subscribe(coffee => {
       this.user.coffees++;
       this.user.balance = (+this.user.balance - coffee.price).toFixed(2);
+      const hour = new Date(coffee.createdAt).getHours();
+      this.coffeeData.datasets[0].data[hour]++;
+      this.coffeeChart?.update();
     });
   }
 
