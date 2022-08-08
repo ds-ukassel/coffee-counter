@@ -26,68 +26,17 @@ export class UserComponent implements OnInit {
   achievements: AchievementInfo[] = [];
 
   coffeeData: ChartData<'bar'> = {
-    labels: [
-      '0 Uhr',
-      '1 Uhr',
-      '2 Uhr',
-      '3 Uhr',
-      '4 Uhr',
-      '5 Uhr',
-      '6 Uhr',
-      '7 Uhr',
-      '8 Uhr',
-      '9 Uhr',
-      '10 Uhr',
-      '11 Uhr',
-      '12 Uhr',
-      '13 Uhr',
-      '14 Uhr',
-      '15 Uhr',
-      '16 Uhr',
-      '17 Uhr',
-      '18 Uhr',
-      '19 Uhr',
-      '20 Uhr',
-      '21 Uhr',
-      '22 Uhr',
-      '23 Uhr',
-    ],
+    labels: Array(24).fill(0).map((x, i) => `${i} Uhr`),
     datasets: [
       {
         label: '#Kaffee',
         backgroundColor: '#a07150',
         borderColor: 'none',
         hoverBackgroundColor: '#a0715099',
-        data: [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-        ],
-      }
-    ]
-  }
-
+        data: Array(24).fill(0),
+      },
+    ],
+  };
 
   constructor(
     private modalService: NgbModal,
