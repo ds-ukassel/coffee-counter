@@ -66,9 +66,9 @@ export class UserComponent implements OnInit {
     userId$.pipe(
       switchMap(id => this.coffeeService.findDiagramData(id)),
     ).subscribe(userCoffeeData => {
-      userCoffeeData.forEach((coffeeDate) => {
-        this.coffeeData.datasets[0].data[coffeeDate._id] = coffeeDate.total
-      });
+      for (const {hour, total} of userCoffeeData) {
+        this.coffeeData.datasets[0].data[hour] = total;
+      }
       this.coffeeChart?.update();
     });
   }

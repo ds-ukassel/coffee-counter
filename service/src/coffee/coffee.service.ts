@@ -48,6 +48,16 @@ export class CoffeeService {
 					total: { $sum: 1 },
 				},
 			},
+			{
+				$addFields: {
+					hour: '$_id',
+				},
+			},
+			{
+				$project: {
+					_id: 0,
+				},
+			},
 		]).exec();
 	}
 }

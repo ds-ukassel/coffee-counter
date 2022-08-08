@@ -10,6 +10,6 @@ export class FilterCoffeeDto extends PartialType(Coffee) {
 }
 
 export class CoffeeDiagramData {
-	_id: number;
+	hour: number;
 	total: number;
 }

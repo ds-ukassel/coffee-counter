@@ -8,8 +8,7 @@ export interface Coffee {
 export type CreateCoffeeDto = Omit<Coffee, '_id' | 'createdAt'>;
 export type FilterCoffeeDto = Partial<Coffee>;
 
-
-export type CoffeeDiagramData = {
-  _id : number,
-  total: number
+export interface CoffeeDiagramData {
+  hour: number;
+  total: number;
 }
