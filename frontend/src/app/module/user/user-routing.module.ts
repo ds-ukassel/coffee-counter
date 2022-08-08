@@ -1,5 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
+import {AchievementModalComponent} from './achievement-modal/achievement-modal.component';
 import {NewUserModalComponent} from './new-user-modal/new-user-modal.component';
 import {UserListComponent} from './user-list/user-list.component';
 import {UserComponent} from './user.component';
@@ -15,11 +16,12 @@ const routes: Routes = [
     ],
   },
   {
-    path: ':id',
+    path: ':user',
     component: UserComponent,
     children: [
       {path: 'purchase', component: PurchaseModalComponent},
-    ]
+      {path: 'achievements/:achievement', component: AchievementModalComponent},
+    ],
   },
 ];
 

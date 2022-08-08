@@ -1,7 +1,7 @@
-import {Body, Controller, Delete, Get, Param, Post} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, Query} from '@nestjs/common';
 import {ApiCreatedResponse, ApiOkResponse, ApiTags} from '@nestjs/swagger';
 
-import {CoffeeDiagramData, CreateCoffeeDto} from './coffee.dto';
+import {CoffeeDiagramData, CreateCoffeeDto, FilterCoffeeDto} from './coffee.dto';
 import {Coffee} from './coffee.schema';
 import {CoffeeService} from './coffee.service';
 
@@ -23,8 +23,10 @@ export class CoffeeController {
 
 	@Get()
 	@ApiOkResponse({type: [Coffee]})
-	async findAll(): Promise<Coffee[]> {
-		return this.coffeeService.findAll();
+	async findAll(
+		@Query() filter: FilterCoffeeDto,
+	): Promise<Coffee[]> {
+		return this.coffeeService.findAll(filter);
 	}
 
 	@Get(':id/diagram')

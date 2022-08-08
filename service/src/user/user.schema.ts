@@ -30,10 +30,15 @@ export class User {
 	@ApiProperty({format: 'url', required: false, maxLength: MAX_AVATAR_LENGTH})
 	avatar?: string;
 
-	@Prop({default: 0})
+	@Prop({default: 0, index: 1})
 	@IsInt()
 	@ApiProperty({type: 'integer'})
 	coffees: number;
+
+	@Prop({default: 0})
+	@IsInt()
+	@ApiProperty({type: 'integer'})
+	achievements: number;
 
 	@Prop({
 		default: 0,

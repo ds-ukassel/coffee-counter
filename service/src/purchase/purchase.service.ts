@@ -1,25 +1,21 @@
 import {Injectable} from '@nestjs/common';
+import {EventEmitter2} from '@nestjs/event-emitter';
 import {InjectModel} from '@nestjs/mongoose';
 import {FilterQuery, Model} from 'mongoose';
-import {UserService} from '../user/user.service';
 import {CreatePurchaseDto} from './purchase.dto';
 import {Purchase, PurchaseDocument} from './purchase.schema';
 
 @Injectable()
 export class PurchaseService {
 	constructor(
+		private eventEmitter: EventEmitter2,
 		@InjectModel('purchases') private model: Model<Purchase>,
-		private userService: UserService,
 	) {
 	}
 
 	async create(dto: CreatePurchaseDto): Promise<PurchaseDocument> {
 		const purchase = await this.model.create(dto);
-		await this.userService.update(dto.userId, {
-			$inc: {
-				balance: dto.total,
-			},
-		});
+		this.emit('created', purchase);
 		return purchase;
 	}
 
@@ -37,11 +33,11 @@ export class PurchaseService {
 
 	async remove(id: string): Promise<PurchaseDocument | null> {
 		const purchase = await this.model.findByIdAndDelete(id).exec();
-		purchase && await this.userService.update(purchase.userId, {
-			$inc: {
-				balance: -purchase.total,
-			},
-		});
+		this.emit('deleted', purchase);
 		return purchase;
+	}
+
+	private emit(event: string, purchase: PurchaseDocument): void {
+		this.eventEmitter.emit(`users.${purchase.userId}.purchases.${purchase._id}.${event}`, purchase);
 	}
 }

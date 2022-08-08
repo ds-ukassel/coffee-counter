@@ -3,14 +3,15 @@ import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {ModalModule} from 'ng-bootstrap-ext';
+import {NgChartsModule} from 'ng2-charts';
+
 import {SharedModule} from '../../shared/shared.module';
 import {NewUserModalComponent} from './new-user-modal/new-user-modal.component';
 import {PurchaseModalComponent} from './purchase-modal/purchase-modal.component';
 import {UserListComponent} from './user-list/user-list.component';
-
 import {UserRoutingModule} from './user-routing.module';
 import {UserComponent} from './user.component';
-import {NgChartsModule} from 'ng2-charts';
+import {AchievementModalComponent} from './achievement-modal/achievement-modal.component';
 
 
 @NgModule({
@@ -19,16 +20,17 @@ import {NgChartsModule} from 'ng2-charts';
     UserListComponent,
     NewUserModalComponent,
     PurchaseModalComponent,
+    AchievementModalComponent,
   ],
-    imports: [
-        CommonModule,
-        UserRoutingModule,
-        FormsModule,
-        NgbModule,
-        SharedModule,
-        ModalModule,
-        NgChartsModule,
-    ],
+  imports: [
+    CommonModule,
+    UserRoutingModule,
+    FormsModule,
+    NgbModule,
+    SharedModule,
+    ModalModule,
+    NgChartsModule,
+  ],
 })
 export class UserModule {
 }

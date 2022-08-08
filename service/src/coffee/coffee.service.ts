@@ -1,26 +1,21 @@
 import {Injectable} from '@nestjs/common';
+import {EventEmitter2} from '@nestjs/event-emitter';
 import {InjectModel} from '@nestjs/mongoose';
 import {FilterQuery, Model} from 'mongoose';
-import {UserService} from '../user/user.service';
 import {CoffeeDiagramData, CreateCoffeeDto} from './coffee.dto';
 import {Coffee, CoffeeDocument} from './coffee.schema';
 
 @Injectable()
 export class CoffeeService {
 	constructor(
+		private eventEmitter: EventEmitter2,
 		@InjectModel('coffees') private model: Model<Coffee>,
-		private userService: UserService,
 	) {
 	}
 
 	async create(dto: CreateCoffeeDto): Promise<CoffeeDocument> {
 		const coffee = await this.model.create(dto);
-		await this.userService.update(dto.userId, {
-			$inc: {
-				coffees: 1,
-				balance: -dto.price,
-			},
-		});
+		this.emit('created', coffee);
 		return coffee;
 	}
 
@@ -34,13 +29,12 @@ export class CoffeeService {
 
 	async remove(id: string): Promise<CoffeeDocument | null> {
 		const coffee = await this.model.findByIdAndDelete(id).exec();
-		coffee && await this.userService.update(coffee.userId, {
-			$inc: {
-				coffees: -1,
-				balance: coffee.price,
-			},
-		});
+		coffee && this.emit('deleted', coffee);
 		return coffee;
+	}
+
+	private emit(event: string, coffee: CoffeeDocument): void {
+		this.eventEmitter.emit(`users.${coffee.userId}.coffees.${coffee._id}.${event}`, coffee);
 	}
 
 	async findDiagramData(id: string): Promise<CoffeeDiagramData[] | null> {

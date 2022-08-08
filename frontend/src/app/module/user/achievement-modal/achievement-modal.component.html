@@ -1,0 +1,35 @@
+<ngbx-modal #modal [back]="['../..']">
+  <ng-container modal-title>
+    {{info?.name}}
+    <span class="text-muted">
+       {{achievement?.unlockedAt | date:'mediumDate' }}
+    </span>
+  </ng-container>
+  <ng-container modal-body>
+    <div class="d-flex mb-3">
+      <img [src]="info?.image" [alt]="info?.name" width="100" height="100">
+      <span class="mx-3">{{info?.description}}</span>
+      <span class="bi-trophy-fill" [class]="info ? (info.tier | trophyTier) : ''" [ngbTooltip]="info?.tier"
+            style="font-size: 50px"></span>
+    </div>
+    <div class="progress mb-3" *ngIf="achievement?.progress || info?.goal">
+      <div class="progress-bar" role="progressbar" [style.width]="info && info.goal ? ((achievement?.progress ?? 0) / info.goal) * 100 + '%' : '100%'">
+        Progress:
+        {{achievement?.progress}}
+        <ng-container *ngIf="info && info.goal">
+          / {{info.goal}}
+        </ng-container>
+      </div>
+    </div>
+    <div class="d-flex">
+      <button class="btn btn-sm btn-info me-3" (click)="showHint = !showHint">
+        <span class="bi-question">hint</span>
+      </button>
+      <span *ngIf="!showHint" class="placeholder col"></span>
+      <span *ngIf="showHint">{{info?.hint}}</span>
+    </div>
+  </ng-container>
+  <ng-container modal-footer>
+    <button class="btn btn-secondary" (click)="modal.close()">Close</button>
+  </ng-container>
+</ngbx-modal>
