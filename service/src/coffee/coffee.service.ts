@@ -44,8 +44,8 @@ export class CoffeeService {
 			},
 			{
 				$group: {
-					_id: { $hour: '$createdAt' },
-					total: { $sum: 1 },
+					_id: {$hour: {date: '$createdAt', timezone: 'Europe/Berlin'}},
+					total: {$sum: 1},
 				},
 			},
 			{
