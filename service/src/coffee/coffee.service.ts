@@ -1,8 +1,8 @@
 import {Injectable} from '@nestjs/common';
 import {EventEmitter2} from '@nestjs/event-emitter';
 import {InjectModel} from '@nestjs/mongoose';
-import {FilterQuery, Model} from 'mongoose';
-import {CoffeeDiagramData, CreateCoffeeDto} from './coffee.dto';
+import {FilterQuery, Model, UpdateQuery} from 'mongoose';
+import {CoffeeDiagramData, CreateCoffeeDto, UpdateCoffeeDto} from './coffee.dto';
 import {Coffee, CoffeeDocument} from './coffee.schema';
 
 @Injectable()
@@ -25,6 +25,12 @@ export class CoffeeService {
 
 	async findOne(id: string): Promise<CoffeeDocument | null> {
 		return this.model.findById(id).exec();
+	}
+
+	async update(id: string, dto: UpdateQuery<Coffee>): Promise<CoffeeDocument | null> {
+		const coffee = await this.model.findByIdAndUpdate(id, dto, {new: true}).exec();
+		coffee && this.emit('updated', coffee);
+		return coffee;
 	}
 
 	async remove(id: string): Promise<CoffeeDocument | null> {

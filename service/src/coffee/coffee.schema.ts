@@ -1,13 +1,16 @@
 import {Prop, Schema, SchemaFactory} from '@nestjs/mongoose';
 import {ApiProperty} from '@nestjs/swagger';
-import {Type} from 'class-transformer';
-import {IsMongoId, IsNumber} from 'class-validator';
+import {Transform, Type} from 'class-transformer';
+import {IsDate, IsMongoId, IsNumber} from 'class-validator';
 import {Document} from 'mongoose';
 
-@Schema({timestamps: {createdAt: true, updatedAt: false}})
+@Schema({timestamps: false})
 export class Coffee {
+	@Prop({default: () => new Date()})
 	@ApiProperty()
 	@Type(() => Date)
+	@Transform(({value}) => new Date(value))
+	@IsDate()
 	createdAt: Date;
 
 	@Prop()
