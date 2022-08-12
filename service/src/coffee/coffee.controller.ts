@@ -1,7 +1,7 @@
-import {Body, Controller, Delete, Get, Param, Post, Query} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Patch, Post, Query} from '@nestjs/common';
 import {ApiCreatedResponse, ApiOkResponse, ApiTags} from '@nestjs/swagger';
 
-import {CoffeeDiagramData, CreateCoffeeDto, FilterCoffeeDto} from './coffee.dto';
+import {CoffeeDiagramData, CreateCoffeeDto, FilterCoffeeDto, UpdateCoffeeDto} from './coffee.dto';
 import {Coffee} from './coffee.schema';
 import {CoffeeService} from './coffee.service';
 
@@ -44,6 +44,16 @@ export class CoffeeController {
 		@Param('id') id: string,
 	): Promise<Coffee | null> {
 		return this.coffeeService.findOne(id);
+	}
+
+	@Patch(':id')
+	// TODO @NotFound()
+	@ApiOkResponse({type: Coffee})
+	async update(
+		@Param('id') id: string,
+		@Body() dto: UpdateCoffeeDto,
+	): Promise<Coffee | null> {
+		return this.coffeeService.update(id, dto);
 	}
 
 	@Delete(':id')

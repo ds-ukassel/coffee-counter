@@ -6,6 +6,9 @@ export class CreateCoffeeDto extends OmitType(Coffee, [
 ] as const) {
 }
 
+export class UpdateCoffeeDto extends PartialType(Coffee) {
+}
+
 export class FilterCoffeeDto extends PartialType(Coffee) {
 }
 
