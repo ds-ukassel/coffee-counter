@@ -25,8 +25,8 @@ $edit-button-dim: 3rem;
   width: $edit-button-dim;
   height: $edit-button-dim;
   border-radius: 50px;
-  left: ($avatar-dim / 2) + (($avatar-dim / 2) * math.cos(45deg)) - ($edit-button-dim / 2);
-  top: ($avatar-dim / 2) + (($avatar-dim / 2) * math.sin(45deg))  - ($edit-button-dim / 2);
+  left: math.div($avatar-dim, 2) + (math.div($avatar-dim, 2) * math.cos(45deg)) - math.div($edit-button-dim, 2);
+  top: math.div($avatar-dim, 2) + (math.div($avatar-dim, 2) * math.sin(45deg))  - math.div($edit-button-dim, 2);
 }
 
 .achievement-icon {
