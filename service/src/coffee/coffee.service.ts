@@ -20,7 +20,7 @@ export class CoffeeService {
 	}
 
 	async findAll(where: FilterQuery<Coffee> = {}): Promise<Coffee[]> {
-		return this.model.find(where).exec();
+		return this.model.find(where).sort('-createdAt').limit(20).exec();
 	}
 
 	async findOne(id: string): Promise<CoffeeDocument | null> {
