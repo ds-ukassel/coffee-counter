@@ -1,6 +1,6 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
-import {NgbPopoverModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbPopoverModule, NgbTooltipModule} from '@ng-bootstrap/ng-bootstrap';
 import {LevelNamePipe} from './pipe/level-name.pipe';
 import {LevelProgressPipe, NextLevelPipe} from './pipe/level-progress.pipe';
 import {LevelPipe} from './pipe/level.pipe';
@@ -19,6 +19,7 @@ const declarations = [
   imports: [
     CommonModule,
     NgbPopoverModule,
+    NgbTooltipModule,
   ],
   declarations: [
     declarations,

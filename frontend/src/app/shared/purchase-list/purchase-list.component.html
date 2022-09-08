@@ -4,7 +4,12 @@
     <div class="ms-2 me-auto">
       <div *ngIf="users?.[item.userId] as user">{{user.name}}</div>
       <span [class.text-muted]="users">{{item.description}}</span>
-      <span class="text-muted"> &bull; {{ item.createdAt | date:'shortTime' }}</span>
+      <span class="text-muted">
+        &bull;
+        <time [dateTime]="item.createdAt" [ngbTooltip]="item.createdAt | date:'full'">
+          {{ item.createdAt | date:'EEEE H:mm' }}
+        </time>
+      </span>
     </div>
     <div *ngIf="!users" class="me-2">
       {{item.money | currency: 'EUR' : 'symbol': '1.': 'de-DE'}}
