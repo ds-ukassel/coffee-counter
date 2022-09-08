@@ -11,17 +11,17 @@ export class Coffee {
 	@Type(() => Date)
 	@Transform(({value}) => new Date(value))
 	@IsDate()
-	createdAt: Date;
+	createdAt!: Date;
 
 	@Prop()
 	@ApiProperty({format: 'objectid'})
 	@IsMongoId()
-	userId: string;
+	userId!: string;
 
 	@Prop()
 	@ApiProperty()
 	@IsNumber()
-	price: number;
+	price!: number;
 }
 
 export type CoffeeDocument = Coffee & Document;

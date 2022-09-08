@@ -20,8 +20,8 @@ export class AchievementService {
 			new: true,
 			rawResult: true,
 		});
-		const value: Achievement = res.value;
-		const updated = res.lastErrorObject.updatedExisting;
+		const value = res.value!;
+		const updated = res.lastErrorObject?.updatedExisting;
 		this.emit(updated ? 'updated' : 'created', value);
 		return value;
 	}

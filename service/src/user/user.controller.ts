@@ -21,7 +21,7 @@ export class UserController {
 	@Get(':id')
 	// TODO @NotFound
 	@ApiOkResponse({type: User})
-	async getUser(@Param('id') id: string): Promise<User> {
+	async getUser(@Param('id') id: string): Promise<User | null> {
 		return this.userService.find(id);
 	}
 
@@ -42,7 +42,7 @@ export class UserController {
 	async update(
 		@Param('id') id: string,
 		@Body() dto: UpdateUserDto,
-	): Promise<User | undefined> {
+	): Promise<User | null> {
 		return this.userService.update(id, dto);
 	}
 
@@ -51,7 +51,7 @@ export class UserController {
 	@ApiOkResponse({type: User})
 	async delete(
 		@Param('id') id: string,
-	): Promise<User | undefined> {
+	): Promise<User | null> {
 		return this.userService.delete(id);
 	}
 }

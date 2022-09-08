@@ -33,7 +33,7 @@ export class PurchaseService {
 
 	async remove(id: string): Promise<PurchaseDocument | null> {
 		const purchase = await this.model.findByIdAndDelete(id).exec();
-		this.emit('deleted', purchase);
+		purchase && this.emit('deleted', purchase);
 		return purchase;
 	}
 

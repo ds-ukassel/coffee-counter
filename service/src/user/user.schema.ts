@@ -21,7 +21,7 @@ export class User {
 	@IsString()
 	@IsNotEmpty()
 	@MaxLength(32)
-	name: string;
+	name!: string;
 
 	@Prop()
 	@IsOptional()
@@ -33,12 +33,12 @@ export class User {
 	@Prop({default: 0, index: 1})
 	@IsInt()
 	@ApiProperty({type: 'integer'})
-	coffees: number;
+	coffees!: number;
 
 	@Prop({default: 0})
 	@IsInt()
 	@ApiProperty({type: 'integer'})
-	achievements: number;
+	achievements!: number;
 
 	@Prop({
 		default: 0,
@@ -47,7 +47,7 @@ export class User {
 	})
 	@ApiProperty({type: 'string', format: 'decimal', example: '1234.56'})
 	@IsNumberString({maxDecimalPlaces: 2})
-	balance: string;
+	balance!: string;
 }
 
 export type UserDocument = User & Document;
