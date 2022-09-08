@@ -2,6 +2,7 @@ import {Injectable} from '@nestjs/common';
 import {OnEvent} from '@nestjs/event-emitter';
 import {Achievement} from '../achievement/achievement.schema';
 import {Coffee} from '../coffee/coffee.schema';
+import {Purchase} from '../purchase/purchase.schema';
 import {UserService} from './user.service';
 
 @Injectable()
@@ -40,14 +41,14 @@ export class UserHandler {
 			},
 		});
 	}
-	
+
 	@OnEvent('users.*.purchases.*.created')
-	async onPurchaseCreated(purchase: Coffee): Promise<void> {
-		await this.userService.update(purchase.userId, {$inc: {balance: +purchase.price}});
+	async onPurchaseCreated(purchase: Purchase): Promise<void> {
+		await this.userService.update(purchase.userId, {$inc: {balance: +purchase.total}});
 	}
 
 	@OnEvent('users.*.purchases.*.deleted')
-	async onPurchaseDeleted(purchase: Coffee): Promise<void> {
-		await this.userService.update(purchase.userId, {$inc: {balance: -purchase.price}});
+	async onPurchaseDeleted(purchase: Purchase): Promise<void> {
+		await this.userService.update(purchase.userId, {$inc: {balance: -purchase.total}});
 	}
 }

@@ -18,13 +18,13 @@ export class Achievement {
 	@Prop()
 	@ApiProperty({format: 'objectid'})
 	@IsMongoId()
-	userId: string;
+	userId!: string;
 
 	@Prop()
 	@ApiProperty()
 	@IsString()
 	@IsNotEmpty()
-	id: string;
+	id!: string;
 
 	@Prop({type: Date, default: null})
 	@ApiPropertyOptional({type: Date, nullable: true})
@@ -36,7 +36,7 @@ export class Achievement {
 	@Prop()
 	@ApiProperty()
 	@IsNumber()
-	progress: number;
+	progress!: number;
 }
 
 export type AchievementDocument = Achievement & Document<never>;

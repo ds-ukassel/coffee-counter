@@ -34,6 +34,10 @@ export class AchievementHandler {
 
 	@OnEvent('users.*.purchases.*.created')
 	async onPurchaseCreated(purchase: Purchase) {
+		if (!purchase.description) {
+			return;
+		}
+
 		let desc = purchase.description.toLowerCase();
 		const milk = ['milk', 'milch'];
 		if (milk.some(m => desc.includes(m))) {

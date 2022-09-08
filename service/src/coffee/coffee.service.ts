@@ -43,8 +43,8 @@ export class CoffeeService {
 		this.eventEmitter.emit(`users.${coffee.userId}.coffees.${coffee._id}.${event}`, coffee);
 	}
 
-	async findDiagramData(id: string): Promise<CoffeeDiagramData[] | null> {
-		return await this.model.aggregate([
+	async findDiagramData(id: string): Promise<CoffeeDiagramData[]> {
+		return this.model.aggregate([
 			{
 				$match: { userId: id },
 			},

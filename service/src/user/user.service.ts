@@ -17,7 +17,7 @@ export class UserService {
 		return this.model.find(filter).sort({name: 1}).exec();
 	}
 
-	async find(id: string): Promise<User | undefined> {
+	async find(id: string): Promise<User | null> {
 		return this.model.findById(id).exec();
 	}
 
@@ -27,13 +27,13 @@ export class UserService {
 		return created;
 	}
 
-	async update(id: string, dto: UpdateUserDto | UpdateQuery<User>): Promise<User | undefined> {
+	async update(id: string, dto: UpdateUserDto | UpdateQuery<User>): Promise<User | null> {
 		const updated = await this.model.findByIdAndUpdate(id, dto, {new: true}).exec();
 		updated && this.emit('updated', updated);
 		return updated;
 	}
 
-	async delete(id: string): Promise<User | undefined> {
+	async delete(id: string): Promise<User | null> {
 		const deleted = await this.model.findByIdAndDelete(id).exec();
 		deleted && this.emit('deleted', deleted);
 		return deleted;

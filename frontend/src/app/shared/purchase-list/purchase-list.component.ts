@@ -7,6 +7,16 @@ import {User} from '../../core/model/user.interface';
 import {CoffeeService} from '../../core/service/coffee.service';
 import {PurchaseService} from '../../core/service/purchase.service';
 
+interface Item {
+  _id: string;
+  createdAt: string;
+  userId: string;
+  description: string;
+  type: 'purchase' | 'coffee';
+  icon: string;
+  money: number;
+}
+
 @Component({
   selector: 'app-purchase-list',
   templateUrl: './purchase-list.component.html',
@@ -15,7 +25,7 @@ import {PurchaseService} from '../../core/service/purchase.service';
 export class PurchaseListComponent implements OnInit {
   @Input() users?: Record<string, User>;
 
-  items: (Purchase | Coffee)[] = [];
+  items: Item[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -33,14 +43,29 @@ export class PurchaseListComponent implements OnInit {
         this.purchaseService.findAll(userId ? {userId} : {}),
       ])),
     ).subscribe(([coffees, purchases]) => {
-      this.items = [...coffees, ...purchases].sort((a, b) => +new Date(b.createdAt) - +new Date(a.createdAt)).slice(0, 20);
+      this.items = [
+        ...coffees.map(c => ({
+          ...c,
+          description: 'Coffee',
+          type: 'coffee' as const,
+          icon: 'bi-cup',
+          money: -c.price,
+        })),
+        ...purchases.map(p => ({
+          ...p,
+          description: p.description ?? 'Purchase',
+          type: 'purchase' as const,
+          icon: 'bi-shop',
+          money: p.total,
+        })),
+      ].sort((a, b) => +new Date(b.createdAt) - +new Date(a.createdAt)).slice(0, 20);
     });
   }
 
-  delete(purchase: Coffee | Purchase) {
-    const del: Observable<{_id: string}> = 'total' in purchase ? this.purchaseService.remove(purchase._id) : this.coffeeService.remove(purchase._id);
+  delete(purchase: Item) {
+    const del: Observable<{ _id: string; }> = purchase.type === 'purchase' ? this.purchaseService.remove(purchase._id) : this.coffeeService.remove(purchase._id);
     del.subscribe(res => {
-      this.items = this.items.filter(purchase => purchase._id != res._id);
+      this.items = this.items.filter(item => item._id !== res._id);
     });
   }
 }

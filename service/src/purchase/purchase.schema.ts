@@ -8,12 +8,12 @@ import {Document} from 'mongoose';
 export class Purchase {
 	@ApiProperty()
 	@Type(() => Date)
-	createdAt: Date;
+	createdAt!: Date;
 
 	@Prop()
 	@ApiProperty({format: 'objectid'})
 	@IsMongoId()
-	userId: string;
+	userId!: string;
 
 	// TODO maybe a detailed list of items?
 	@Prop()
@@ -26,7 +26,7 @@ export class Purchase {
 	@ApiProperty({minimum: 0.01, multipleOf: 0.01})
 	@IsNumber({maxDecimalPlaces: 2})
 	@IsPositive()
-	total: number;
+	total!: number;
 }
 
 export type PurchaseDocument = Purchase & Document;
