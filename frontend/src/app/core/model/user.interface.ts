@@ -8,3 +8,4 @@ export interface User {
 }
 
 export type CreateUserDto = Omit<User, '_id'>;
+export type UpdateUserDto = Pick<User, 'name' | 'avatar'>;
