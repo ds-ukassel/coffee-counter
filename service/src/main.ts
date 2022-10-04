@@ -10,7 +10,10 @@ async function bootstrap() {
 	const prefix = `/api/${environment.version}`;
 	app.enableCors();
 	app.setGlobalPrefix(prefix);
-	app.useGlobalPipes(new ValidationPipe());
+	app.useGlobalPipes(new ValidationPipe({
+		whitelist: true,
+		forbidUnknownValues: true,
+	}));
 	app.useGlobalGuards(new ApiKeyGuard());
 
 	const config = new DocumentBuilder()
