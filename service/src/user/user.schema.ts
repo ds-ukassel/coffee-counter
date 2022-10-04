@@ -1,6 +1,7 @@
 import {Prop, Schema, SchemaFactory} from '@nestjs/mongoose';
-import {ApiProperty} from '@nestjs/swagger';
+import {ApiProperty, ApiPropertyOptional} from '@nestjs/swagger';
 import {
+	IsBoolean,
 	IsByteLength,
 	IsInt,
 	IsNotEmpty,
@@ -29,6 +30,12 @@ export class User {
 	@IsByteLength(0, MAX_AVATAR_LENGTH)
 	@ApiProperty({format: 'url', required: false, maxLength: MAX_AVATAR_LENGTH})
 	avatar?: string;
+
+	@Prop()
+	@IsOptional()
+	@IsBoolean()
+	@ApiPropertyOptional()
+	archived?: boolean;
 
 	@Prop({default: 0, index: 1})
 	@IsInt()

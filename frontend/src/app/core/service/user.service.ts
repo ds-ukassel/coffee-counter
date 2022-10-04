@@ -14,8 +14,8 @@ export class UserService {
   ) {
   }
 
-  findAll(): Observable<User[]> {
-    return this.http.get<User[]>(environment.apiUrl + '/users');
+  findAll(archived = false): Observable<User[]> {
+    return this.http.get<User[]>(environment.apiUrl + '/users', {params: {archived}});
   }
 
   findOne(userId: string) {

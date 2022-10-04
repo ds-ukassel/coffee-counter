@@ -1,5 +1,16 @@
-import {Body, ConflictException, Controller, Delete, Get, Param, Patch, Post} from '@nestjs/common';
-import {ApiConflictResponse, ApiCreatedResponse, ApiOkResponse, ApiTags} from '@nestjs/swagger';
+import {
+	Body,
+	ConflictException,
+	Controller, DefaultValuePipe,
+	Delete,
+	Get,
+	Param,
+	ParseBoolPipe,
+	Patch,
+	Post,
+	Query,
+} from '@nestjs/common';
+import {ApiConflictResponse, ApiCreatedResponse, ApiOkResponse, ApiQuery, ApiTags} from '@nestjs/swagger';
 import {CreateUserDto, UpdateUserDto} from './user.dto';
 import {User} from './user.schema';
 import {UserService} from './user.service';
@@ -14,8 +25,10 @@ export class UserController {
 
 	@Get()
 	@ApiOkResponse({type: [User]})
-	async getUsers(): Promise<User[]> {
-		return this.userService.findAll();
+	async getUsers(
+		@Query('archived', new DefaultValuePipe(false), ParseBoolPipe) archived: boolean,
+	): Promise<User[]> {
+		return this.userService.findAll({archived: archived ? true : {$ne: true}});
 	}
 
 	@Get(':id')
