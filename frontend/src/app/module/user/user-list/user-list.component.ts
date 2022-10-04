@@ -37,4 +37,14 @@ export class UserListComponent implements OnInit {
       this.users = this.users.filter(u => u._id !== user._id);
     });
   }
+
+  deleteUser(user: User) {
+    if (!confirm('Are you sure you want to delete this user? This action cannot be undone.')) {
+      return;
+    }
+
+    this.userService.delete(user._id).subscribe(() => {
+      this.users = this.users.filter(u => u._id !== user._id);
+    });
+  }
 }

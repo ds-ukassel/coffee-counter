@@ -29,4 +29,8 @@ export class UserService {
   updateOne(id: string, dto: UpdateUserDto): Observable<User> {
     return this.http.patch<User>(environment.apiUrl + '/users/' + id, dto);
   }
+
+  delete(id: string): Observable<User> {
+    return this.http.delete<User>(environment.apiUrl + '/users/' + id);
+  }
 }

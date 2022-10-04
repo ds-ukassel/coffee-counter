@@ -49,8 +49,11 @@
           <div ngbDropdown class="d-inline-block" (click)="$event.preventDefault(); $event.stopImmediatePropagation()">
             <button class="btn btn-outline-secondary bi-three-dots" ngbDropdownToggle></button>
             <div ngbDropdownMenu>
-              <button class="link-warning bi-archive" ngbDropdownItem (click)="archiveUser(user)">
+              <button class="text-warning bi-archive" ngbDropdownItem (click)="archiveUser(user)">
                 {{ user.archived ? 'Unarchive' : 'Archive'}}
+              </button>
+              <button class="text-danger bi-trash" ngbDropdownItem (click)="deleteUser(user)">
+                Delete
               </button>
             </div>
           </div>
