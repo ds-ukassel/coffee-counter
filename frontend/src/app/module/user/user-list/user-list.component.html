@@ -47,7 +47,7 @@
         </div>
         <div class="col-auto">
           <div ngbDropdown class="d-inline-block" (click)="$event.preventDefault(); $event.stopImmediatePropagation()">
-            <button class="btn btn-outline-secondary bi-three-dots" ngbDropdownToggle></button>
+            <button class="btn btn-outline-secondary bi-gear" ngbDropdownToggle></button>
             <div ngbDropdownMenu>
               <button class="text-warning bi-archive" ngbDropdownItem (click)="archiveUser(user)">
                 {{ user.archived ? 'Unarchive' : 'Archive'}}

@@ -3,3 +3,8 @@ $primary: #a07150;
 @import '~bootstrap/scss/bootstrap';
 @import '~bootstrap-icons/font/bootstrap-icons';
 @import 'node_modules/bootstrap-darkmode/scss/darktheme';
+
+.dropdown-toggle[class*=bi-]:empty::after {
+  // Remove caret from dropdown toggle buttons that are just icons
+  border: none;
+}
