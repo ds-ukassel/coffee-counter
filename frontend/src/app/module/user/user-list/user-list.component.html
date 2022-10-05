@@ -45,8 +45,24 @@
             </div>
           </div>
         </div>
+        <div class="col-auto">
+          <div ngbDropdown class="d-inline-block" (click)="$event.preventDefault(); $event.stopImmediatePropagation()">
+            <button class="btn btn-outline-secondary bi-gear" ngbDropdownToggle></button>
+            <div ngbDropdownMenu>
+              <button class="text-warning bi-archive" ngbDropdownItem (click)="archiveUser(user)">
+                {{ user.archived ? 'Unarchive' : 'Archive'}}
+              </button>
+              <button class="text-danger bi-trash" ngbDropdownItem (click)="deleteUser(user)">
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </a>
   </div>
+  <a routerLink="." [queryParams]="{archived: !archived}">
+    View {{ archived ? 'Active' : 'Archived'}} Users
+  </a>
 </div>
 <router-outlet></router-outlet>

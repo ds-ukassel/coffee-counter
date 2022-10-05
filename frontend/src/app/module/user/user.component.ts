@@ -1,6 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {ChartData} from 'chart.js';
+import {BaseChartDirective} from 'ng2-charts';
 import {map, switchMap} from 'rxjs';
 import {AchievementInfo} from '../../core/model/achievement.interface';
 import {User} from '../../core/model/user.interface';
@@ -8,8 +10,6 @@ import {AchievementService} from '../../core/service/achievement.service';
 import {CoffeeService} from '../../core/service/coffee.service';
 import {PurchaseService} from '../../core/service/purchase.service';
 import {UserService} from '../../core/service/user.service';
-import {ChartData} from 'chart.js';
-import {BaseChartDirective} from 'ng2-charts';
 
 @Component({
   selector: 'app-user',
@@ -20,8 +20,8 @@ export class UserComponent implements OnInit {
   @ViewChild(BaseChartDirective) coffeeChart: BaseChartDirective | undefined;
 
   user!: User;
-
-  editing = false;
+  editName?: string;
+  editAvatar?: string;
 
   achievements: AchievementInfo[] = [];
 
@@ -87,9 +87,13 @@ export class UserComponent implements OnInit {
   }
 
   updateUser() {
-    this.userService.updateOne(this.user).subscribe(res => {
+    this.userService.updateOne(this.user._id, {
+      name: this.editName || this.user.name,
+      avatar: this.editAvatar || this.user.avatar,
+    }).subscribe(res => {
       this.user = res;
-      this.editing = false;
+      delete this.editName;
+      delete this.editAvatar;
     });
   }
 }

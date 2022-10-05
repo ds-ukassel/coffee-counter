@@ -3,28 +3,28 @@
     <div class="col-xl-3">
       <div class="row">
         <div class="col-lg-6 col-xl-12 avatar-container">
-          <img class="rounded-circle user-avatar border border-2 border-dark" [src]="user.avatar || '/assets/se.svg'"
+          <img class="rounded-circle user-avatar border border-2 border-dark" [src]="editAvatar || user.avatar || '/assets/se.svg'"
                [alt]="user.name">
-          <button class="btn btn-primary bi-person-circle text-light" ngbTooltip="Edit Avatar"
-                  [ngbPopover]="editAvatar" container="body" placement="right bottom-right" autoClose="outside">
+          <button class="btn btn-primary bi-person-circle text-light" ngbTooltip="Edit Avatar" (click)="editAvatar = user.avatar"
+                  [ngbPopover]="editAvatarForm" #popover="ngbPopover" container="body" placement="right bottom-right" autoClose="outside">
           </button>
-          <ng-template #editAvatar>
+          <ng-template #editAvatarForm>
             <div class="mb-3">
               <label class="form-label" for="avatar">URL</label>
-              <input type="url" class="form-control" id="avatar" [(ngModel)]="user.avatar">
+              <input type="url" class="form-control" id="avatar" [(ngModel)]="editAvatar">
             </div>
-            <button class="btn btn-success" (click)="updateUser()">Save</button>
+            <button class="btn btn-success" (click)="updateUser(); popover.close()">Save</button>
           </ng-template>
         </div>
         <div class="col-lg-6 col-xl-12">
           <div class="d-flex">
-            <h3 *ngIf="!editing" class="flex-fill">{{user.name}}</h3>
-            <input *ngIf="editing" type="text" class="flex-fill form-control form-control-lg" [(ngModel)]="user.name">
-            <button *ngIf="!editing" class="btn btn-link bi-pencil"
+            <h3 *ngIf="!editName" class="flex-fill">{{user.name}}</h3>
+            <input *ngIf="editName" type="text" class="flex-fill form-control form-control-lg" [(ngModel)]="editName">
+            <button *ngIf="!editName" class="btn btn-link bi-pencil"
                     ngbTooltip="Edit Username" placement="right bottom"
-                    (click)="editing = true;">
+                    (click)="editName = user.name">
             </button>
-            <button *ngIf="editing" class="btn btn-link bi-check-circle"
+            <button *ngIf="editName" class="btn btn-link bi-check-circle"
                     ngbTooltip="Save" placement="right bottom"
                     (click)="updateUser()"></button>
           </div>
