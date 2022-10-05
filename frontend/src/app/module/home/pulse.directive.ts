@@ -1,7 +1,7 @@
 import {Directive, ElementRef, HostListener} from '@angular/core';
 
 @Directive({
-  selector: '[clickPulseAnimation]'
+  selector: '[appClickPulseAnimation]'
 })
 export class PulseDirective {
   private readonly keyframes: Keyframe[] = [
@@ -12,7 +12,7 @@ export class PulseDirective {
   private readonly options: KeyframeAnimationOptions = {
     duration: 700,
   }
-  
+
   constructor(private el: ElementRef) {
   }
 
