@@ -28,7 +28,7 @@
         [style.cursor]="'pointer'"
         [style.--progress]="user.coffees | levelProgress"
         [ngbTooltip]="(user.coffees | levelProgress | percent) + ' Progress'"
-        (click)="createCoffee(user)" clickPulseAnimation>
+        (click)="createCoffee(user)" appClickPulseAnimation>
         <circle class="progress-ring__circle"
                 stroke="gold"
                 stroke-width="10"

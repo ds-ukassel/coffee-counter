@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {ModalComponent} from 'ng-bootstrap-ext';
 import {CreateUserDto} from '../../../core/model/user.interface';
 import {UserService} from '../../../core/service/user.service';
@@ -8,16 +8,13 @@ import {UserService} from '../../../core/service/user.service';
   templateUrl: './new-user-modal.component.html',
   styleUrls: ['./new-user-modal.component.scss'],
 })
-export class NewUserModalComponent implements OnInit {
+export class NewUserModalComponent {
   user: CreateUserDto = {name: '', balance: '0.00', coffees: 0, achievements: 0};
   creating = false;
 
   constructor(
     private userService: UserService,
   ) {
-  }
-
-  ngOnInit(): void {
   }
 
   create(modal: ModalComponent): void {
