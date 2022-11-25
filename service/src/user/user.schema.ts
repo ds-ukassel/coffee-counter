@@ -1,5 +1,6 @@
 import {Prop, Schema, SchemaFactory} from '@nestjs/mongoose';
-import {ApiProperty, ApiPropertyOptional} from '@nestjs/swagger';
+import {ApiProperty, ApiPropertyOptional, PickType} from '@nestjs/swagger';
+import {Type} from 'class-transformer';
 import {
 	IsBoolean,
 	IsByteLength,
@@ -10,10 +11,19 @@ import {
 	IsString,
 	IsUrl,
 	MaxLength,
+	ValidateNested,
 } from 'class-validator';
 import {Document, SchemaTypes, Types} from 'mongoose';
+import {Purchase} from '../purchase/purchase.schema';
 
 const MAX_AVATAR_LENGTH = 16 * 1024;
+
+export class Shortcut extends PickType(Purchase, ['description', 'total'] as const) {
+	@Prop()
+	@ApiProperty()
+	@IsString()
+	icon!: string;
+}
 
 @Schema({timestamps: false})
 export class User {
@@ -55,6 +65,12 @@ export class User {
 	@ApiProperty({type: 'string', format: 'decimal', example: '1234.56'})
 	@IsNumberString({maxDecimalPlaces: 2})
 	balance!: string;
+
+	@Prop()
+	@ApiPropertyOptional()
+	@ValidateNested({each: true})
+	@Type(() => Shortcut)
+	shortcuts?: Shortcut[];
 }
 
 export type UserDocument = User & Document;
