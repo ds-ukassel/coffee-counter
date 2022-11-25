@@ -1,0 +1,11 @@
+<ul class="list-group">
+  <li *ngFor="let shortcut of shortcuts" class="list-group-item d-flex">
+    <select class="form-select" [(ngModel)]="shortcut.icon">
+      <option *ngFor="let icon of icons" [value]="icon">{{icon}}</option>
+    </select>
+    <input type="text" class="form-control" [(ngModel)]="shortcut.description" placeholder="Description">
+    <input type="number" class="form-control" step="0.01" [(ngModel)]="shortcut.total" placeholder="Price">
+  </li>
+</ul>
+<button type="button" class="btn btn-success bi-plus-circle" (click)="add()">
+</button>

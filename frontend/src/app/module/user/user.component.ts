@@ -55,6 +55,7 @@ export class UserComponent implements OnInit {
       switchMap(id => this.userService.findOne(id)),
     ).subscribe(user => {
       this.user = user;
+      this.user.shortcuts ||= [];
     });
 
     userId$.pipe(
@@ -94,6 +95,14 @@ export class UserComponent implements OnInit {
       this.user = res;
       delete this.editName;
       delete this.editAvatar;
+    });
+  }
+
+  saveShortcuts() {
+    this.userService.updateOne(this.user._id, {
+      shortcuts: this.user.shortcuts,
+    }).subscribe(res => {
+      this.user = res;
     });
   }
 }

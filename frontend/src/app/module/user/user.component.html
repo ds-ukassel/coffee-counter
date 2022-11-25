@@ -88,6 +88,11 @@
       <h3>Coffees by Hour of Day</h3>
       <canvas type="bar" [data]="coffeeData" [legend]="false" baseChart></canvas>
       <hr>
+      <h3>Shortcuts</h3>
+      <app-shortcut-list [shortcuts]="user.shortcuts!"></app-shortcut-list>
+      <button type="button" class="btn btn-primary" (click)="saveShortcuts()">
+        Save
+      </button>
       <h3>Recent Purchases</h3>
       <app-purchase-list></app-purchase-list>
     </div>
