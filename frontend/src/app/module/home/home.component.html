@@ -6,19 +6,33 @@
   <div class="d-flex flex-wrap justify-content-center">
     <div *ngFor="let user of users" class="text-start m-3 card-container">
       <div class="card bg-light bg-darkmode-dark">
-        <div class="card-body position-relative">
+        <div class="card-body">
           <h5 class="card-title">
             <a class="text-body" [routerLink]="['/users', user._id]">
               {{ user.name }}
             </a>
           </h5>
-          <span class="bi-cup text-primary h5" ngbTooltip="Coffees"> {{ user.coffees }}</span><br>
-          <span class="bi-star text-info h5" ngbTooltip="Level"> {{ user.coffees | level }}</span><br>
-          <span class="bi-trophy text-warning h5" ngbTooltip="Trophies"> {{ user.achievements }}</span>
-          <button
-            class="btn btn-warning bi-arrow-counterclockwise fs-3 position-absolute bottom-0 end-0 me-2 mb-2"
-            (click)="deleteLastCoffee(user)" ngbTooltip="Undo last Coffee">
-          </button>
+          <h5>
+            <span class="bi-cup text-primary" ngbTooltip="Coffees">
+              {{ user.coffees }}
+            </span>
+            <span class="bi-star text-info" ngbTooltip="Level">
+              {{ user.coffees | level }}
+            </span>
+            <span class="bi-trophy text-warning" ngbTooltip="Trophies">
+              {{ user.achievements }}
+            </span>
+          </h5>
+          <div class="d-flex flex-wrap">
+            <button *ngFor="let shortcut of user.shortcuts" class="btn btn-secondary me-2"
+                    [ngbTooltip]="shortcut.description" (click)="applyShortcut(user, shortcut)">
+              {{ shortcut.icon }}
+            </button>
+            <button
+              class="btn btn-warning bi-arrow-counterclockwise"
+              (click)="deleteLastCoffee(user)" ngbTooltip="Undo last Coffee">
+            </button>
+          </div>
         </div>
       </div>
       <img class="rounded-circle user-avatar border border-2 border-dark" [src]="user.avatar || '/assets/se.svg'"

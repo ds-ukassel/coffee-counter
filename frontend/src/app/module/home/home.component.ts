@@ -1,7 +1,8 @@
 import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {NgbOffcanvas} from '@ng-bootstrap/ng-bootstrap';
 import {switchMap} from 'rxjs';
-import {User} from '../../core/model/user.interface';
+import { PurchaseService } from 'src/app/core/service/purchase.service';
+import {Shortcut, User} from '../../core/model/user.interface';
 import {CoffeeService} from '../../core/service/coffee.service';
 import {UserService} from '../../core/service/user.service';
 
@@ -18,6 +19,7 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private userService: UserService,
+    private purchaseService: PurchaseService,
     private coffeeService: CoffeeService,
     private offcanvasService: NgbOffcanvas,
   ) {
@@ -54,5 +56,15 @@ export class HomeComponent implements OnInit {
 
   openPurchaseList() {
     this.offcanvasService.open(this.purchaseList, {position: 'end'});
+  }
+
+  applyShortcut(user:User, shortcut: Shortcut) {
+    this.purchaseService.create({
+      userId: user._id,
+      total: shortcut.total,
+      description: shortcut.description,
+    }).subscribe(purchase => {
+      user.balance = (+user.balance + purchase.total).toFixed(2);
+    });
   }
 }

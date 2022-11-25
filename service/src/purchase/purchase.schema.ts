@@ -25,7 +25,6 @@ export class Purchase {
 	@Prop()
 	@ApiProperty({minimum: 0.01, multipleOf: 0.01})
 	@IsNumber({maxDecimalPlaces: 2})
-	@IsPositive()
 	total!: number;
 }
 
