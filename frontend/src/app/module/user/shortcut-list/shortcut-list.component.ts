@@ -151,4 +151,8 @@ export class ShortcutListComponent implements OnInit {
       total: 0,
     });
   }
+
+  remove(shortcut: Shortcut) {
+    this.shortcuts.splice(this.shortcuts.indexOf(shortcut), 1);
+  }
 }
