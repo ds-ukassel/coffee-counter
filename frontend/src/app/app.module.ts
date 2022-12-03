@@ -3,6 +3,7 @@ import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {BrowserModule} from '@angular/platform-browser';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {ToastModule} from 'ng-bootstrap-ext';
 import {ApiKeyInterceptor} from './core/service/api-key.interceptor';
 
 import {AppRoutingModule} from './app-routing.module';
@@ -30,6 +31,7 @@ import {NgChartsModule} from 'ng2-charts';
     FormsModule,
     SharedModule,
     NgChartsModule,
+    ToastModule,
   ],
   providers: [
     {

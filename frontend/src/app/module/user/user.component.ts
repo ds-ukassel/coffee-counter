@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ChartData} from 'chart.js';
+import {ToastService} from 'ng-bootstrap-ext';
 import {BaseChartDirective} from 'ng2-charts';
 import {map, switchMap} from 'rxjs';
 import {AchievementInfo} from '../../core/model/achievement.interface';
@@ -45,6 +46,7 @@ export class UserComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private purchaseService: PurchaseService,
     private achievementService: AchievementService,
+    private toastService: ToastService,
   ) {
   }
 
@@ -84,6 +86,9 @@ export class UserComponent implements OnInit {
       const hour = new Date(coffee.createdAt).getHours();
       this.coffeeData.datasets[0].data[hour]++;
       this.coffeeChart?.update();
+      this.toastService.success('Add Coffee', 'Successfully added coffee');
+    }, error => {
+      this.toastService.error('Add Coffee', 'Failed to add cofee', error);
     });
   }
 
@@ -93,8 +98,14 @@ export class UserComponent implements OnInit {
       avatar: this.editAvatar || this.user.avatar,
     }).subscribe(res => {
       this.user = res;
+      this.toastService.success('Update Profile', `Successfully updated${[
+        this.editName && 'name',
+        this.editAvatar && 'avatar',
+      ].filter(x => x).join(' and ')}`);
       delete this.editName;
       delete this.editAvatar;
+    }, error => {
+      this.toastService.error('Update Profile', 'Failed to update profile', error);
     });
   }
 
@@ -103,6 +114,9 @@ export class UserComponent implements OnInit {
       shortcuts: this.user.shortcuts,
     }).subscribe(res => {
       this.user = res;
+      this.toastService.success('Save Shortcuts', 'Successfully saved shortcuts');
+    }, error => {
+      this.toastService.error('Save Shortcuts', 'Failed to save shortcuts', error);
     });
   }
 }
