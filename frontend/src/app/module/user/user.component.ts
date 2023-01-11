@@ -100,10 +100,7 @@ export class UserComponent implements OnInit {
       avatar: this.editAvatar || this.user.avatar,
     }).subscribe(res => {
       this.user = res;
-      this.toastService.success('Update Profile', `Successfully updated${[
-        this.editName && 'name',
-        this.editAvatar && 'avatar',
-      ].filter(x => x).join(' and ')}`);
+      this.toastService.success('Update Profile', 'Successfully updated profile');
       delete this.editName;
       delete this.editAvatar;
     }, error => {
