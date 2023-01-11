@@ -84,7 +84,9 @@ export class UserComponent implements OnInit {
       this.user.coffees++;
       this.user.balance = (+this.user.balance - coffee.price).toFixed(2);
       const hour = new Date(coffee.createdAt).getHours();
-      this.coffeeData.datasets[0].data[hour]++;
+      const data = this.coffeeData.datasets[0].data;
+      const datum = data[hour];
+      data[hour] = (datum && typeof datum === 'number' ? datum : 0) + 1;
       this.coffeeChart?.update();
       this.toastService.success('Add Coffee', 'Successfully added coffee');
     }, error => {
