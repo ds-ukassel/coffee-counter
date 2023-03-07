@@ -14,21 +14,21 @@ jobs:
         working-directory: frontend
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
       - name: Install pnpm
         id: pnpm-install
-        uses: pnpm/action-setup@v2.0.1
+        uses: pnpm/action-setup@v2
         with:
           version: 7
           run_install: false
       - name: Get pnpm store directory
         id: pnpm-cache
         run: |
-          echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
+          echo "pnpm_cache_dir=$(pnpm store path)" >> $GITHUB_OUTPUT
       - name: Setup pnpm cache
         uses: actions/cache@v3
         with:
@@ -50,7 +50,7 @@ jobs:
           image_tag: latest
           context: frontend/
       - name: Deploy to Rancher
-        uses: sekassel-research/actions-rancher-update@2.0.2
+        uses: sekassel-research/actions-rancher-update@v3.0.0
         with:
           rancher_url: ${{ secrets.RANCHER_URL }}
           rancher_token: ${{ secrets.RANCHER_TOKEN }}
