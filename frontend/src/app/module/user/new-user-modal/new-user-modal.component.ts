@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {ModalComponent} from 'ng-bootstrap-ext';
+import {ModalComponent} from '@mean-stream/ngbx';
 import {CreateUserDto} from '../../../core/model/user.interface';
 import {UserService} from '../../../core/service/user.service';
 

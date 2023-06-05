@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ChartData} from 'chart.js';
-import {ToastService} from 'ng-bootstrap-ext';
+import {ToastService} from '@mean-stream/ngbx';
 import {BaseChartDirective} from 'ng2-charts';
 import {map, switchMap} from 'rxjs';
 import {AchievementInfo} from '../../core/model/achievement.interface';
