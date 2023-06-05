@@ -1,6 +1,6 @@
 <div class="text-center">
   <h3>{{infoText}}</h3>
-  <h4>{{user.name}}</h4>
+  <h4>{{user?.name || 'Please set a user in settings'}}</h4>
   <button
     class="btn btn-warning bi-arrow-counterclockwise" *ngIf="user"
     (click)="deleteLastCoffee()"> Undo last coffee
