@@ -4,6 +4,12 @@
     <label class="form-label" for="apiKeyInput">API Key</label>
     <input type="password" class="form-control" id="apiKeyInput" [(ngModel)]="apiKey">
   </div>
+  <div class="mb-3">
+    <label class="form-label" for="apiKeyInput">Username</label>
+    <select class="form-control" id="userInput" [(ngModel)]="userName">
+      <option *ngFor="let user of users" [value]="user.name">{{ user.name }}</option>
+    </select>
+  </div>
   <button class="btn btn-primary" (click)="save()">
     Save
   </button>

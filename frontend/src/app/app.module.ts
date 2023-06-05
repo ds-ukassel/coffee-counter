@@ -14,6 +14,7 @@ import {SettingsComponent} from './module/settings/settings.component';
 import {SharedModule} from './shared/shared.module';
 import {PulseDirective} from './module/home/pulse.directive';
 import {NgChartsModule} from 'ng2-charts';
+import {CookieService} from "ngx-cookie-service";
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import {NgChartsModule} from 'ng2-charts';
       multi: true,
       useClass: ApiKeyInterceptor,
     },
+    CookieService,
   ],
   bootstrap: [AppComponent],
 })
