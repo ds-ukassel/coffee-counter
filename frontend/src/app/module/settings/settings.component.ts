@@ -22,10 +22,10 @@ export class SettingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.apiKey = this.apiKeyService.apiKey || '';
-    this.selectedUserId = this.cookieService.get('selectedUserId') || '';
     this.userService.findAll().subscribe(users => {
       this.users = users;
     });
+    this.selectedUserId = this.cookieService.get('selectedUserId') || '';
   }
 
   save(): void {

@@ -1,1 +1,8 @@
-<p>autolog works!</p>
+<div class="text-center">
+  <h3>{{infoText}}</h3>
+  <h4>{{infoText2}}</h4>
+  <button
+    class="btn btn-warning bi-arrow-counterclockwise" *ngIf="user"
+    (click)="deleteLastCoffee()" ngbTooltip="Undo last Coffee">
+  </button>
+</div>
