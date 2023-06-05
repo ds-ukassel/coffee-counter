@@ -63,7 +63,7 @@ export class User {
 		transform: (value: Types.Decimal128) => value.toString(),
 	})
 	@ApiProperty({type: 'string', format: 'decimal', example: '1234.56'})
-	@IsNumberString({maxDecimalPlaces: 2})
+	@IsNumberString()
 	balance!: string;
 
 	@Prop()
