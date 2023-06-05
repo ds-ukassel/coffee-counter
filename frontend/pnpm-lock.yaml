@@ -35,6 +35,9 @@ dependencies:
   '@angular/router':
     specifier: ^16.0.4
     version: 16.0.4(@angular/common@16.0.4)(@angular/core@16.0.4)(@angular/platform-browser@16.0.4)(rxjs@7.8.1)
+  '@mean-stream/ngbx':
+    specifier: ^0.11.0
+    version: 0.11.0(@angular/common@16.0.4)(@angular/core@16.0.4)(@angular/forms@16.0.4)(@angular/router@16.0.4)(@ng-bootstrap/ng-bootstrap@15.0.0)(bootstrap-darkmode@5.0.1)(bootstrap@5.3.0)(class-validator@0.14.0)(rxjs@7.8.1)
   '@ng-bootstrap/ng-bootstrap':
     specifier: ^15.0.0
     version: 15.0.0(@angular/common@16.0.4)(@angular/core@16.0.4)(@angular/forms@16.0.4)(@angular/localize@16.0.4)(@popperjs/core@2.11.8)(rxjs@7.8.1)
@@ -53,9 +56,9 @@ dependencies:
   chart.js:
     specifier: ^4.3.0
     version: 4.3.0
-  ng-bootstrap-ext:
-    specifier: ^0.6.1
-    version: 0.6.1(@angular/common@16.0.4)(@angular/core@16.0.4)(@ng-bootstrap/ng-bootstrap@15.0.0)
+  class-validator:
+    specifier: ^0.14.0
+    version: 0.14.0
   ng2-charts:
     specifier: ^4.1.1
     version: 4.1.1(@angular/cdk@16.0.3)(@angular/common@16.0.4)(@angular/core@16.0.4)(chart.js@4.3.0)(rxjs@7.8.1)
@@ -2214,6 +2217,39 @@ packages:
     resolution: {integrity: sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A==}
     dev: true
 
+  /@mean-stream/ngbx@0.11.0(@angular/common@16.0.4)(@angular/core@16.0.4)(@angular/forms@16.0.4)(@angular/router@16.0.4)(@ng-bootstrap/ng-bootstrap@15.0.0)(bootstrap-darkmode@5.0.1)(bootstrap@5.3.0)(class-validator@0.14.0)(rxjs@7.8.1):
+    resolution: {integrity: sha512-KYtpF3VlaoLb2QCQg4EPl/mD54207tYwzj1PKqYWa9m3AvIUBzt0HLYvJtNJL9LholwhGV1kxEdp9YJ0r3JgKQ==}
+    peerDependencies:
+      '@angular/common': ^15.2.0
+      '@angular/core': ^15.2.0
+      '@angular/forms': 15.2.8
+      '@angular/router': ^15.2.0
+      '@ng-bootstrap/ng-bootstrap': ^14.0.0
+      bootstrap: ^5.2.3
+      bootstrap-darkmode: ^0.9.1
+      class-validator: ^0.14.0
+      reflect-metadata: ^0.1.13
+      rxjs: 7.8.1
+    peerDependenciesMeta:
+      bootstrap-darkmode:
+        optional: true
+      class-validator:
+        optional: true
+      reflect-metadata:
+        optional: true
+    dependencies:
+      '@angular/common': 16.0.4(@angular/core@16.0.4)(rxjs@7.8.1)
+      '@angular/core': 16.0.4(rxjs@7.8.1)(zone.js@0.13.0)
+      '@angular/forms': 16.0.4(@angular/common@16.0.4)(@angular/core@16.0.4)(@angular/platform-browser@16.0.4)(rxjs@7.8.1)
+      '@angular/router': 16.0.4(@angular/common@16.0.4)(@angular/core@16.0.4)(@angular/platform-browser@16.0.4)(rxjs@7.8.1)
+      '@ng-bootstrap/ng-bootstrap': 15.0.0(@angular/common@16.0.4)(@angular/core@16.0.4)(@angular/forms@16.0.4)(@angular/localize@16.0.4)(@popperjs/core@2.11.8)(rxjs@7.8.1)
+      bootstrap: 5.3.0(@popperjs/core@2.11.8)
+      bootstrap-darkmode: 5.0.1(bootstrap@5.3.0)
+      class-validator: 0.14.0
+      rxjs: 7.8.1
+      tslib: 2.5.3
+    dev: false
+
   /@ng-bootstrap/ng-bootstrap@15.0.0(@angular/common@16.0.4)(@angular/core@16.0.4)(@angular/forms@16.0.4)(@angular/localize@16.0.4)(@popperjs/core@2.11.8)(rxjs@7.8.1):
     resolution: {integrity: sha512-BA/SI7sURpKwIex6bj2ujL+xUh8oYMrc5POdGC8sVe+yX3NRS0xNbozI6oke6pL2PpYq+/zaJTmuEJsEMCplZA==}
     peerDependencies:
@@ -2669,6 +2705,10 @@ packages:
     dependencies:
       '@types/node': 20.2.5
     dev: true
+
+  /@types/validator@13.7.17:
+    resolution: {integrity: sha512-aqayTNmeWrZcvnG2MG9eGYI6b7S5fl+yKgPs6bAjOTwPS316R5SxBGKvtSExfyoJU7pIeHJfsHI0Ji41RVMkvQ==}
+    dev: false
 
   /@types/ws@8.5.4:
     resolution: {integrity: sha512-zdQDHKUgcX/zBc4GrwsE/7dVdAD8JR4EuiAXiiUhhfyIJXXb2+PrGshFyeXWQPMmmZ2XxgaqclgpIC7eTXc1mg==}
@@ -3661,6 +3701,14 @@ packages:
     resolution: {integrity: sha512-p3KULyQg4S7NIHixdwbGX+nFHkoBiA4YQmyWtjb8XngSKV124nJmRysgAeujbUVb15vh+RvFUfCPqU7rXk+hZg==}
     engines: {node: '>=6.0'}
     dev: true
+
+  /class-validator@0.14.0:
+    resolution: {integrity: sha512-ct3ltplN8I9fOwUd8GrP8UQixwff129BkEtuWDKL5W45cQuLd19xqmTLu5ge78YDm/fdje6FMt0hGOhl0lii3A==}
+    dependencies:
+      '@types/validator': 13.7.17
+      libphonenumber-js: 1.10.34
+      validator: 13.9.0
+    dev: false
 
   /clean-stack@2.2.0:
     resolution: {integrity: sha512-4diC9HaTE+KRAMWhDhrGOECgWZxoevMc5TlkObMqNSsVU62PYzXZ/SMTjzyGAFF1YusgxGcSWTEXBhp0CPwQ1A==}
@@ -5810,6 +5858,10 @@ packages:
       type-check: 0.4.0
     dev: true
 
+  /libphonenumber-js@1.10.34:
+    resolution: {integrity: sha512-p6g4NaQH4gK1gre32+kV14Mk6GPo2EDcPDvjbi+D2ycsPFsN4gVWNbs0itdHLZqByg6YEK8mE7OeP200I/ScTQ==}
+    dev: false
+
   /license-webpack-plugin@4.0.2(webpack@5.80.0):
     resolution: {integrity: sha512-771TFWFD70G1wLTC4oU2Cw4qvtmNrIw+wRvBtn+okgHl7slJVi7zfNcdmqDL72BojM30VNJ2UHylr1o77U37Jw==}
     peerDependencies:
@@ -6264,20 +6316,6 @@ packages:
   /neo-async@2.6.2:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
     dev: true
-
-  /ng-bootstrap-ext@0.6.1(@angular/common@16.0.4)(@angular/core@16.0.4)(@ng-bootstrap/ng-bootstrap@15.0.0):
-    resolution: {integrity: sha512-MjG1aMv58WQIjtl25XWE85OqBZ1O1yIwpafESkAfXJMi+iLx7ZM8TP70RmcQigHeX2XwpetQsZdFUkb8kuxkXw==}
-    deprecated: Use @mean-stream/ngbx instead
-    peerDependencies:
-      '@angular/common': ^15.0.0
-      '@angular/core': ^15.0.0
-      '@ng-bootstrap/ng-bootstrap': ^14.0.0
-    dependencies:
-      '@angular/common': 16.0.4(@angular/core@16.0.4)(rxjs@7.8.1)
-      '@angular/core': 16.0.4(rxjs@7.8.1)(zone.js@0.13.0)
-      '@ng-bootstrap/ng-bootstrap': 15.0.0(@angular/common@16.0.4)(@angular/core@16.0.4)(@angular/forms@16.0.4)(@angular/localize@16.0.4)(@popperjs/core@2.11.8)(rxjs@7.8.1)
-      tslib: 2.5.3
-    dev: false
 
   /ng2-charts@4.1.1(@angular/cdk@16.0.3)(@angular/common@16.0.4)(@angular/core@16.0.4)(chart.js@4.3.0)(rxjs@7.8.1):
     resolution: {integrity: sha512-iHwXDbmX86lfeH8VRcsaW2tJATsuAZo4kvvC/Yk2l35zOHjevja1qBvO6BAibiDazi9r9aS6ZRJOqWPsz1pP2w==}
@@ -8114,6 +8152,11 @@ packages:
     dependencies:
       builtins: 5.0.1
     dev: true
+
+  /validator@13.9.0:
+    resolution: {integrity: sha512-B+dGG8U3fdtM0/aNK4/X8CXq/EcxU2WPrPEkJGslb47qyHsxmbggTWK0yEA4qnYVNF+nxNlN88o14hIcPmSIEA==}
+    engines: {node: '>= 0.10'}
+    dev: false
 
   /vary@1.1.2:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}
