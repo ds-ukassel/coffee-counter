@@ -12,7 +12,7 @@ import {User} from "../../core/model/user.interface";
 export class SettingsComponent implements OnInit {
   apiKey!: string;
   selectedUserId!: string;
-  users!: User[];
+  users: User[] = [];
 
   constructor(
     private apiKeyService: ApiKeyService,
@@ -31,8 +31,6 @@ export class SettingsComponent implements OnInit {
   save(): void {
     this.apiKeyService.apiKey = this.apiKey;
     const selectedUser = this.users.find(user => user._id === this.selectedUserId);
-    if (selectedUser) {
-      this.cookieService.set('selectedUserId', selectedUser._id);
-    }
+    this.cookieService.set('selectedUserId', selectedUser?._id || '');
   }
 }
