@@ -15,6 +15,7 @@ import {SharedModule} from './shared/shared.module';
 import {PulseDirective} from './module/home/pulse.directive';
 import {NgChartsModule} from 'ng2-charts';
 import {CookieService} from "ngx-cookie-service";
+import {AutologComponent} from './module/autolog/autolog.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import {CookieService} from "ngx-cookie-service";
     HomeComponent,
     SettingsComponent,
     PulseDirective,
+    AutologComponent,
   ],
   imports: [
     BrowserModule,
