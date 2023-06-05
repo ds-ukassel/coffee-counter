@@ -30,9 +30,8 @@ export class AutologComponent implements OnInit {
         tap(user => {
           this.user = user;
           this.createCoffee(user);
-          this.infoText = 'Logged coffee for user';
         })
-      ).subscribe();
+      ).subscribe(() => this.infoText = 'Logged coffee for user');
     } else {
       this.infoText = 'No user set';
     }
