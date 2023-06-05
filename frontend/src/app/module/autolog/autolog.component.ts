@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {User} from "../../core/model/user.interface";
-import {CoffeeService} from "../../core/service/coffee.service";
-import {CookieService} from "ngx-cookie-service";
-import {UserService} from "../../core/service/user.service";
-import {switchMap, tap} from "rxjs";
-import {ToastService} from "ng-bootstrap-ext";
+import {User} from '../../core/model/user.interface';
+import {CoffeeService} from '../../core/service/coffee.service';
+import {CookieService} from 'ngx-cookie-service';
+import {UserService} from '../../core/service/user.service';
+import {switchMap, tap} from 'rxjs';
+import {ToastService} from '@mean-stream/ngbx';
 
 @Component({
   selector: 'app-autolog',
@@ -27,10 +27,8 @@ export class AutologComponent implements OnInit {
     const userId = this.cookieService.get('selectedUserId') || '';
     if (userId) {
       this.userService.findOne(userId).pipe(
-        tap(user => {
-          this.user = user;
-          this.createCoffee(user);
-        })
+        tap(user => this.user = user),
+        switchMap(user => this.createCoffee(user))
       ).subscribe(() => this.infoText = 'Logged coffee for user');
     } else {
       this.infoText = 'No user set';
@@ -38,15 +36,19 @@ export class AutologComponent implements OnInit {
   }
 
   createCoffee(user: User) {
-    this.coffeeService.create({
+    return this.coffeeService.create({
       userId: user._id,
       price: this.coffeeService.price,
-    }).subscribe();
+    });
   }
 
   deleteLastCoffee() {
+    console.log("Test");
     this.coffeeService.findAll({userId: this.user?._id}).pipe(
       switchMap(coffees => this.coffeeService.remove(coffees[coffees.length - 1]._id)),
-    ).subscribe(() => this.toastService.success('Delete coffee', 'Successfully deleted last coffee'));
+    ).subscribe(() => {
+      console.log("2. Test");
+      this.toastService.success('Delete coffee', 'Successfully deleted last coffee');
+    });
   }
 }
