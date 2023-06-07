@@ -6,6 +6,13 @@
   "display": "standalone",
   "scope": "./",
   "start_url": "./",
+  "shortcuts": [
+    {
+      "name": "Add Coffee",
+      "description": "Add a coffee to your counter",
+      "url": "./autolog"
+    }
+  ],
   "icons": [
     {
       "src": "assets/icons/icon-72x72.png",
