@@ -1,5 +1,5 @@
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
-import {NgModule} from '@angular/core';
+import {isDevMode, NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {BrowserModule} from '@angular/platform-browser';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -16,6 +16,7 @@ import {PulseDirective} from './module/home/pulse.directive';
 import {NgChartsModule} from 'ng2-charts';
 import {CookieService} from "ngx-cookie-service";
 import {AutologComponent} from './module/autolog/autolog.component';
+import {ServiceWorkerModule} from '@angular/service-worker';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,12 @@ import {AutologComponent} from './module/autolog/autolog.component';
     SharedModule,
     NgChartsModule,
     ToastModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    }),
   ],
   providers: [
     {
