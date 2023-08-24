@@ -3,6 +3,7 @@ import {ApiKeyService} from '../../core/service/api-key.service';
 import {UserService} from '../../core/service/user.service';
 import {CookieService} from 'ngx-cookie-service';
 import {User} from "../../core/model/user.interface";
+import {ToastService} from "@mean-stream/ngbx";
 
 @Component({
   selector: 'app-settings',
@@ -18,6 +19,7 @@ export class SettingsComponent implements OnInit {
     private apiKeyService: ApiKeyService,
     private userService: UserService,
     private cookieService: CookieService,
+    private toastService: ToastService,
   ) {}
 
   ngOnInit(): void {
@@ -32,5 +34,6 @@ export class SettingsComponent implements OnInit {
     this.apiKeyService.apiKey = this.apiKey;
     const selectedUser = this.users.find(user => user._id === this.selectedUserId);
     this.cookieService.set('selectedUserId', selectedUser?._id || '');
+    this.toastService.success('Save Settings', 'Successfully saved settings');
   }
 }
