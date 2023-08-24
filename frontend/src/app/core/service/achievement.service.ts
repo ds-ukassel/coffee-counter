@@ -12,7 +12,7 @@ export const achievements: AchievementInfo[] = [
     name: 'Night Owl',
     description: 'Late at night, when everybody is sleeping, it\'s only you, your PC and your coffee.',
     tier: TrophyTier.bronze,
-    hint: 'Register a Coffee between 8PM and 5AM',
+    hint: 'Register a coffee between 8PM and 5AM',
   },
   {
     id: 'early-bird',
@@ -20,15 +20,15 @@ export const achievements: AchievementInfo[] = [
     name: 'Early Bird',
     description: 'The early bird catches the worm, or as a software engineer would say: "Was eine unheilige Zeit. Erstmal nen Kaffe!"',
     tier: TrophyTier.bronze,
-    hint: 'Register a Coffee between 5AM and 8AM',
+    hint: 'Register a coffee between 5AM and 8AM',
   },
   {
     id: 'most-addicted',
     image: '/assets/trophies/mostAddictedOfThemAll.svg',
     name: 'Most Addicted',
-    description: 'One coffee to rule them all, one coffee to find them, One coffee to bring them all, and in the darkness bind them.',
+    description: 'One coffee to rule them all, one coffee to find them, one coffee to bring them all, and in the darkness bind them.',
     tier: TrophyTier.platinum,
-    hint: 'Have more coffees registered as any other user',
+    hint: 'Have more coffees than any other user',
   },
   {
     id: 'buyer-of-milk',
