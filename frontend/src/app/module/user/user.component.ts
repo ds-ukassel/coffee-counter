@@ -79,7 +79,6 @@ export class UserComponent implements OnInit {
   createCoffee() {
     this.coffeeService.create({
       userId: this.user._id,
-      price: this.coffeeService.price,
     }).subscribe(coffee => {
       this.user.coffees++;
       this.user.balance = (+this.user.balance - coffee.price).toFixed(2);

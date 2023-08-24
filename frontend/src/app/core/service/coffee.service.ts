@@ -8,11 +8,6 @@ import {Coffee, CoffeeDiagramData, CreateCoffeeDto, FilterCoffeeDto} from '../mo
   providedIn: 'root',
 })
 export class CoffeeService {
-  // TODO this needs to be configured somewhere.
-  // TODO Maybe we should even offer different types of coffees with different prices.
-  //      Perhaps in a dropdown in the coffee button.
-  price = 0.4;
-
   constructor(
     private http: HttpClient,
   ) {

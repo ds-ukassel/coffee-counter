@@ -37,7 +37,6 @@ export class HomeComponent implements OnInit {
   createCoffee(user: User) {
     this.coffeeService.create({
       userId: user._id,
-      price: this.coffeeService.price,
     }).subscribe(coffee => {
       user.coffees++;
       user.balance = (+user.balance - coffee.price).toFixed(2);

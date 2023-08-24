@@ -5,7 +5,7 @@ export interface Coffee {
   price: number;
 }
 
-export type CreateCoffeeDto = Omit<Coffee, '_id' | 'createdAt'>;
+export type CreateCoffeeDto = Omit<Coffee, '_id' | 'createdAt' | 'price'>;
 export type FilterCoffeeDto = Partial<Coffee>;
 
 export interface CoffeeDiagramData {

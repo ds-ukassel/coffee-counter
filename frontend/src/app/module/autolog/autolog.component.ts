@@ -38,7 +38,6 @@ export class AutologComponent implements OnInit {
   createCoffee(user: User) {
     return this.coffeeService.create({
       userId: user._id,
-      price: this.coffeeService.price,
     });
   }
 
