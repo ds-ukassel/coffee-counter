@@ -1,4 +1,4 @@
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {isDevMode, NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {BrowserModule} from '@angular/platform-browser';
@@ -14,7 +14,7 @@ import {SettingsComponent} from './module/settings/settings.component';
 import {SharedModule} from './shared/shared.module';
 import {PulseDirective} from './module/home/pulse.directive';
 import {NgChartsModule} from 'ng2-charts';
-import {CookieService} from "ngx-cookie-service";
+import {CookieService} from 'ngx-cookie-service';
 import {AutologComponent} from './module/autolog/autolog.component';
 import {ServiceWorkerModule} from '@angular/service-worker';
 
@@ -27,11 +27,11 @@ import {ServiceWorkerModule} from '@angular/service-worker';
     PulseDirective,
     AutologComponent,
   ],
+  bootstrap: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NgbModule,
-    HttpClientModule,
     FormsModule,
     SharedModule,
     NgChartsModule,
@@ -40,7 +40,7 @@ import {ServiceWorkerModule} from '@angular/service-worker';
       enabled: !isDevMode(),
       // Register the ServiceWorker as soon as the application is stable
       // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000'
+      registrationStrategy: 'registerWhenStable:30000',
     }),
   ],
   providers: [
@@ -50,8 +50,8 @@ import {ServiceWorkerModule} from '@angular/service-worker';
       useClass: ApiKeyInterceptor,
     },
     CookieService,
+    provideHttpClient(withInterceptorsFromDi()),
   ],
-  bootstrap: [AppComponent],
 })
 export class AppModule {
 }
