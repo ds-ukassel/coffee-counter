@@ -13,10 +13,11 @@ import {HomeComponent} from './module/home/home.component';
 import {SettingsComponent} from './module/settings/settings.component';
 import {SharedModule} from './shared/shared.module';
 import {PulseDirective} from './module/home/pulse.directive';
-import {NgChartsModule} from 'ng2-charts';
 import {CookieService} from 'ngx-cookie-service';
 import {AutologComponent} from './module/autolog/autolog.component';
 import {ServiceWorkerModule} from '@angular/service-worker';
+import {BaseChartDirective, provideCharts, withDefaultRegisterables} from 'ng2-charts';
+import {BarController, Colors, Legend} from 'chart.js';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,6 @@ import {ServiceWorkerModule} from '@angular/service-worker';
     NgbModule,
     FormsModule,
     SharedModule,
-    NgChartsModule,
     ToastModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),
@@ -51,6 +51,7 @@ import {ServiceWorkerModule} from '@angular/service-worker';
     },
     CookieService,
     provideHttpClient(withInterceptorsFromDi()),
+    provideCharts(withDefaultRegisterables(BarController, Legend, Colors)),
   ],
 })
 export class AppModule {

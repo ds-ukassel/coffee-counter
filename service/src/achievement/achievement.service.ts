@@ -18,7 +18,7 @@ export class AchievementService {
 		const res = await this.model.findOneAndUpdate({userId, id}, {...achievement, userId, id}, {
 			upsert: true,
 			new: true,
-			rawResult: true,
+			includeResultMetadata: true,
 		});
 		const value = res.value!;
 		const updated = res.lastErrorObject?.updatedExisting;

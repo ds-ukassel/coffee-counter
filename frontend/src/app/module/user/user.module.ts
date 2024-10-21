@@ -3,7 +3,6 @@ import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {ModalModule} from '@mean-stream/ngbx';
-import {NgChartsModule} from 'ng2-charts';
 
 import {SharedModule} from '../../shared/shared.module';
 import {NewUserModalComponent} from './new-user-modal/new-user-modal.component';
@@ -13,6 +12,7 @@ import {UserRoutingModule} from './user-routing.module';
 import {UserComponent} from './user.component';
 import {AchievementModalComponent} from './achievement-modal/achievement-modal.component';
 import { ShortcutListComponent } from './shortcut-list/shortcut-list.component';
+import {BaseChartDirective} from 'ng2-charts';
 
 
 @NgModule({
@@ -31,7 +31,7 @@ import { ShortcutListComponent } from './shortcut-list/shortcut-list.component';
     NgbModule,
     SharedModule,
     ModalModule,
-    NgChartsModule,
+    BaseChartDirective,
   ],
 })
 export class UserModule {
