@@ -1,3 +1,3 @@
 FROM nginx
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
-COPY ./dist/frontend/ /usr/share/nginx/html/
+COPY ./dist/frontend/browser/ /usr/share/nginx/html/
