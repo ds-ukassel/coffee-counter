@@ -4,14 +4,10 @@ import {InjectModel} from '@nestjs/mongoose';
 import {FilterQuery, Model, UpdateQuery} from 'mongoose';
 import {CoffeeDiagramData, CreateCoffeeDto} from './coffee.dto';
 import {Coffee, CoffeeDocument} from './coffee.schema';
+import {environment} from '../environment';
 
 @Injectable()
 export class CoffeeService {
-	// TODO this needs to be configured somewhere.
-	// TODO Maybe we should even offer different types of coffees with different prices.
-	//      Perhaps in a dropdown in the coffee button.
-	price = 0.4;
-
 	constructor(
 		private eventEmitter: EventEmitter2,
 		@InjectModel('coffees') private model: Model<Coffee>,
@@ -19,7 +15,7 @@ export class CoffeeService {
 	}
 
 	async create(dto: CreateCoffeeDto): Promise<CoffeeDocument> {
-		const coffee = await this.model.create({...dto, price: this.price});
+		const coffee = await this.model.create({...dto, price: environment.coffeePrice});
 		this.emit('created', coffee);
 		return coffee;
 	}
