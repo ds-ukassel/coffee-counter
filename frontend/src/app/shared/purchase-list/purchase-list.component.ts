@@ -21,6 +21,7 @@ interface Item {
   selector: 'app-purchase-list',
   templateUrl: './purchase-list.component.html',
   styleUrls: ['./purchase-list.component.scss'],
+  standalone: false,
 })
 export class PurchaseListComponent implements OnInit {
   @Input() users?: Record<string, User>;

@@ -10,6 +10,7 @@ import {PurchaseService} from '../../../core/service/purchase.service';
   selector: 'app-purchase-modal',
   templateUrl: './purchase-modal.component.html',
   styleUrls: ['./purchase-modal.component.scss'],
+  standalone: false,
 })
 export class PurchaseModalComponent implements OnInit {
   user?: User;

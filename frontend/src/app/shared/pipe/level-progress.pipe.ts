@@ -19,6 +19,7 @@ export function levelProgress(coffees: number): number {
 
 @Pipe({
   name: 'levelProgress',
+  standalone: false,
 })
 export class LevelProgressPipe implements PipeTransform {
 
@@ -29,7 +30,8 @@ export class LevelProgressPipe implements PipeTransform {
 }
 
 @Pipe({
-  name: 'nextLevel'
+  name: 'nextLevel',
+  standalone: false,
 })
 export class NextLevelPipe implements PipeTransform {
   transform(value: number): number {

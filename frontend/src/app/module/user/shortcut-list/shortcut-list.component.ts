@@ -5,6 +5,7 @@ import {Shortcut} from '../../../core/model/user.interface';
   selector: 'app-shortcut-list',
   templateUrl: './shortcut-list.component.html',
   styleUrls: ['./shortcut-list.component.scss'],
+  standalone: false,
 })
 export class ShortcutListComponent implements OnInit {
   @Input() shortcuts!: Shortcut[];

@@ -22,6 +22,7 @@ export function levelName(level: number): string {
 
 @Pipe({
   name: 'levelName',
+  standalone: false,
 })
 export class LevelNamePipe implements PipeTransform {
   transform(value: number): string {

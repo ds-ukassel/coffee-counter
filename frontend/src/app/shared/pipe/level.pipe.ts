@@ -6,6 +6,7 @@ export function level(coffees: number): number {
 
 @Pipe({
   name: 'level',
+  standalone: false,
 })
 export class LevelPipe implements PipeTransform {
   transform(value: number, balance?: number): number {

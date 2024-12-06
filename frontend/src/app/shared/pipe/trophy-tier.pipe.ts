@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import {Pipe, PipeTransform} from '@angular/core';
 
 export enum TrophyTier {
   bronze = 'bronze',
@@ -15,7 +15,8 @@ const TrophyTierMap = {
 }
 
 @Pipe({
-  name: 'trophyTier'
+  name: 'trophyTier',
+  standalone: false,
 })
 export class TrophyTierPipe implements PipeTransform {
   transform(value: TrophyTier): string {

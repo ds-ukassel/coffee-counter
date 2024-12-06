@@ -7,6 +7,7 @@ import {UserService} from '../../../core/service/user.service';
   selector: 'app-new-user-modal',
   templateUrl: './new-user-modal.component.html',
   styleUrls: ['./new-user-modal.component.scss'],
+  standalone: false,
 })
 export class NewUserModalComponent {
   user: CreateUserDto = {name: '', balance: '0.00', coffees: 0, achievements: 0};

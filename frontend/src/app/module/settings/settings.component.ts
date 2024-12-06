@@ -2,13 +2,14 @@ import {Component, OnInit} from '@angular/core';
 import {ApiKeyService} from '../../core/service/api-key.service';
 import {UserService} from '../../core/service/user.service';
 import {CookieService} from 'ngx-cookie-service';
-import {User} from "../../core/model/user.interface";
-import {ToastService} from "@mean-stream/ngbx";
+import {User} from '../../core/model/user.interface';
+import {ToastService} from '@mean-stream/ngbx';
 
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
-  styleUrls: ['./settings.component.scss']
+  styleUrls: ['./settings.component.scss'],
+  standalone: false,
 })
 export class SettingsComponent implements OnInit {
   apiKey!: string;

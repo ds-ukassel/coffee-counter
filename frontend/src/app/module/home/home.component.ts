@@ -1,7 +1,7 @@
 import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {NgbOffcanvas} from '@ng-bootstrap/ng-bootstrap';
 import {switchMap} from 'rxjs';
-import { PurchaseService } from 'src/app/core/service/purchase.service';
+import {PurchaseService} from 'src/app/core/service/purchase.service';
 import {Shortcut, User} from '../../core/model/user.interface';
 import {CoffeeService} from '../../core/service/coffee.service';
 import {UserService} from '../../core/service/user.service';
@@ -10,6 +10,7 @@ import {UserService} from '../../core/service/user.service';
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
+  standalone: false,
 })
 export class HomeComponent implements OnInit {
   @ViewChild('purchaseList') private purchaseList!: TemplateRef<any>;

@@ -16,6 +16,7 @@ import {UserService} from '../../core/service/user.service';
   selector: 'app-user',
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss'],
+  standalone: false,
 })
 export class UserComponent implements OnInit {
   @ViewChild(BaseChartDirective) coffeeChart: BaseChartDirective | undefined;

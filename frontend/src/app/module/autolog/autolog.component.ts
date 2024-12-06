@@ -9,7 +9,8 @@ import {ToastService} from '@mean-stream/ngbx';
 @Component({
   selector: 'app-autolog',
   templateUrl: './autolog.component.html',
-  styleUrls: ['./autolog.component.scss']
+  styleUrls: ['./autolog.component.scss'],
+  standalone: false,
 })
 export class AutologComponent implements OnInit {
   infoText: string | undefined;
