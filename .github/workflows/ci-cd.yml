@@ -59,8 +59,8 @@ jobs:
           namespace: coffee-counter
           deployment: frontend
           docker_image: ${{ secrets.DOCKER_REGISTRY }}/coffee-counter/frontend:latest
-  service:
-    name: Service
+  backend:
+    name: Backend
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -71,7 +71,7 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           registry: ${{ secrets.DOCKER_REGISTRY }}
-          image_name: coffee-counter/service
+          image_name: coffee-counter/backend
           image_tag: latest
           context: service/
       - name: Deploy to Rancher
@@ -82,5 +82,5 @@ jobs:
           cluster_id: ${{ secrets.RANCHER_CLUSTER }}
           project_id: ${{ secrets.RANCHER_PROJECT }}
           namespace: coffee-counter
-          deployment: service
-          docker_image: ${{ secrets.DOCKER_REGISTRY }}/coffee-counter/service:latest
+          deployment: backend
+          docker_image: ${{ secrets.DOCKER_REGISTRY }}/coffee-counter/backend:latest
