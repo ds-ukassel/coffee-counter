@@ -14,6 +14,7 @@ interface Item {
   description: string;
   type: 'purchase' | 'coffee';
   icon: string;
+  photo?: string;
   money: number;
 }
 
@@ -51,6 +52,7 @@ export class PurchaseListComponent implements OnInit {
           type: 'coffee' as const,
           icon: 'bi-cup',
           money: -c.price,
+          photo: c.photo,
         })),
         ...purchases.map(p => ({
           ...p,

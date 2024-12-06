@@ -1,4 +1,4 @@
-import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {NgbOffcanvas} from '@ng-bootstrap/ng-bootstrap';
 import {switchMap} from 'rxjs';
 import {PurchaseService} from 'src/app/core/service/purchase.service';
@@ -14,6 +14,8 @@ import {UserService} from '../../core/service/user.service';
 })
 export class HomeComponent implements OnInit {
   @ViewChild('purchaseList') private purchaseList!: TemplateRef<any>;
+  @ViewChild('video', {static: true}) private video!: ElementRef<HTMLVideoElement>;
+  @ViewChild('canvas', {static: true}) private canvas!: ElementRef<HTMLCanvasElement>;
 
   users: User[] = [];
   userMap: Record<string, User> = {};
@@ -27,6 +29,12 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    navigator.mediaDevices.getUserMedia({
+      video: true,
+    }).then(stream => {
+      this.video.nativeElement.srcObject = stream;
+    });
+
     this.userService.findAll().subscribe(users => {
       this.users = users;
       for (let user of users) {
@@ -36,12 +44,26 @@ export class HomeComponent implements OnInit {
   }
 
   createCoffee(user: User) {
+    const photo = this.captureImage();
+    user.avatar = photo;
+
     this.coffeeService.create({
       userId: user._id,
+      photo,
     }).subscribe(coffee => {
       user.coffees++;
       user.balance = (+user.balance - coffee.price).toFixed(2);
     });
+  }
+
+  private captureImage() {
+    const canvas = this.canvas.nativeElement;
+    const video = this.video.nativeElement;
+    const imageSize = 256;
+    canvas.width = imageSize;
+    canvas.height = imageSize * video.videoHeight / video.videoWidth;
+    canvas.getContext('2d')!.drawImage(video, 0, 0, canvas.width, canvas.height);
+    return canvas.toDataURL('image/jpeg');
   }
 
   deleteLastCoffee(user: User) {

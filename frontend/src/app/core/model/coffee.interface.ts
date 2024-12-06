@@ -3,6 +3,7 @@ export interface Coffee {
   createdAt: string;
   userId: string;
   price: number;
+  photo?: string;
 }
 
 export type CreateCoffeeDto = Omit<Coffee, '_id' | 'createdAt' | 'price'>;
