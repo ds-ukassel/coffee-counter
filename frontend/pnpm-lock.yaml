@@ -63,11 +63,11 @@ importers:
         specifier: ^0.14.1
         version: 0.14.1
       ng2-charts:
-        specifier: ^6.0.1
-        version: 6.0.1(@angular/cdk@19.0.2(@angular/common@19.0.3(@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/common@19.0.3(@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@19.0.3(@angular/animations@19.0.3(@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@19.0.3(@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0)))(chart.js@4.4.7)(rxjs@7.8.1)
+        specifier: ^7.0.0
+        version: 7.0.0(@angular/cdk@19.0.2(@angular/common@19.0.3(@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/common@19.0.3(@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@19.0.3(@angular/animations@19.0.3(@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@19.0.3(@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0)))(chart.js@4.4.7)(rxjs@7.8.1)
       ngx-cookie-service:
-        specifier: ^18.0.0
-        version: 18.0.0(@angular/common@19.0.3(@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0))
+        specifier: ^19.0.0
+        version: 19.0.0(@angular/common@19.0.3(@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0))
       rxjs:
         specifier: ~7.8.1
         version: 7.8.1
@@ -86,13 +86,13 @@ importers:
         version: 19.0.1(chokidar@4.0.1)(eslint@8.57.1)(typescript@5.5.4)
       '@angular-eslint/eslint-plugin':
         specifier: 19.0.1
-        version: 19.0.1(@typescript-eslint/utils@8.10.0(eslint@8.57.1)(typescript@5.5.4))(eslint@8.57.1)(typescript@5.5.4)
+        version: 19.0.1(@typescript-eslint/utils@8.17.0(eslint@8.57.1)(typescript@5.5.4))(eslint@8.57.1)(typescript@5.5.4)
       '@angular-eslint/eslint-plugin-template':
         specifier: 19.0.1
-        version: 19.0.1(@typescript-eslint/types@8.10.0)(@typescript-eslint/utils@8.10.0(eslint@8.57.1)(typescript@5.5.4))(eslint@8.57.1)(typescript@5.5.4)
+        version: 19.0.1(@typescript-eslint/types@8.17.0)(@typescript-eslint/utils@8.17.0(eslint@8.57.1)(typescript@5.5.4))(eslint@8.57.1)(typescript@5.5.4)
       '@angular-eslint/schematics':
         specifier: 19.0.1
-        version: 19.0.1(@typescript-eslint/types@8.10.0)(@typescript-eslint/utils@8.10.0(eslint@8.57.1)(typescript@5.5.4))(chokidar@4.0.1)(eslint@8.57.1)(typescript@5.5.4)
+        version: 19.0.1(@typescript-eslint/types@8.17.0)(@typescript-eslint/utils@8.17.0(eslint@8.57.1)(typescript@5.5.4))(chokidar@4.0.1)(eslint@8.57.1)(typescript@5.5.4)
       '@angular-eslint/template-parser':
         specifier: 19.0.1
         version: 19.0.1(eslint@8.57.1)(typescript@5.5.4)
@@ -2034,8 +2034,8 @@ packages:
     resolution: {integrity: sha512-jjhdIE/FPF2B7Z1uzc6i3oWKbGcHb87Qw7AWj6jmEqNOfDFbJWtjt/XfwCpvNkpGWlcJaog5vTR+VV8+w9JflA==}
     engines: {node: ^18.18.0 || >=20.0.0}
 
-  '@typescript-eslint/scope-manager@8.10.0':
-    resolution: {integrity: sha512-AgCaEjhfql9MDKjMUxWvH7HjLeBqMCBfIaBbzzIcBbQPZE7CPh1m6FF+L75NUMJFMLYhCywJXIDEMa3//1A0dw==}
+  '@typescript-eslint/scope-manager@8.17.0':
+    resolution: {integrity: sha512-/ewp4XjvnxaREtqsZjF4Mfn078RD/9GmiEAtTeLQ7yFdKnqwTOgRMSvFz4et9U5RiJQ15WTGXPLj89zGusvxBg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
   '@typescript-eslint/type-utils@7.18.0':
@@ -2052,8 +2052,8 @@ packages:
     resolution: {integrity: sha512-iZqi+Ds1y4EDYUtlOOC+aUmxnE9xS/yCigkjA7XpTKV6nCBd3Hp/PRGGmdwnfkV2ThMyYldP1wRpm/id99spTQ==}
     engines: {node: ^18.18.0 || >=20.0.0}
 
-  '@typescript-eslint/types@8.10.0':
-    resolution: {integrity: sha512-k/E48uzsfJCRRbGLapdZgrX52csmWJ2rcowwPvOZ8lwPUv3xW6CcFeJAXgx4uJm+Ge4+a4tFOkdYvSpxhRhg1w==}
+  '@typescript-eslint/types@8.17.0':
+    resolution: {integrity: sha512-gY2TVzeve3z6crqh2Ic7Cr+CAv6pfb0Egee7J5UAVWCpVvDI/F71wNfolIim4FE6hT15EbpZFVUj9j5i38jYXA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
   '@typescript-eslint/typescript-estree@7.18.0':
@@ -2065,8 +2065,8 @@ packages:
       typescript:
         optional: true
 
-  '@typescript-eslint/typescript-estree@8.10.0':
-    resolution: {integrity: sha512-3OE0nlcOHaMvQ8Xu5gAfME3/tWVDpb/HxtpUZ1WeOAksZ/h/gwrBzCklaGzwZT97/lBbbxJ16dMA98JMEngW4w==}
+  '@typescript-eslint/typescript-estree@8.17.0':
+    resolution: {integrity: sha512-JqkOopc1nRKZpX+opvKqnM3XUlM7LpFMD0lYxTqOTKQfCWAmxw45e3qlOCsEqEB2yuacujivudOFpCnqkBDNMw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       typescript: '*'
@@ -2080,18 +2080,22 @@ packages:
     peerDependencies:
       eslint: ^8.56.0
 
-  '@typescript-eslint/utils@8.10.0':
-    resolution: {integrity: sha512-Oq4uZ7JFr9d1ZunE/QKy5egcDRXT/FrS2z/nlxzPua2VHFtmMvFNDvpq1m/hq0ra+T52aUezfcjGRIB7vNJF9w==}
+  '@typescript-eslint/utils@8.17.0':
+    resolution: {integrity: sha512-bQC8BnEkxqG8HBGKwG9wXlZqg37RKSMY7v/X8VEWD8JG2JuTHuNK0VFvMPMUKQcbk6B+tf05k+4AShAEtCtJ/w==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
+      typescript: '*'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
 
   '@typescript-eslint/visitor-keys@7.18.0':
     resolution: {integrity: sha512-cDF0/Gf81QpY3xYyJKDV14Zwdmid5+uuENhjH2EqFaF0ni+yAyq/LzMaIJdhNJXZI7uLzwIlA+V7oWoyn6Curg==}
     engines: {node: ^18.18.0 || >=20.0.0}
 
-  '@typescript-eslint/visitor-keys@8.10.0':
-    resolution: {integrity: sha512-k8nekgqwr7FadWk548Lfph6V3r9OVqjzAIVskE7orMZR23cGJjAOVazsZSJW+ElyjfTM4wx/1g88Mi70DDtG9A==}
+  '@typescript-eslint/visitor-keys@8.17.0':
+    resolution: {integrity: sha512-1Hm7THLpO6ww5QU6H/Qp+AusUUl+z/CAm3cNZZ0jQvon9yicgO7Rwd+/WWRpMKLYV6p2UvdbR27c86rzCPpreg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
   '@ungap/structured-clone@1.2.0':
@@ -2809,6 +2813,10 @@ packages:
   eslint-visitor-keys@3.4.3:
     resolution: {integrity: sha512-wpc+LXeiyiisxPlEkUzU6svyS1frIO3Mgxj1fdy7Pm8Ygzguax2N3Fa/D/ag1WqbOprdI+uY6wMUl8/a2G+iag==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+
+  eslint-visitor-keys@4.2.0:
+    resolution: {integrity: sha512-UyLnSehNt62FFhSwjZlHmeokpRK59rcz29j+F1/aDgbkbRTk7wIc9XzdoasMUbRNKDM0qQt/+BJ4BrpFeABemw==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
   eslint@8.57.1:
     resolution: {integrity: sha512-ypowyDxpVSYpkXr9WPv2PAZCtNip1Mv5KTW0SCurXv/9iOpcrH9PaqUElksqEB6pChqHGDRCFTyrZlGhnLNGiA==}
@@ -3714,21 +3722,21 @@ packages:
   neo-async@2.6.2:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
 
-  ng2-charts@6.0.1:
-    resolution: {integrity: sha512-pO7evbvHqjiKB7zqE12tCKWQI9gmQ8DVOEaWBBLlxJabc4fLGk7o9t4jC4+Q9pJiQrTtQkugm0dIPQ4PFHUaWA==}
+  ng2-charts@7.0.0:
+    resolution: {integrity: sha512-HofyPPkz7yOX6Dr9JfV/SDddzmmqCFYCKbn71jeDiyWPRjrj99yTBCyqYtjzzNrnlTfWwbdvynYZ4GAhu/lbgQ==}
     peerDependencies:
-      '@angular/cdk': '>=17.0.0'
-      '@angular/common': '>=17.0.0'
-      '@angular/core': '>=17.0.0'
-      '@angular/platform-browser': '>=17.0.0'
+      '@angular/cdk': '>=18.0.0'
+      '@angular/common': '>=18.0.0'
+      '@angular/core': '>=18.0.0'
+      '@angular/platform-browser': '>=18.0.0'
       chart.js: ^3.4.0 || ^4.0.0
       rxjs: ^6.5.3 || ^7.4.0
 
-  ngx-cookie-service@18.0.0:
-    resolution: {integrity: sha512-hkkUckzZTXXWtFgvVkT2hg6mwYMLXioXDZWBsVCOy9gYkADjsj0N5VViO7eo2izQ0VcMPd/Etog1trf/T4oZMQ==}
+  ngx-cookie-service@19.0.0:
+    resolution: {integrity: sha512-itxGY1BlIRoEjEtDsSsRKnJuiQteTMLKPNHrykiH06tjUQ1bi3orE7YKU1D210VBqVy1jNrB7hKuGOOIQtQJDA==}
     peerDependencies:
-      '@angular/common': ^18.0.0-rc.0
-      '@angular/core': ^18.0.0-rc.0
+      '@angular/common': ^19.0.0
+      '@angular/core': ^19.0.0
 
   node-addon-api@6.1.0:
     resolution: {integrity: sha512-+eawOlIgy680F0kBzPUNFhMZGtJ1YmqM6l4+Crf4IkImjYrO/mqPwRMh352g23uIaQKFItcQ64I7KMaJxHgAVA==}
@@ -5009,31 +5017,31 @@ snapshots:
 
   '@angular-eslint/bundled-angular-compiler@19.0.1': {}
 
-  '@angular-eslint/eslint-plugin-template@19.0.1(@typescript-eslint/types@8.10.0)(@typescript-eslint/utils@8.10.0(eslint@8.57.1)(typescript@5.5.4))(eslint@8.57.1)(typescript@5.5.4)':
+  '@angular-eslint/eslint-plugin-template@19.0.1(@typescript-eslint/types@8.17.0)(@typescript-eslint/utils@8.17.0(eslint@8.57.1)(typescript@5.5.4))(eslint@8.57.1)(typescript@5.5.4)':
     dependencies:
       '@angular-eslint/bundled-angular-compiler': 19.0.1
-      '@angular-eslint/utils': 19.0.1(@typescript-eslint/utils@8.10.0(eslint@8.57.1)(typescript@5.5.4))(eslint@8.57.1)(typescript@5.5.4)
-      '@typescript-eslint/types': 8.10.0
-      '@typescript-eslint/utils': 8.10.0(eslint@8.57.1)(typescript@5.5.4)
+      '@angular-eslint/utils': 19.0.1(@typescript-eslint/utils@8.17.0(eslint@8.57.1)(typescript@5.5.4))(eslint@8.57.1)(typescript@5.5.4)
+      '@typescript-eslint/types': 8.17.0
+      '@typescript-eslint/utils': 8.17.0(eslint@8.57.1)(typescript@5.5.4)
       aria-query: 5.3.2
       axobject-query: 4.1.0
       eslint: 8.57.1
       typescript: 5.5.4
 
-  '@angular-eslint/eslint-plugin@19.0.1(@typescript-eslint/utils@8.10.0(eslint@8.57.1)(typescript@5.5.4))(eslint@8.57.1)(typescript@5.5.4)':
+  '@angular-eslint/eslint-plugin@19.0.1(@typescript-eslint/utils@8.17.0(eslint@8.57.1)(typescript@5.5.4))(eslint@8.57.1)(typescript@5.5.4)':
     dependencies:
       '@angular-eslint/bundled-angular-compiler': 19.0.1
-      '@angular-eslint/utils': 19.0.1(@typescript-eslint/utils@8.10.0(eslint@8.57.1)(typescript@5.5.4))(eslint@8.57.1)(typescript@5.5.4)
-      '@typescript-eslint/utils': 8.10.0(eslint@8.57.1)(typescript@5.5.4)
+      '@angular-eslint/utils': 19.0.1(@typescript-eslint/utils@8.17.0(eslint@8.57.1)(typescript@5.5.4))(eslint@8.57.1)(typescript@5.5.4)
+      '@typescript-eslint/utils': 8.17.0(eslint@8.57.1)(typescript@5.5.4)
       eslint: 8.57.1
       typescript: 5.5.4
 
-  '@angular-eslint/schematics@19.0.1(@typescript-eslint/types@8.10.0)(@typescript-eslint/utils@8.10.0(eslint@8.57.1)(typescript@5.5.4))(chokidar@4.0.1)(eslint@8.57.1)(typescript@5.5.4)':
+  '@angular-eslint/schematics@19.0.1(@typescript-eslint/types@8.17.0)(@typescript-eslint/utils@8.17.0(eslint@8.57.1)(typescript@5.5.4))(chokidar@4.0.1)(eslint@8.57.1)(typescript@5.5.4)':
     dependencies:
       '@angular-devkit/core': 19.0.4(chokidar@4.0.1)
       '@angular-devkit/schematics': 19.0.4(chokidar@4.0.1)
-      '@angular-eslint/eslint-plugin': 19.0.1(@typescript-eslint/utils@8.10.0(eslint@8.57.1)(typescript@5.5.4))(eslint@8.57.1)(typescript@5.5.4)
-      '@angular-eslint/eslint-plugin-template': 19.0.1(@typescript-eslint/types@8.10.0)(@typescript-eslint/utils@8.10.0(eslint@8.57.1)(typescript@5.5.4))(eslint@8.57.1)(typescript@5.5.4)
+      '@angular-eslint/eslint-plugin': 19.0.1(@typescript-eslint/utils@8.17.0(eslint@8.57.1)(typescript@5.5.4))(eslint@8.57.1)(typescript@5.5.4)
+      '@angular-eslint/eslint-plugin-template': 19.0.1(@typescript-eslint/types@8.17.0)(@typescript-eslint/utils@8.17.0(eslint@8.57.1)(typescript@5.5.4))(eslint@8.57.1)(typescript@5.5.4)
       ignore: 6.0.2
       semver: 7.6.3
       strip-json-comments: 3.1.1
@@ -5051,10 +5059,10 @@ snapshots:
       eslint-scope: 8.2.0
       typescript: 5.5.4
 
-  '@angular-eslint/utils@19.0.1(@typescript-eslint/utils@8.10.0(eslint@8.57.1)(typescript@5.5.4))(eslint@8.57.1)(typescript@5.5.4)':
+  '@angular-eslint/utils@19.0.1(@typescript-eslint/utils@8.17.0(eslint@8.57.1)(typescript@5.5.4))(eslint@8.57.1)(typescript@5.5.4)':
     dependencies:
       '@angular-eslint/bundled-angular-compiler': 19.0.1
-      '@typescript-eslint/utils': 8.10.0(eslint@8.57.1)(typescript@5.5.4)
+      '@typescript-eslint/utils': 8.17.0(eslint@8.57.1)(typescript@5.5.4)
       eslint: 8.57.1
       typescript: 5.5.4
 
@@ -6841,10 +6849,10 @@ snapshots:
       '@typescript-eslint/types': 7.18.0
       '@typescript-eslint/visitor-keys': 7.18.0
 
-  '@typescript-eslint/scope-manager@8.10.0':
+  '@typescript-eslint/scope-manager@8.17.0':
     dependencies:
-      '@typescript-eslint/types': 8.10.0
-      '@typescript-eslint/visitor-keys': 8.10.0
+      '@typescript-eslint/types': 8.17.0
+      '@typescript-eslint/visitor-keys': 8.17.0
 
   '@typescript-eslint/type-utils@7.18.0(eslint@8.57.1)(typescript@5.5.4)':
     dependencies:
@@ -6860,7 +6868,7 @@ snapshots:
 
   '@typescript-eslint/types@7.18.0': {}
 
-  '@typescript-eslint/types@8.10.0': {}
+  '@typescript-eslint/types@8.17.0': {}
 
   '@typescript-eslint/typescript-estree@7.18.0(typescript@5.5.4)':
     dependencies:
@@ -6877,10 +6885,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/typescript-estree@8.10.0(typescript@5.5.4)':
+  '@typescript-eslint/typescript-estree@8.17.0(typescript@5.5.4)':
     dependencies:
-      '@typescript-eslint/types': 8.10.0
-      '@typescript-eslint/visitor-keys': 8.10.0
+      '@typescript-eslint/types': 8.17.0
+      '@typescript-eslint/visitor-keys': 8.17.0
       debug: 4.4.0
       fast-glob: 3.3.2
       is-glob: 4.0.3
@@ -6903,26 +6911,27 @@ snapshots:
       - supports-color
       - typescript
 
-  '@typescript-eslint/utils@8.10.0(eslint@8.57.1)(typescript@5.5.4)':
+  '@typescript-eslint/utils@8.17.0(eslint@8.57.1)(typescript@5.5.4)':
     dependencies:
       '@eslint-community/eslint-utils': 4.4.1(eslint@8.57.1)
-      '@typescript-eslint/scope-manager': 8.10.0
-      '@typescript-eslint/types': 8.10.0
-      '@typescript-eslint/typescript-estree': 8.10.0(typescript@5.5.4)
+      '@typescript-eslint/scope-manager': 8.17.0
+      '@typescript-eslint/types': 8.17.0
+      '@typescript-eslint/typescript-estree': 8.17.0(typescript@5.5.4)
       eslint: 8.57.1
+    optionalDependencies:
+      typescript: 5.5.4
     transitivePeerDependencies:
       - supports-color
-      - typescript
 
   '@typescript-eslint/visitor-keys@7.18.0':
     dependencies:
       '@typescript-eslint/types': 7.18.0
       eslint-visitor-keys: 3.4.3
 
-  '@typescript-eslint/visitor-keys@8.10.0':
+  '@typescript-eslint/visitor-keys@8.17.0':
     dependencies:
-      '@typescript-eslint/types': 8.10.0
-      eslint-visitor-keys: 3.4.3
+      '@typescript-eslint/types': 8.17.0
+      eslint-visitor-keys: 4.2.0
 
   '@ungap/structured-clone@1.2.0': {}
 
@@ -7709,6 +7718,8 @@ snapshots:
       estraverse: 5.3.0
 
   eslint-visitor-keys@3.4.3: {}
+
+  eslint-visitor-keys@4.2.0: {}
 
   eslint@8.57.1:
     dependencies:
@@ -8707,7 +8718,7 @@ snapshots:
 
   neo-async@2.6.2: {}
 
-  ng2-charts@6.0.1(@angular/cdk@19.0.2(@angular/common@19.0.3(@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/common@19.0.3(@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@19.0.3(@angular/animations@19.0.3(@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@19.0.3(@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0)))(chart.js@4.4.7)(rxjs@7.8.1):
+  ng2-charts@7.0.0(@angular/cdk@19.0.2(@angular/common@19.0.3(@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/common@19.0.3(@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@19.0.3(@angular/animations@19.0.3(@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@19.0.3(@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0)))(chart.js@4.4.7)(rxjs@7.8.1):
     dependencies:
       '@angular/cdk': 19.0.2(@angular/common@19.0.3(@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1)
       '@angular/common': 19.0.3(@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1)
@@ -8718,7 +8729,7 @@ snapshots:
       rxjs: 7.8.1
       tslib: 2.8.1
 
-  ngx-cookie-service@18.0.0(@angular/common@19.0.3(@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0)):
+  ngx-cookie-service@19.0.0(@angular/common@19.0.3(@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0)):
     dependencies:
       '@angular/common': 19.0.3(@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1)
       '@angular/core': 19.0.3(rxjs@7.8.1)(zone.js@0.15.0)
