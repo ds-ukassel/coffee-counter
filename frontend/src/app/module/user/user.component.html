@@ -3,7 +3,7 @@
     <div class="col-xl-3">
       <div class="row">
         <div class="col-lg-6 col-xl-12 avatar-container">
-          <img class="rounded-circle user-avatar border border-2 border-dark" [src]="editAvatar || user.avatar || '/assets/se.svg'"
+          <img class="rounded-circle user-avatar border border-2 border-dark" [src]="editAvatar || user.avatar || '/assets/vs_logo.svg'"
                [alt]="user.name">
           <button class="btn btn-primary bi-person-circle text-light" ngbTooltip="Edit Avatar" (click)="editAvatar = user.avatar"
                   [ngbPopover]="editAvatarForm" #popover="ngbPopover" container="body" placement="right bottom-right" autoClose="outside">

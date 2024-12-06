@@ -9,7 +9,7 @@
     <a *ngFor="let user of users" class="list-group-item list-group-item-action" [routerLink]="[user._id]">
       <div class="row align-items-center">
         <div class="col-auto">
-          <img class="rounded-circle user-avatar" [src]="user.avatar || '/assets/se.svg'" [alt]="user.name">
+          <img class="rounded-circle user-avatar" [src]="user.avatar || '/assets/vs_logo.svg'" [alt]="user.name">
         </div>
         <div class="col">
           <h6>{{ user.name }}</h6>
