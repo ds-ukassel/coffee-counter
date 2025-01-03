@@ -11,7 +11,7 @@ import {AppComponent} from './app.component';
 import {NavbarComponent} from './navbar/navbar.component';
 import {HomeComponent} from './module/home/home.component';
 import {SettingsComponent} from './module/settings/settings.component';
-import {SharedModule} from './shared/shared.module';
+
 import {PulseDirective} from './module/home/pulse.directive';
 import {CookieService} from 'ngx-cookie-service';
 import {AutologComponent} from './module/autolog/autolog.component';
@@ -27,7 +27,6 @@ import {BarController, Colors, Legend} from 'chart.js';
     AppRoutingModule,
     NgbModule,
     FormsModule,
-    SharedModule,
     ToastModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),

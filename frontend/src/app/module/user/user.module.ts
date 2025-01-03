@@ -4,7 +4,6 @@ import {FormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {ModalModule} from '@mean-stream/ngbx';
 
-import {SharedModule} from '../../shared/shared.module';
 import {NewUserModalComponent} from './new-user-modal/new-user-modal.component';
 import {PurchaseModalComponent} from './purchase-modal/purchase-modal.component';
 import {UserListComponent} from './user-list/user-list.component';
@@ -21,7 +20,6 @@ import {BaseChartDirective} from 'ng2-charts';
     UserRoutingModule,
     FormsModule,
     NgbModule,
-    SharedModule,
     ModalModule,
     BaseChartDirective,
     UserComponent,
