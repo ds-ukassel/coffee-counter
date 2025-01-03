@@ -5,7 +5,7 @@ import {Achievement, AchievementInfo} from '../../../core/model/achievement.inte
 import {AchievementService} from '../../../core/service/achievement.service';
 import {ModalModule} from '@mean-stream/ngbx';
 import {NgbTooltip} from '@ng-bootstrap/ng-bootstrap';
-import {DatePipe, NgIf} from '@angular/common';
+import {DatePipe} from '@angular/common';
 import {TrophyTierPipe} from '../../../shared/pipe/trophy-tier.pipe';
 
 @Component({
@@ -15,7 +15,6 @@ import {TrophyTierPipe} from '../../../shared/pipe/trophy-tier.pipe';
   imports: [
     ModalModule,
     NgbTooltip,
-    NgIf,
     DatePipe,
     TrophyTierPipe,
   ],

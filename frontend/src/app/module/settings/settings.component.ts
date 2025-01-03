@@ -5,13 +5,12 @@ import {CookieService} from 'ngx-cookie-service';
 import {User} from '../../core/model/user.interface';
 import {ToastService} from '@mean-stream/ngbx';
 import {FormsModule} from '@angular/forms';
-import {NgFor} from '@angular/common';
 
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.scss'],
-  imports: [FormsModule, NgFor],
+  imports: [FormsModule],
 })
 export class SettingsComponent implements OnInit {
   apiKey!: string;

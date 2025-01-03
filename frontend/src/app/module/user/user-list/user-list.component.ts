@@ -11,7 +11,7 @@ import {
   NgbDropdownToggle,
   NgbTooltip,
 } from '@ng-bootstrap/ng-bootstrap';
-import {CurrencyPipe, NgFor} from '@angular/common';
+import {CurrencyPipe} from '@angular/common';
 import {LevelPipe} from '../../../shared/pipe/level.pipe';
 import {LevelNamePipe} from '../../../shared/pipe/level-name.pipe';
 
@@ -22,7 +22,6 @@ import {LevelNamePipe} from '../../../shared/pipe/level-name.pipe';
   imports: [
     NgbTooltip,
     RouterLink,
-    NgFor,
     NgbDropdown,
     NgbDropdownToggle,
     NgbDropdownMenu,

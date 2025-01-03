@@ -1,7 +1,9 @@
 <ngbx-modal #modal [back]="['..']">
   <ng-container modal-title>
     Add Purchase
-    <span *ngIf="user" class="text-muted">for {{ user.name }}</span>
+    @if (user) {
+      <span class="text-muted">for {{ user.name }}</span>
+    }
   </ng-container>
   <ng-container modal-body>
     <div class="mb-3">
@@ -9,7 +11,9 @@
       <input type="text" class="form-control" id="description" list="descriptionOptions"
              [(ngModel)]="purchase.description">
       <datalist id="descriptionOptions">
-        <option *ngFor="let description of descriptions" [value]="description"></option>
+        @for (description of descriptions; track description) {
+          <option [value]="description"></option>
+        }
       </datalist>
       <div class="form-text">Optional.</div>
     </div>

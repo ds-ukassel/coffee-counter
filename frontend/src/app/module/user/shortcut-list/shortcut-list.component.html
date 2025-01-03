@@ -1,27 +1,31 @@
 <ul class="list-group">
-  <li *ngFor="let shortcut of shortcuts" class="list-group-item d-flex">
-    <div class="me-2">
-      <select class="form-select" [(ngModel)]="shortcut.icon">
-        <option *ngFor="let icon of icons" [value]="icon">{{icon}}</option>
-      </select>
-    </div>
-    <div class="me-2 flex-grow-1">
-      <input type="text" class="form-control" [(ngModel)]="shortcut.description" placeholder="Description">
-    </div>
-    <div class="me-2">
-      <input type="number" class="form-control" step="0.01" [(ngModel)]="shortcut.total" placeholder="Price">
-    </div>
-    <div class="">
-      <button type="button" class="btn btn-outline-danger bi-trash" [ngbPopover]="confirmPopover"></button>
-      <ng-template #confirmPopover>
-        <p>Are you sure you want to delete this shortcut?</p>
-        <div class="text-end">
-          <button class="btn btn-secondary me-2">No</button>
-          <button class="btn btn-danger" (click)="remove(shortcut)">Yes</button>
-        </div>
-      </ng-template>
-    </div>
-  </li>
+  @for (shortcut of shortcuts; track shortcut) {
+    <li class="list-group-item d-flex">
+      <div class="me-2">
+        <select class="form-select" [(ngModel)]="shortcut.icon">
+          @for (icon of icons; track icon) {
+            <option [value]="icon">{{ icon }}</option>
+          }
+        </select>
+      </div>
+      <div class="me-2 flex-grow-1">
+        <input type="text" class="form-control" [(ngModel)]="shortcut.description" placeholder="Description">
+      </div>
+      <div class="me-2">
+        <input type="number" class="form-control" step="0.01" [(ngModel)]="shortcut.total" placeholder="Price">
+      </div>
+      <div class="">
+        <button type="button" class="btn btn-outline-danger bi-trash" [ngbPopover]="confirmPopover"></button>
+        <ng-template #confirmPopover>
+          <p>Are you sure you want to delete this shortcut?</p>
+          <div class="text-end">
+            <button class="btn btn-secondary me-2">No</button>
+            <button class="btn btn-danger" (click)="remove(shortcut)">Yes</button>
+          </div>
+        </ng-template>
+      </div>
+    </li>
+  }
 </ul>
 <button type="button" class="btn btn-success bi-plus-circle" (click)="add()">
 </button>

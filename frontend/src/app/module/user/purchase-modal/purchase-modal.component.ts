@@ -6,7 +6,7 @@ import {UserService} from '../../../core/service/user.service';
 import {CreatePurchaseDto} from '../../../core/model/purchase.interface';
 import {PurchaseService} from '../../../core/service/purchase.service';
 import {ModalModule} from '@mean-stream/ngbx';
-import {CurrencyPipe, NgFor, NgIf} from '@angular/common';
+import {CurrencyPipe} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 
 @Component({
@@ -15,9 +15,7 @@ import {FormsModule} from '@angular/forms';
   styleUrls: ['./purchase-modal.component.scss'],
   imports: [
     ModalModule,
-    NgIf,
     FormsModule,
-    NgFor,
     CurrencyPipe,
   ],
 })

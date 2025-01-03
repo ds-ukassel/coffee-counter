@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, RouterLink, RouterOutlet} from '@angular/router';
-import {NgbModal, NgbPopover, NgbTooltip} from '@ng-bootstrap/ng-bootstrap';
+import {NgbPopover, NgbTooltip} from '@ng-bootstrap/ng-bootstrap';
 import {ChartData} from 'chart.js';
 import {ToastService} from '@mean-stream/ngbx';
 import {BaseChartDirective} from 'ng2-charts';
@@ -9,9 +9,8 @@ import {AchievementInfo} from '../../core/model/achievement.interface';
 import {User} from '../../core/model/user.interface';
 import {AchievementService} from '../../core/service/achievement.service';
 import {CoffeeService} from '../../core/service/coffee.service';
-import {PurchaseService} from '../../core/service/purchase.service';
 import {UserService} from '../../core/service/user.service';
-import {CurrencyPipe, NgFor, NgIf} from '@angular/common';
+import {CurrencyPipe} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {ShortcutListComponent} from './shortcut-list/shortcut-list.component';
 import {PurchaseListComponent} from '../../shared/purchase-list/purchase-list.component';
@@ -24,11 +23,9 @@ import {NextLevelPipe} from '../../shared/pipe/level-progress.pipe';
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss'],
   imports: [
-    NgIf,
     NgbTooltip,
     NgbPopover,
     FormsModule,
-    NgFor,
     RouterLink,
     ShortcutListComponent,
     BaseChartDirective,
@@ -43,7 +40,7 @@ import {NextLevelPipe} from '../../shared/pipe/level-progress.pipe';
 export class UserComponent implements OnInit {
   @ViewChild(BaseChartDirective) coffeeChart: BaseChartDirective | undefined;
 
-  user!: User;
+  user?: User;
   editName?: string;
   editAvatar?: string;
 
@@ -63,11 +60,9 @@ export class UserComponent implements OnInit {
   };
 
   constructor(
-    private modalService: NgbModal,
     private userService: UserService,
     private coffeeService: CoffeeService,
     private activatedRoute: ActivatedRoute,
-    private purchaseService: PurchaseService,
     private achievementService: AchievementService,
     private toastService: ToastService,
   ) {
@@ -100,11 +95,11 @@ export class UserComponent implements OnInit {
   }
 
   createCoffee() {
-    this.coffeeService.create({
+    this.user && this.coffeeService.create({
       userId: this.user._id,
     }).subscribe(coffee => {
-      this.user.coffees++;
-      this.user.balance = (+this.user.balance - coffee.price).toFixed(2);
+      this.user!.coffees++;
+      this.user!.balance = (+this.user!.balance - coffee.price).toFixed(2);
       const hour = new Date(coffee.createdAt).getHours();
       const data = this.coffeeData.datasets[0].data;
       const datum = data[hour];
@@ -117,7 +112,7 @@ export class UserComponent implements OnInit {
   }
 
   updateUser() {
-    this.userService.updateOne(this.user._id, {
+    this.user && this.userService.updateOne(this.user._id, {
       name: this.editName || this.user.name,
       avatar: this.editAvatar || this.user.avatar,
     }).subscribe(res => {
@@ -131,7 +126,7 @@ export class UserComponent implements OnInit {
   }
 
   saveShortcuts() {
-    this.userService.updateOne(this.user._id, {
+    this.user && this.userService.updateOne(this.user._id, {
       shortcuts: this.user.shortcuts,
     }).subscribe(res => {
       this.user = res;

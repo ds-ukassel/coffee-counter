@@ -6,60 +6,62 @@
     <a class="btn btn-success bi-person-plus" ngbTooltip="Add User" routerLink="new"></a>
   </div>
   <div class="list-group">
-    <a *ngFor="let user of users" class="list-group-item list-group-item-action" [routerLink]="[user._id]">
-      <div class="row align-items-center">
-        <div class="col-auto">
-          <img class="rounded-circle user-avatar" [src]="user.avatar || '/assets/vs_logo.svg'" [alt]="user.name">
-        </div>
-        <div class="col">
-          <h6>{{ user.name }}</h6>
-          <img class="rounded-circle level-icon"
-               [src]="'/assets/levels/' + (user.coffees | level:+user.balance) + '.png'"
-               alt="Level Icon">
-          <i class="text-muted">
-            {{ user.coffees | level:+user.balance | levelName }}
-          </i>
-        </div>
-        <div class="col-3 col-md-auto">
-          <div class="row">
-            <div class="col-md-auto">
-              <span class="bi-cup text-primary" ngbTooltip="Coffees">
-                {{ user.coffees }}
-              </span>
+    @for (user of users; track user._id) {
+      <a class="list-group-item list-group-item-action" [routerLink]="[user._id]">
+        <div class="row align-items-center">
+          <div class="col-auto">
+            <img class="rounded-circle user-avatar" [src]="user.avatar || '/assets/vs_logo.svg'" [alt]="user.name">
+          </div>
+          <div class="col">
+            <h6>{{ user.name }}</h6>
+            <img class="rounded-circle level-icon"
+                 [src]="'/assets/levels/' + (user.coffees | level:+user.balance) + '.png'"
+                 alt="Level Icon">
+            <i class="text-muted">
+              {{ user.coffees | level:+user.balance | levelName }}
+            </i>
+          </div>
+          <div class="col-3 col-md-auto">
+            <div class="row">
+              <div class="col-md-auto">
+                <span class="bi-cup text-primary" ngbTooltip="Coffees">
+                  {{ user.coffees }}
+                </span>
+              </div>
+              <div class="col-md-auto">
+                <span class="bi-star text-info" ngbTooltip="Level">
+                  {{ user.coffees | level }}
+                </span>
+              </div>
+              <div class="col-md-auto">
+                <span class="bi-trophy text-warning" ngbTooltip="Trophies">
+                  {{ user.achievements }}
+                </span>
+              </div>
+              <div class="col-md-auto">
+                <span [class]="['bi-cash-coin', +user.balance < 0 ? 'text-danger' : 'text-success']"
+                      [ngbTooltip]="+user.balance < 0 ? 'Negative Balance!' : 'Balance'">
+                  {{ user.balance | currency: 'EUR' : 'symbol': '1.': 'de-DE' }}
+                </span>
+              </div>
             </div>
-            <div class="col-md-auto">
-              <span class="bi-star text-info" ngbTooltip="Level">
-                {{ user.coffees | level }}
-              </span>
-            </div>
-            <div class="col-md-auto">
-              <span class="bi-trophy text-warning" ngbTooltip="Trophies">
-                {{ user.achievements }}
-              </span>
-            </div>
-            <div class="col-md-auto">
-              <span [class]="['bi-cash-coin', +user.balance < 0 ? 'text-danger' : 'text-success']"
-                    [ngbTooltip]="+user.balance < 0 ? 'Negative Balance!' : 'Balance'">
-                {{ user.balance | currency: 'EUR' : 'symbol': '1.': 'de-DE' }}
-              </span>
+          </div>
+          <div class="col-auto">
+            <div ngbDropdown class="d-inline-block" (click)="$event.preventDefault(); $event.stopImmediatePropagation()">
+              <button class="btn btn-outline-secondary bi-gear" ngbDropdownToggle></button>
+              <div ngbDropdownMenu>
+                <button class="text-warning bi-archive" ngbDropdownItem (click)="archiveUser(user)">
+                  {{ user.archived ? 'Unarchive' : 'Archive'}}
+                </button>
+                <button class="text-danger bi-trash" ngbDropdownItem (click)="deleteUser(user)">
+                  Delete
+                </button>
+              </div>
             </div>
           </div>
         </div>
-        <div class="col-auto">
-          <div ngbDropdown class="d-inline-block" (click)="$event.preventDefault(); $event.stopImmediatePropagation()">
-            <button class="btn btn-outline-secondary bi-gear" ngbDropdownToggle></button>
-            <div ngbDropdownMenu>
-              <button class="text-warning bi-archive" ngbDropdownItem (click)="archiveUser(user)">
-                {{ user.archived ? 'Unarchive' : 'Archive'}}
-              </button>
-              <button class="text-danger bi-trash" ngbDropdownItem (click)="deleteUser(user)">
-                Delete
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </a>
+      </a>
+    }
   </div>
   <a routerLink="." [queryParams]="{archived: !archived}">
     View {{ archived ? 'Active' : 'Archived'}} Users

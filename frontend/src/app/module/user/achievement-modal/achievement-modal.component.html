@@ -12,21 +12,26 @@
       <span class="bi-trophy-fill" [class]="info ? (info.tier | trophyTier) : ''" [ngbTooltip]="info?.tier"
             style="font-size: 50px"></span>
     </div>
-    <div class="progress mb-3" *ngIf="achievement?.progress || info?.goal">
-      <div class="progress-bar" role="progressbar" [style.width]="info && info.goal ? ((achievement?.progress ?? 0) / info.goal) * 100 + '%' : '100%'">
-        Progress:
-        {{achievement?.progress}}
-        <ng-container *ngIf="info && info.goal">
-          / {{info.goal}}
-        </ng-container>
+    @if (achievement?.progress || info?.goal) {
+      <div class="progress mb-3">
+        <div class="progress-bar" role="progressbar" [style.width]="info && info.goal ? ((achievement?.progress ?? 0) / info.goal) * 100 + '%' : '100%'">
+          Progress:
+          {{achievement?.progress}}
+          @if (info && info.goal) {
+            / {{info.goal}}
+          }
+        </div>
       </div>
-    </div>
+    }
     <div class="d-flex">
       <button class="btn btn-sm btn-info me-3" (click)="showHint = !showHint">
         <span class="bi-question">hint</span>
       </button>
-      <span *ngIf="!showHint" class="placeholder col"></span>
-      <span *ngIf="showHint">{{info?.hint}}</span>
+      @if (showHint) {
+        <span>{{ info?.hint }}</span>
+      } @else {
+        <span class="placeholder col"></span>
+      }
     </div>
   </ng-container>
   <ng-container modal-footer>

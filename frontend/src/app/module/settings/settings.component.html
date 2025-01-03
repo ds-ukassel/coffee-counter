@@ -7,7 +7,9 @@
   <div class="mb-3">
     <label class="form-label" for="userInput">Username</label>
     <select class="form-control" id="userInput" [(ngModel)]="selectedUserId">
-      <option *ngFor="let user of users" [value]="user._id">{{user.name}}</option>
+      @for (user of users; track user._id) {
+        <option [value]="user._id">{{ user.name }}</option>
+      }
     </select>
   </div>
 

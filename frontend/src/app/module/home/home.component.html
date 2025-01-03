@@ -4,53 +4,57 @@
   <h3 class="text-center">Ultimate Edition</h3>
 
   <div class="d-flex flex-wrap justify-content-center">
-    <div *ngFor="let user of users" class="text-start m-3 card-container">
-      <div class="card bg-light-or-dark">
-        <div class="card-body">
-          <h5 class="card-title">
-            <a class="text-body" [routerLink]="['/users', user._id]">
-              {{ user.name }}
-            </a>
-          </h5>
-          <h5>
-            <span class="bi-cup text-primary" ngbTooltip="Coffees">
-              {{ user.coffees }}
-            </span>
-            <span class="bi-star text-info" ngbTooltip="Level">
-              {{ user.coffees | level }}
-            </span>
-            <span class="bi-trophy text-warning" ngbTooltip="Trophies">
-              {{ user.achievements }}
-            </span>
-          </h5>
-          <div class="d-flex flex-wrap">
-            <button *ngFor="let shortcut of user.shortcuts" class="btn btn-secondary me-2"
-                    [ngbTooltip]="shortcut.description" (click)="applyShortcut(user, shortcut)">
-              {{ shortcut.icon }}
-            </button>
-            <button
-              class="btn btn-warning bi-arrow-counterclockwise"
-              (click)="deleteLastCoffee(user)" ngbTooltip="Undo last Coffee">
-            </button>
+    @for (user of users; track user._id) {
+      <div class="text-start m-3 card-container">
+        <div class="card bg-light-or-dark">
+          <div class="card-body">
+            <h5 class="card-title">
+              <a class="text-body" [routerLink]="['/users', user._id]">
+                {{ user.name }}
+              </a>
+            </h5>
+            <h5>
+              <span class="bi-cup text-primary" ngbTooltip="Coffees">
+                {{ user.coffees }}
+              </span>
+              <span class="bi-star text-info" ngbTooltip="Level">
+                {{ user.coffees | level }}
+              </span>
+              <span class="bi-trophy text-warning" ngbTooltip="Trophies">
+                {{ user.achievements }}
+              </span>
+            </h5>
+            <div class="d-flex flex-wrap">
+              @for (shortcut of user.shortcuts; track shortcut) {
+                <button class="btn btn-secondary me-2"
+                      [ngbTooltip]="shortcut.description" (click)="applyShortcut(user, shortcut)">
+                {{ shortcut.icon }}
+              </button>
+              }
+              <button
+                class="btn btn-warning bi-arrow-counterclockwise"
+                (click)="deleteLastCoffee(user)" ngbTooltip="Undo last Coffee">
+              </button>
+            </div>
           </div>
         </div>
+        <img class="rounded-circle user-avatar border border-2 border-dark bg-body-tertiary" [src]="user.avatar || '/assets/vs_logo.svg'"
+             [alt]="user.name">
+        <svg
+          class="user-avatar progress-ring overflow-visible" [style.cursor]="'pointer'"
+          [style.--progress]="user.coffees | levelProgress"
+          [ngbTooltip]="(user.coffees | levelProgress | percent) + ' Progress'"
+          (click)="createCoffee(user)" appClickPulseAnimation>
+          <circle class="progress-ring__circle"
+                  stroke="gold"
+                  stroke-width="10"
+                  fill="transparent"
+                  r="50%"
+                  cx="50%"
+                  cy="50%"/>
+        </svg>
       </div>
-      <img class="rounded-circle user-avatar border border-2 border-dark bg-body-tertiary" [src]="user.avatar || '/assets/vs_logo.svg'"
-           [alt]="user.name">
-      <svg
-        class="user-avatar progress-ring overflow-visible" [style.cursor]="'pointer'"
-        [style.--progress]="user.coffees | levelProgress"
-        [ngbTooltip]="(user.coffees | levelProgress | percent) + ' Progress'"
-        (click)="createCoffee(user)" appClickPulseAnimation>
-        <circle class="progress-ring__circle"
-                stroke="gold"
-                stroke-width="10"
-                fill="transparent"
-                r="50%"
-                cx="50%"
-                cy="50%"/>
-      </svg>
-    </div>
+    }
   </div>
 </div>
 

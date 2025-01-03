@@ -6,7 +6,7 @@ import {Purchase} from '../../core/model/purchase.interface';
 import {User} from '../../core/model/user.interface';
 import {CoffeeService} from '../../core/service/coffee.service';
 import {PurchaseService} from '../../core/service/purchase.service';
-import {CurrencyPipe, DatePipe, NgFor, NgIf} from '@angular/common';
+import {CurrencyPipe, DatePipe} from '@angular/common';
 import {NgbPopover, NgbTooltip} from '@ng-bootstrap/ng-bootstrap';
 
 interface Item {
@@ -24,8 +24,6 @@ interface Item {
   templateUrl: './purchase-list.component.html',
   styleUrls: ['./purchase-list.component.scss'],
   imports: [
-    NgFor,
-    NgIf,
     NgbTooltip,
     NgbPopover,
     CurrencyPipe,
