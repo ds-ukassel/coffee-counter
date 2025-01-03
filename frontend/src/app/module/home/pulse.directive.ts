@@ -1,9 +1,6 @@
 import {Directive, ElementRef, HostListener} from '@angular/core';
 
-@Directive({
-  selector: '[appClickPulseAnimation]',
-  standalone: false,
-})
+@Directive({selector: '[appClickPulseAnimation]'})
 export class PulseDirective {
   private readonly keyframes: Keyframe[] = [
     // (255, 215, 0) is RGB for the html 'gold' color

@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {ActivatedRoute, RouterLink, RouterOutlet} from '@angular/router';
+import {NgbModal, NgbPopover, NgbTooltip} from '@ng-bootstrap/ng-bootstrap';
 import {ChartData} from 'chart.js';
 import {ToastService} from '@mean-stream/ngbx';
 import {BaseChartDirective} from 'ng2-charts';
@@ -11,12 +11,34 @@ import {AchievementService} from '../../core/service/achievement.service';
 import {CoffeeService} from '../../core/service/coffee.service';
 import {PurchaseService} from '../../core/service/purchase.service';
 import {UserService} from '../../core/service/user.service';
+import {CurrencyPipe, NgFor, NgIf} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {ShortcutListComponent} from './shortcut-list/shortcut-list.component';
+import {PurchaseListComponent} from '../../shared/purchase-list/purchase-list.component';
+import {LevelPipe} from '../../shared/pipe/level.pipe';
+import {LevelNamePipe} from '../../shared/pipe/level-name.pipe';
+import {NextLevelPipe} from '../../shared/pipe/level-progress.pipe';
 
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss'],
-  standalone: false,
+  imports: [
+    NgIf,
+    NgbTooltip,
+    NgbPopover,
+    FormsModule,
+    NgFor,
+    RouterLink,
+    ShortcutListComponent,
+    BaseChartDirective,
+    PurchaseListComponent,
+    RouterOutlet,
+    CurrencyPipe,
+    LevelPipe,
+    LevelNamePipe,
+    NextLevelPipe,
+  ],
 })
 export class UserComponent implements OnInit {
   @ViewChild(BaseChartDirective) coffeeChart: BaseChartDirective | undefined;

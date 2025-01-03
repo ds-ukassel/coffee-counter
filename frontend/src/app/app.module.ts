@@ -16,18 +16,11 @@ import {PulseDirective} from './module/home/pulse.directive';
 import {CookieService} from 'ngx-cookie-service';
 import {AutologComponent} from './module/autolog/autolog.component';
 import {ServiceWorkerModule} from '@angular/service-worker';
-import {BaseChartDirective, provideCharts, withDefaultRegisterables} from 'ng2-charts';
+import {provideCharts, withDefaultRegisterables} from 'ng2-charts';
 import {BarController, Colors, Legend} from 'chart.js';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    NavbarComponent,
-    HomeComponent,
-    SettingsComponent,
-    PulseDirective,
-    AutologComponent,
-  ],
+  declarations: [AppComponent],
   bootstrap: [AppComponent],
   imports: [
     BrowserModule,
@@ -42,6 +35,11 @@ import {BarController, Colors, Legend} from 'chart.js';
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000',
     }),
+    NavbarComponent,
+    HomeComponent,
+    SettingsComponent,
+    PulseDirective,
+    AutologComponent,
   ],
   providers: [
     {

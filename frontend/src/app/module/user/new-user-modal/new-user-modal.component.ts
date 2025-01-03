@@ -1,13 +1,19 @@
 import {Component} from '@angular/core';
-import {ModalComponent} from '@mean-stream/ngbx';
+import {ModalComponent, ModalModule} from '@mean-stream/ngbx';
 import {CreateUserDto} from '../../../core/model/user.interface';
 import {UserService} from '../../../core/service/user.service';
+import {FormsModule} from '@angular/forms';
+import {NgbTooltip} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-new-user-modal',
   templateUrl: './new-user-modal.component.html',
   styleUrls: ['./new-user-modal.component.scss'],
-  standalone: false,
+  imports: [
+    ModalModule,
+    FormsModule,
+    NgbTooltip,
+  ],
 })
 export class NewUserModalComponent {
   user: CreateUserDto = {name: '', balance: '0.00', coffees: 0, achievements: 0};

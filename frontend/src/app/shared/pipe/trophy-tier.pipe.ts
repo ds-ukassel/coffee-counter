@@ -14,10 +14,7 @@ const TrophyTierMap = {
   platinum: 'text-secondary',
 }
 
-@Pipe({
-  name: 'trophyTier',
-  standalone: false,
-})
+@Pipe({name: 'trophyTier'})
 export class TrophyTierPipe implements PipeTransform {
   transform(value: TrophyTier): string {
     return TrophyTierMap[value];

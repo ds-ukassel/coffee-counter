@@ -17,10 +17,7 @@ export function levelProgress(coffees: number): number {
   return 2 * coffees / nextLevelAt - 1;
 }
 
-@Pipe({
-  name: 'levelProgress',
-  standalone: false,
-})
+@Pipe({name: 'levelProgress'})
 export class LevelProgressPipe implements PipeTransform {
 
   transform(value: number): number {
@@ -29,10 +26,7 @@ export class LevelProgressPipe implements PipeTransform {
 
 }
 
-@Pipe({
-  name: 'nextLevel',
-  standalone: false,
-})
+@Pipe({name: 'nextLevel'})
 export class NextLevelPipe implements PipeTransform {
   transform(value: number): number {
     return nextPowerOfTwo(value);

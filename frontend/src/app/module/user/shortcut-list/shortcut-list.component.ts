@@ -1,11 +1,18 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Shortcut} from '../../../core/model/user.interface';
+import {NgFor} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {NgbPopover} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-shortcut-list',
   templateUrl: './shortcut-list.component.html',
   styleUrls: ['./shortcut-list.component.scss'],
-  standalone: false,
+  imports: [
+    NgFor,
+    FormsModule,
+    NgbPopover,
+  ],
 })
 export class ShortcutListComponent implements OnInit {
   @Input() shortcuts!: Shortcut[];

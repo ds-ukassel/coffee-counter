@@ -20,8 +20,6 @@ const declarations = [
     CommonModule,
     NgbPopoverModule,
     NgbTooltipModule,
-  ],
-  declarations: [
     declarations,
     PurchaseListComponent,
   ],

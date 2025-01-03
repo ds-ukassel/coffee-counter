@@ -1,14 +1,38 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink, RouterOutlet} from '@angular/router';
 import {map, switchMap, tap} from 'rxjs';
 import {User} from '../../../core/model/user.interface';
 import {UserService} from '../../../core/service/user.service';
+import {
+  NgbDropdown,
+  NgbDropdownButtonItem,
+  NgbDropdownItem,
+  NgbDropdownMenu,
+  NgbDropdownToggle,
+  NgbTooltip,
+} from '@ng-bootstrap/ng-bootstrap';
+import {CurrencyPipe, NgFor} from '@angular/common';
+import {LevelPipe} from '../../../shared/pipe/level.pipe';
+import {LevelNamePipe} from '../../../shared/pipe/level-name.pipe';
 
 @Component({
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss'],
-  standalone: false,
+  imports: [
+    NgbTooltip,
+    RouterLink,
+    NgFor,
+    NgbDropdown,
+    NgbDropdownToggle,
+    NgbDropdownMenu,
+    NgbDropdownButtonItem,
+    NgbDropdownItem,
+    RouterOutlet,
+    CurrencyPipe,
+    LevelPipe,
+    LevelNamePipe,
+  ],
 })
 export class UserListComponent implements OnInit {
   users: User[] = [];

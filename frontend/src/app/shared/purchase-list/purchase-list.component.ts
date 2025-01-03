@@ -6,6 +6,8 @@ import {Purchase} from '../../core/model/purchase.interface';
 import {User} from '../../core/model/user.interface';
 import {CoffeeService} from '../../core/service/coffee.service';
 import {PurchaseService} from '../../core/service/purchase.service';
+import {CurrencyPipe, DatePipe, NgFor, NgIf} from '@angular/common';
+import {NgbPopover, NgbTooltip} from '@ng-bootstrap/ng-bootstrap';
 
 interface Item {
   _id: string;
@@ -21,7 +23,14 @@ interface Item {
   selector: 'app-purchase-list',
   templateUrl: './purchase-list.component.html',
   styleUrls: ['./purchase-list.component.scss'],
-  standalone: false,
+  imports: [
+    NgFor,
+    NgIf,
+    NgbTooltip,
+    NgbPopover,
+    CurrencyPipe,
+    DatePipe,
+  ],
 })
 export class PurchaseListComponent implements OnInit {
   @Input() users?: Record<string, User>;

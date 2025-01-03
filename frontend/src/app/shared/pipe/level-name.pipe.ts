@@ -20,10 +20,7 @@ export function levelName(level: number): string {
   return level < 0 ? 'Geringverdiener - pay your debt!' : level < LEVEL_NAMES.length ? LEVEL_NAMES[level] : LEVEL_NAMES[LEVEL_NAMES.length - 1];
 }
 
-@Pipe({
-  name: 'levelName',
-  standalone: false,
-})
+@Pipe({name: 'levelName'})
 export class LevelNamePipe implements PipeTransform {
   transform(value: number): string {
     return levelName(value);

@@ -5,12 +5,13 @@ import {CookieService} from 'ngx-cookie-service';
 import {UserService} from '../../core/service/user.service';
 import {switchMap, tap} from 'rxjs';
 import {ToastService} from '@mean-stream/ngbx';
+import {NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-autolog',
   templateUrl: './autolog.component.html',
   styleUrls: ['./autolog.component.scss'],
-  standalone: false,
+  imports: [NgIf],
 })
 export class AutologComponent implements OnInit {
   infoText: string | undefined;

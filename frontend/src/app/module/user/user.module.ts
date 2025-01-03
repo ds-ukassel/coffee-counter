@@ -11,19 +11,11 @@ import {UserListComponent} from './user-list/user-list.component';
 import {UserRoutingModule} from './user-routing.module';
 import {UserComponent} from './user.component';
 import {AchievementModalComponent} from './achievement-modal/achievement-modal.component';
-import { ShortcutListComponent } from './shortcut-list/shortcut-list.component';
+import {ShortcutListComponent} from './shortcut-list/shortcut-list.component';
 import {BaseChartDirective} from 'ng2-charts';
 
 
 @NgModule({
-  declarations: [
-    UserComponent,
-    UserListComponent,
-    NewUserModalComponent,
-    PurchaseModalComponent,
-    AchievementModalComponent,
-    ShortcutListComponent,
-  ],
   imports: [
     CommonModule,
     UserRoutingModule,
@@ -32,6 +24,12 @@ import {BaseChartDirective} from 'ng2-charts';
     SharedModule,
     ModalModule,
     BaseChartDirective,
+    UserComponent,
+    UserListComponent,
+    NewUserModalComponent,
+    PurchaseModalComponent,
+    AchievementModalComponent,
+    ShortcutListComponent,
   ],
 })
 export class UserModule {

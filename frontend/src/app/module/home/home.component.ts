@@ -1,16 +1,31 @@
 import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {NgbOffcanvas} from '@ng-bootstrap/ng-bootstrap';
+import {NgbOffcanvas, NgbTooltip} from '@ng-bootstrap/ng-bootstrap';
 import {switchMap} from 'rxjs';
 import {PurchaseService} from 'src/app/core/service/purchase.service';
 import {Shortcut, User} from '../../core/model/user.interface';
 import {CoffeeService} from '../../core/service/coffee.service';
 import {UserService} from '../../core/service/user.service';
+import {NgFor, PercentPipe} from '@angular/common';
+import {RouterLink} from '@angular/router';
+import {PulseDirective} from './pulse.directive';
+import {PurchaseListComponent} from '../../shared/purchase-list/purchase-list.component';
+import {LevelPipe} from '../../shared/pipe/level.pipe';
+import {LevelProgressPipe} from '../../shared/pipe/level-progress.pipe';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  standalone: false,
+  imports: [
+    NgFor,
+    RouterLink,
+    NgbTooltip,
+    PulseDirective,
+    PurchaseListComponent,
+    PercentPipe,
+    LevelPipe,
+    LevelProgressPipe,
+  ],
 })
 export class HomeComponent implements OnInit {
   @ViewChild('purchaseList') private purchaseList!: TemplateRef<any>;

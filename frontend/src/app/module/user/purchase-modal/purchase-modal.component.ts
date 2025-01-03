@@ -5,12 +5,21 @@ import {User} from '../../../core/model/user.interface';
 import {UserService} from '../../../core/service/user.service';
 import {CreatePurchaseDto} from '../../../core/model/purchase.interface';
 import {PurchaseService} from '../../../core/service/purchase.service';
+import {ModalModule} from '@mean-stream/ngbx';
+import {CurrencyPipe, NgFor, NgIf} from '@angular/common';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-purchase-modal',
   templateUrl: './purchase-modal.component.html',
   styleUrls: ['./purchase-modal.component.scss'],
-  standalone: false,
+  imports: [
+    ModalModule,
+    NgIf,
+    FormsModule,
+    NgFor,
+    CurrencyPipe,
+  ],
 })
 export class PurchaseModalComponent implements OnInit {
   user?: User;

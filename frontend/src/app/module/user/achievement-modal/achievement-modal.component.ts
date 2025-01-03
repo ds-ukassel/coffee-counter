@@ -3,12 +3,22 @@ import {ActivatedRoute} from '@angular/router';
 import {switchMap, tap} from 'rxjs';
 import {Achievement, AchievementInfo} from '../../../core/model/achievement.interface';
 import {AchievementService} from '../../../core/service/achievement.service';
+import {ModalModule} from '@mean-stream/ngbx';
+import {NgbTooltip} from '@ng-bootstrap/ng-bootstrap';
+import {DatePipe, NgIf} from '@angular/common';
+import {TrophyTierPipe} from '../../../shared/pipe/trophy-tier.pipe';
 
 @Component({
   selector: 'app-achievement-modal',
   templateUrl: './achievement-modal.component.html',
   styleUrls: ['./achievement-modal.component.scss'],
-  standalone: false,
+  imports: [
+    ModalModule,
+    NgbTooltip,
+    NgIf,
+    DatePipe,
+    TrophyTierPipe,
+  ],
 })
 export class AchievementModalComponent implements OnInit {
   info?: AchievementInfo;
