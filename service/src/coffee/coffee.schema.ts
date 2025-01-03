@@ -1,7 +1,7 @@
 import {Prop, Schema, SchemaFactory} from '@nestjs/mongoose';
 import {ApiProperty} from '@nestjs/swagger';
 import {Transform, Type} from 'class-transformer';
-import {IsDataURI, IsDate, IsMongoId, IsNumber, IsOptional} from 'class-validator';
+import {IsDate, IsMongoId, IsNumber} from 'class-validator';
 import {Document} from 'mongoose';
 
 @Schema({timestamps: false})
@@ -22,12 +22,6 @@ export class Coffee {
 	@ApiProperty()
 	@IsNumber()
 	price!: number;
-
-  @Prop()
-  @ApiProperty()
-  @IsOptional()
-  @IsDataURI()
-  photo?: string;
 }
 
 export type CoffeeDocument = Coffee & Document;
