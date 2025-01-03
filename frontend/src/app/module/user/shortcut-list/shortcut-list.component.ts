@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {Shortcut} from '../../../core/model/user.interface';
 import {FormsModule} from '@angular/forms';
 import {NgbPopover} from '@ng-bootstrap/ng-bootstrap';
@@ -12,7 +12,7 @@ import {NgbPopover} from '@ng-bootstrap/ng-bootstrap';
     NgbPopover,
   ],
 })
-export class ShortcutListComponent implements OnInit {
+export class ShortcutListComponent {
   @Input() shortcuts!: Shortcut[];
 
   icons = [
@@ -143,12 +143,6 @@ export class ShortcutListComponent implements OnInit {
     '🥄',
     '🫙',
   ];
-
-  constructor() {
-  }
-
-  ngOnInit(): void {
-  }
 
   add() {
     this.shortcuts.push({
