@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongodb
+spec:
+  selector:
+    matchLabels:
+      app: mongodb
+  serviceName: "mongodb"
+  replicas: {{ .Values.mongodb.replicas }}
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      containers:
+        - name: mongodb
+          image: mongo:latest
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - name: mongodb-storage
+              mountPath: /data/db
+  volumeClaimTemplates:
+    - {{- if .Values.mongodb.persistence.enabled }}
+      metadata:
+        name: mongodb-pvc
+      spec:
+        storageClassName: {{ .Values.mongodb.persistence.storageClass | quote }}
+        accessModes:
+          - {{ .Values.mongodb.persistence.accessMode | quote }}
+        resources:
+          requests:
+            storage: {{ .Values.mongodb.persistence.size | quote }}
+      {{- else if .Values.mongodb.persistence.existingClaim }}
+      metadata:
+        name: {{ .Values.mongodb.persistence.existingClaim }}
+      spec: {}
+      {{- else }}
+      {{- fail "Persistence is enabled, but no PVC or size is specified!" }}
+      {{- end }}

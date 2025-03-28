@@ -1,0 +1,31 @@
+mongodb:
+  replicas: 1
+  persistence:
+    storageClass: ""
+    existingClaim: ""
+    enabled: true
+    accessMode: ReadWriteOnce
+    size: 1Gi
+
+backend:
+  image: registry.uni-kassel.dev/coffee-counter/service:latest
+  replicas: 2
+  secret:
+    existingSecret: '' # specify to use an existing secret
+    apiKey: 'super-secret-key' # replace this with any secret
+  env:
+    MONGO_URI: "mongodb://mongodb:27017/coffee-counter"
+
+frontend:
+  image: registry.uni-kassel.dev/coffee-counter/frontend:latest
+  replicas: 2
+
+ingress:
+  enabled: true
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt"
+  host: coffee.uni-kassel.dev
+  tls:
+    - secretName: coffee-cert
+      hosts:
+        - coffee.uni-kassel.dev
