@@ -1,14 +1,17 @@
 mongodb:
   replicas: 1
   persistence:
-    storageClass: ""
+    storageClass: "-"
     existingClaim: ""
     enabled: true
     accessMode: ReadWriteOnce
     size: 1Gi
 
+imagePullSecrets:
+  - name: registry-vs
+
 backend:
-  image: registry.uni-kassel.dev/coffee-counter/service:latest
+  image: registry.uni-kassel.dev/coffee-counter/backend:latest
   replicas: 2
   secret:
     existingSecret: '' # specify to use an existing secret
@@ -24,6 +27,7 @@ ingress:
   enabled: true
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt"
+  className: nginx
   host: coffee.uni-kassel.dev
   tls:
     - secretName: coffee-cert

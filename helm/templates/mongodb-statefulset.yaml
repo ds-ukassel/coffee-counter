@@ -19,7 +19,7 @@ spec:
           ports:
             - containerPort: 27017
           volumeMounts:
-            - name: mongodb-storage
+            - name: mongodb-pvc
               mountPath: /data/db
   volumeClaimTemplates:
     - {{- if .Values.mongodb.persistence.enabled }}

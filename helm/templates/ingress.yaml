@@ -1,10 +1,13 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: myapp-ingress
+  name: coffee-ingress
   annotations:
 {{ toYaml .Values.ingress.annotations | indent 4 }}
 spec:
+  {{- if .Values.ingress.className }}
+  ingressClassName: {{ .Values.ingress.className | quote }}
+  {{- end }}
   tls:
 {{ toYaml .Values.ingress.tls | indent 4 }}
   rules:
@@ -17,11 +20,11 @@ spec:
               service:
                 name: backend
                 port:
-                  number: 80
+                  name: http
           - path: /
             pathType: Prefix
             backend:
               service:
                 name: frontend
                 port:
-                  number: 80
+                  name: http
