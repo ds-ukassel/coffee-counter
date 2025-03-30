@@ -5,7 +5,7 @@ mongodb:
     rootUser: admin
     rootPassword: '' # if unspecified, will generate a random password
   persistence:
-    storageClass: "-"
+    storageClass: ""
     existingClaim: ""
     enabled: true
     accessMode: ReadWriteOnce

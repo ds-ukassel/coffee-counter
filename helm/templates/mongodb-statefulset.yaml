@@ -29,7 +29,9 @@ spec:
       metadata:
         name: mongodb-pvc
       spec:
+        {{- if .Values.mongodb.persistence.storageClass }}
         storageClassName: {{ .Values.mongodb.persistence.storageClass | quote }}
+        {{- end }}
         accessModes:
           - {{ .Values.mongodb.persistence.accessMode | quote }}
         resources:
