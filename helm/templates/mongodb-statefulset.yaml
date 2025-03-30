@@ -21,6 +21,9 @@ spec:
           volumeMounts:
             - name: mongodb-pvc
               mountPath: /data/db
+          envFrom:
+            - secretRef:
+                name: mongodb-secret
   volumeClaimTemplates:
     - {{- if .Values.mongodb.persistence.enabled }}
       metadata:

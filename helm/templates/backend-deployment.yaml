@@ -17,11 +17,12 @@ spec:
       containers:
         - name: backend
           image: {{ .Values.backend.image }}
+          envFrom:
+            - secretRef:
+                name: backend-secret
           env:
             - name: MONGO_URI
-              value: {{ .Values.backend.env.MONGO_URI  }}
-            - name: COFFEE_API_KEY
               valueFrom:
                 secretKeyRef:
-                  name: coffee-api-secret
-                  key: COFFEE_API_KEY
+                  name: {{ default .Values.mongodb.secret.existingSecret "mongodb-secret" }}
+                  key: MONGO_URI

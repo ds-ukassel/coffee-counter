@@ -10,3 +10,11 @@ Open your browser and visit:
 
   http://{{ .Values.ingress.host }}
 {{- end}}
+
+Enter the API key in settings
+
+  $ kubectl get secret -n {{ .Release.Namespace }} backend-secret -o jsonpath='{.data.COFFEE_API_KEY}' | base64 --decode
+
+To connect to the database locally, get the MongoDB URI from the secret:
+
+  $ kubectl get secret -n {{ .Release.Namespace }} mongodb-secret -o jsonpath='{.data.MONGO_URI}' | base64 --decode

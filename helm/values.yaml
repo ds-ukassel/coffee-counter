@@ -1,5 +1,9 @@
 mongodb:
   replicas: 1
+  secret:
+    existingSecret: '' # specify to use an existing secret
+    rootUser: admin
+    rootPassword: '' # if unspecified, will generate a random password
   persistence:
     storageClass: "-"
     existingClaim: ""
@@ -15,9 +19,7 @@ backend:
   replicas: 2
   secret:
     existingSecret: '' # specify to use an existing secret
-    apiKey: 'super-secret-key' # replace this with any secret
-  env:
-    MONGO_URI: "mongodb://mongodb:27017/coffee-counter"
+    apiKey: '' # if blank, will generate a random key
 
 frontend:
   image: registry.uni-kassel.dev/coffee-counter/frontend:latest
