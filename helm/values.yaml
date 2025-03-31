@@ -1,5 +1,5 @@
 mongodb:
-  image: mongodb:8
+  image: mongo:8
   imagePullPolicy: Always
   replicas: 1
   secret:
@@ -32,7 +32,7 @@ frontend:
 ingress:
   enabled: true
   annotations:
-    cert-manager.io/cluster-issuer: "letsencrypt"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
   className: nginx
   host: coffee.uni-kassel.dev
   tls:
