@@ -1,4 +1,6 @@
 mongodb:
+  image: mongodb:8
+  imagePullPolicy: Always
   replicas: 1
   secret:
     existingSecret: '' # specify to use an existing secret
@@ -16,6 +18,7 @@ imagePullSecrets:
 
 backend:
   image: registry.uni-kassel.dev/coffee-counter/backend:latest
+  imagePullPolicy: Always
   replicas: 2
   secret:
     existingSecret: '' # specify to use an existing secret
@@ -23,6 +26,7 @@ backend:
 
 frontend:
   image: registry.uni-kassel.dev/coffee-counter/frontend:latest
+  imagePullPolicy: Always
   replicas: 2
 
 ingress:
