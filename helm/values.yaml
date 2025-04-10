@@ -23,6 +23,7 @@ backend:
   secret:
     existingSecret: '' # specify to use an existing secret
     apiKey: '' # if blank, will generate a random key
+    coffeePrice: 0.30
 
 frontend:
   image: registry.uni-kassel.dev/coffee-counter/frontend:latest
