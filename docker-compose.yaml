@@ -5,5 +5,32 @@ services:
       - "27017:27017"
     volumes:
       - data:/data/db
+
+  backend:
+    image: registry.uni-kassel.dev/coffee-counter/backend:latest
+    build:
+      context: service/
+      platforms:
+        - linux/amd64
+        - linux/arm64
+    ports:
+      - "3000:3000"
+    environment:
+      MONGO_URI: "mongodb://database:27017/coffee-counter"
+      COFFEE_API_KEY: "super-secret-key" # replace this with any secret
+    depends_on:
+      - database
+
+  frontend:
+    image: registry.uni-kassel.dev/coffee-counter/frontend:latest
+    build:
+      context: frontend/
+      platforms:
+        - linux/amd64
+        - linux/arm64
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
 volumes:
   data:

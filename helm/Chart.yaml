@@ -1,0 +1,4 @@
+apiVersion: v2
+name: coffee-counter
+description: A Helm chart for deploying MongoDB, Backend, Frontend, and Ingress
+version: 0.1.0

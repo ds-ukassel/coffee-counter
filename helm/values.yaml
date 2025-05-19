@@ -1,0 +1,42 @@
+mongodb:
+  image: mongo:8
+  imagePullPolicy: Always
+  replicas: 1
+  secret:
+    existingSecret: '' # specify to use an existing secret
+    rootUser: admin
+    rootPassword: '' # if unspecified, will generate a random password
+  persistence:
+    storageClass: ""
+    existingClaim: ""
+    enabled: true
+    accessMode: ReadWriteOnce
+    size: 1Gi
+
+imagePullSecrets:
+  - name: registry-vs
+
+backend:
+  image: registry.uni-kassel.dev/coffee-counter/backend:latest
+  imagePullPolicy: Always
+  replicas: 2
+  secret:
+    existingSecret: '' # specify to use an existing secret
+    apiKey: '' # if blank, will generate a random key
+    coffeePrice: 0.30
+
+frontend:
+  image: registry.uni-kassel.dev/coffee-counter/frontend:latest
+  imagePullPolicy: Always
+  replicas: 2
+
+ingress:
+  enabled: true
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  className: nginx
+  host: coffee.uni-kassel.dev
+  tls:
+    - secretName: coffee-cert
+      hosts:
+        - coffee.uni-kassel.dev

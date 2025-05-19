@@ -1,0 +1,20 @@
+Coffee Counter installed as {{ .Release.Name }} in namespace {{ .Release.Namespace }}.
+
+To learn more about the release, try:
+
+  $ helm status -n {{ .Release.Namespace }} {{ .Release.Name }}
+  $ helm get all -n {{ .Release.Namespace }} {{ .Release.Name }}
+
+{{- if .Values.ingress.enabled }}
+Open your browser and visit:
+
+  http://{{ .Values.ingress.host }}
+{{- end}}
+
+Enter the API key in settings
+
+  $ kubectl get secret -n {{ .Release.Namespace }} backend-secret -o jsonpath='{.data.COFFEE_API_KEY}' | base64 --decode
+
+To connect to the database locally, get the MongoDB URI from the secret:
+
+  $ kubectl get secret -n {{ .Release.Namespace }} mongodb-secret -o jsonpath='{.data.MONGO_URI}' | base64 --decode
