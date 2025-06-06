@@ -27,7 +27,7 @@ import {LevelProgressPipe} from '../../shared/pipe/level-progress.pipe';
   ],
 })
 export class HomeComponent implements OnInit {
-  @ViewChild('purchaseList') private purchaseList!: TemplateRef<any>;
+  @ViewChild('purchaseList') private purchaseList!: TemplateRef<unknown>;
 
   users: User[] = [];
   userMap: Record<string, User> = {};
@@ -43,7 +43,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.userService.findAll().subscribe(users => {
       this.users = users;
-      for (let user of users) {
+      for (const user of users) {
         this.userMap[user._id] = user;
       }
     });

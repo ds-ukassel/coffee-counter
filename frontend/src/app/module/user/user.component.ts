@@ -95,7 +95,10 @@ export class UserComponent implements OnInit {
   }
 
   createCoffee() {
-    this.user && this.coffeeService.create({
+    if (!this.user) {
+      return;
+    }
+    this.coffeeService.create({
       userId: this.user._id,
     }).subscribe(coffee => {
       this.user!.coffees++;
@@ -112,7 +115,10 @@ export class UserComponent implements OnInit {
   }
 
   updateUser() {
-    this.user && this.userService.updateOne(this.user._id, {
+    if (!this.user) {
+      return;
+    }
+    this.userService.updateOne(this.user._id, {
       name: this.editName || this.user.name,
       avatar: this.editAvatar || this.user.avatar,
     }).subscribe(res => {
@@ -126,7 +132,10 @@ export class UserComponent implements OnInit {
   }
 
   saveShortcuts() {
-    this.user && this.userService.updateOne(this.user._id, {
+    if (!this.user) {
+      return;
+    }
+    this.userService.updateOne(this.user._id, {
       shortcuts: this.user.shortcuts,
     }).subscribe(res => {
       this.user = res;
