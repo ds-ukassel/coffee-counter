@@ -1,8 +1,8 @@
 $primary: #a07150;
 $color-mode-type: media-query;
 
-@import 'node_modules/bootstrap/scss/bootstrap';
-@import 'node_modules/bootstrap-icons/font/bootstrap-icons';
+@import 'bootstrap/scss/bootstrap';
+@import 'bootstrap-icons/font/bootstrap-icons';
 
 .dropdown-toggle[class*=bi-]:empty::after {
   // Remove caret from dropdown toggle buttons that are just icons
