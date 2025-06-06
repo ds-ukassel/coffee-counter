@@ -1,13 +1,11 @@
+import {CurrencyPipe, DatePipe} from '@angular/common';
 import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
+import {NgbPopover, NgbTooltip} from '@ng-bootstrap/ng-bootstrap';
 import {forkJoin, map, Observable, switchMap} from 'rxjs';
-import {Coffee} from '../../core/model/coffee.interface';
-import {Purchase} from '../../core/model/purchase.interface';
 import {User} from '../../core/model/user.interface';
 import {CoffeeService} from '../../core/service/coffee.service';
 import {PurchaseService} from '../../core/service/purchase.service';
-import {CurrencyPipe, DatePipe} from '@angular/common';
-import {NgbPopover, NgbTooltip} from '@ng-bootstrap/ng-bootstrap';
 
 interface Item {
   _id: string;
