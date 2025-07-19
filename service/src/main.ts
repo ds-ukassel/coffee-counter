@@ -1,4 +1,4 @@
-import {ValidationPipe} from '@nestjs/common';
+import {Logger, ValidationPipe} from '@nestjs/common';
 import {NestFactory} from '@nestjs/core';
 import {DocumentBuilder, SwaggerModule} from '@nestjs/swagger';
 import {ApiKeyGuard} from './api-key.guard';
@@ -34,4 +34,4 @@ async function bootstrap() {
 	await app.listen(environment.port);
 }
 
-bootstrap();
+bootstrap().catch((err: Error) => Logger.error(`Error during bootstrap: ${err.message}`, err.stack));

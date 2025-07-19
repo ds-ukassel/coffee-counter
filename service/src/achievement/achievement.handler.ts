@@ -38,7 +38,7 @@ export class AchievementHandler {
 			return;
 		}
 
-		let desc = purchase.description.toLowerCase();
+		const desc = purchase.description.toLowerCase();
 		const milk = ['milk', 'milch'];
 		if (milk.some(m => desc.includes(m))) {
 			await this.awardRepeatable(purchase.userId, 'buyer-of-milk', purchase.createdAt);

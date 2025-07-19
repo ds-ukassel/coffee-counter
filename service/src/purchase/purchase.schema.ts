@@ -1,8 +1,8 @@
 import {Prop, Schema, SchemaFactory} from '@nestjs/mongoose';
 import {ApiProperty, ApiPropertyOptional} from '@nestjs/swagger';
 import {Type} from 'class-transformer';
-import {IsMongoId, IsNumber, IsOptional, IsPositive, IsString} from 'class-validator';
-import {Document} from 'mongoose';
+import {IsMongoId, IsNumber, IsOptional, IsString} from 'class-validator';
+import {Document, Types} from 'mongoose';
 
 @Schema({timestamps: {createdAt: true, updatedAt: false}})
 export class Purchase {
@@ -28,7 +28,7 @@ export class Purchase {
 	total!: number;
 }
 
-export type PurchaseDocument = Purchase & Document;
+export type PurchaseDocument = Purchase & Document<Types.ObjectId>;
 
 export const PurchaseSchema = SchemaFactory.createForClass(Purchase)
 	.set('toJSON', {virtuals: true})
