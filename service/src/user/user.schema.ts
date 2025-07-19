@@ -73,6 +73,6 @@ export class User {
 	shortcuts?: Shortcut[];
 }
 
-export type UserDocument = User & Document;
+export type UserDocument = User & Document<Types.ObjectId>;
 
 export const UserSchema = SchemaFactory.createForClass(User);

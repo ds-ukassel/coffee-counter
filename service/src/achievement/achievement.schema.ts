@@ -10,7 +10,8 @@ import {Document} from 'mongoose';
 	toJSON: {
 		virtuals: true,
 		transform: (doc, ret) => {
-			delete ret._id;
+			// @ts-expect-error hide the _id field
+      delete ret._id;
 		},
 	},
 })

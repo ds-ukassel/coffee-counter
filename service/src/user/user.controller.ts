@@ -1,16 +1,17 @@
 import {
-	Body,
-	ConflictException,
-	Controller, DefaultValuePipe,
-	Delete,
-	Get,
-	Param,
-	ParseBoolPipe,
-	Patch,
-	Post,
-	Query,
+  Body,
+  ConflictException,
+  Controller,
+  DefaultValuePipe,
+  Delete,
+  Get,
+  Param,
+  ParseBoolPipe,
+  Patch,
+  Post,
+  Query,
 } from '@nestjs/common';
-import {ApiConflictResponse, ApiCreatedResponse, ApiOkResponse, ApiQuery, ApiTags} from '@nestjs/swagger';
+import {ApiConflictResponse, ApiCreatedResponse, ApiOkResponse, ApiTags} from '@nestjs/swagger';
 import {CreateUserDto, UpdateUserDto} from './user.dto';
 import {User} from './user.schema';
 import {UserService} from './user.service';

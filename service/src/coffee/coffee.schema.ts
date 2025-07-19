@@ -2,7 +2,7 @@ import {Prop, Schema, SchemaFactory} from '@nestjs/mongoose';
 import {ApiProperty} from '@nestjs/swagger';
 import {Transform, Type} from 'class-transformer';
 import {IsDate, IsMongoId, IsNumber} from 'class-validator';
-import {Document} from 'mongoose';
+import {Document, Types} from 'mongoose';
 
 @Schema({timestamps: false})
 export class Coffee {
@@ -24,7 +24,7 @@ export class Coffee {
 	price!: number;
 }
 
-export type CoffeeDocument = Coffee & Document;
+export type CoffeeDocument = Coffee & Document<Types.ObjectId>;
 
 export const CoffeeSchema = SchemaFactory.createForClass(Coffee)
 	.set('toJSON', {virtuals: true})
