@@ -41,6 +41,5 @@ jobs:
           rancher_token: ${{ secrets.RANCHER_TOKEN }}
           cluster_id: ${{ secrets.RANCHER_CLUSTER }}
           namespace: coffee-counter
-          kind: deployment
-          workload: backend
+          workloads: deployment/backend
           docker_image: ${{ secrets.DOCKER_REGISTRY }}/coffee-counter/backend
