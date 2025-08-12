@@ -41,18 +41,18 @@
     "@angular/build": "^20.1.4",
     "@angular/cli": "^20.1.4",
     "@angular/compiler-cli": "^20.1.4",
-    "@eslint/js": "^9.31.0",
+    "@eslint/js": "^9.33.0",
     "@types/jasmine": "~5.1.8",
-    "@types/node": "^24.0.15",
+    "@types/node": "^24.2.1",
     "angular-eslint": "^20.1.1",
-    "eslint": "^9.31.0",
+    "eslint": "^9.33.0",
     "jasmine-core": "~5.9.0",
     "karma": "~6.4.4",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.1",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "typescript": "~5.8.3",
-    "typescript-eslint": "^8.38.0"
+    "typescript": "~5.9.2",
+    "typescript-eslint": "^8.39.1"
   }
 }
