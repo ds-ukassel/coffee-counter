@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {switchMap} from 'rxjs';
 import {User} from '../../../core/model/user.interface';
 import {UserService} from '../../../core/service/user.service';
@@ -23,12 +23,12 @@ export class PurchaseModalComponent implements OnInit {
   user?: User;
 
   purchase: CreatePurchaseDto = {userId: '', total: 1};
-  multiplier = 0.01;
 
   descriptions: string[] = [];
 
   constructor(
     public route: ActivatedRoute,
+    private router: Router,
     private userService: UserService,
     private purchaseService: PurchaseService,
   ) {
@@ -49,6 +49,8 @@ export class PurchaseModalComponent implements OnInit {
       return;
     }
     this.purchase.userId = this.user._id;
-    this.purchaseService.create(this.purchase).subscribe();
+    this.purchaseService.create(this.purchase).subscribe(purchase => {
+      this.router.navigate(['..'], {relativeTo: this.route, queryParams: {newPurchase: purchase._id}});
+    });
   }
 }
