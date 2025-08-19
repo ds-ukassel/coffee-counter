@@ -1,9 +1,10 @@
 import {Component} from '@angular/core';
-import {ModalComponent, ModalModule} from '@mean-stream/ngbx';
+import {FormsModule} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+import {ModalModule} from '@mean-stream/ngbx';
+import {NgbTooltip} from '@ng-bootstrap/ng-bootstrap';
 import {CreateUserDto} from '../../../core/model/user.interface';
 import {UserService} from '../../../core/service/user.service';
-import {FormsModule} from '@angular/forms';
-import {NgbTooltip} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-new-user-modal',
@@ -21,18 +22,24 @@ export class NewUserModalComponent {
 
   constructor(
     private userService: UserService,
+    private route: ActivatedRoute,
+    private router: Router,
   ) {
   }
 
-  create(modal: ModalComponent): void {
+  create(): void {
     if (!this.user.avatar) {
       delete this.user.avatar;
     }
     this.user.balance += '';
     this.creating = true;
-    this.userService.createOne(this.user).subscribe(() => {
+    this.userService.createOne(this.user).subscribe(user => {
       this.creating = false;
-      modal.close();
+      this.router.navigate(['..'], {
+        relativeTo: this.route,
+        queryParams: {newUser: user._id},
+        queryParamsHandling: 'merge',
+      });
     }, error => {
       this.creating = false;
       console.error(error);

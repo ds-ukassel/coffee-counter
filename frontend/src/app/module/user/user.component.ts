@@ -1,14 +1,15 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute, RouterLink, RouterOutlet} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink, RouterOutlet} from '@angular/router';
 import {NgbPopover, NgbTooltip} from '@ng-bootstrap/ng-bootstrap';
 import {ChartData} from 'chart.js';
 import {ToastService} from '@mean-stream/ngbx';
 import {BaseChartDirective} from 'ng2-charts';
-import {map, switchMap} from 'rxjs';
+import {EMPTY, map, switchMap} from 'rxjs';
 import {AchievementInfo} from '../../core/model/achievement.interface';
 import {User} from '../../core/model/user.interface';
 import {AchievementService} from '../../core/service/achievement.service';
 import {CoffeeService} from '../../core/service/coffee.service';
+import {PurchaseService} from '../../core/service/purchase.service';
 import {UserService} from '../../core/service/user.service';
 import {CurrencyPipe} from '@angular/common';
 import {FormsModule} from '@angular/forms';
@@ -39,6 +40,7 @@ import {NextLevelPipe} from '../../shared/pipe/level-progress.pipe';
 })
 export class UserComponent implements OnInit {
   @ViewChild(BaseChartDirective) coffeeChart: BaseChartDirective | undefined;
+  @ViewChild(PurchaseListComponent) purchaseList: PurchaseListComponent | undefined;
 
   user?: User;
   editName?: string;
@@ -60,8 +62,11 @@ export class UserComponent implements OnInit {
   };
 
   constructor(
+    private route: ActivatedRoute,
+    private router: Router,
     private userService: UserService,
     private coffeeService: CoffeeService,
+    private purchaseService: PurchaseService,
     private activatedRoute: ActivatedRoute,
     private achievementService: AchievementService,
     private toastService: ToastService,
@@ -92,6 +97,20 @@ export class UserComponent implements OnInit {
       }
       this.coffeeChart?.update();
     });
+
+    this.route.queryParams.pipe(
+      switchMap(({newPurchase}) => newPurchase ? this.purchaseService.findOne(newPurchase) : EMPTY),
+    ).subscribe(newPurchase => {
+      if (this.user) {
+        this.user.balance = (+this.user.balance + newPurchase.total).toFixed(2);
+      }
+      this.purchaseList?.addPurchase(newPurchase);
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: {newPurchase: null},
+        queryParamsHandling: 'merge',
+      });
+    });
   }
 
   createCoffee() {
@@ -103,6 +122,8 @@ export class UserComponent implements OnInit {
     }).subscribe(coffee => {
       this.user!.coffees++;
       this.user!.balance = (+this.user!.balance - coffee.price).toFixed(2);
+      this.purchaseList?.addCoffee(coffee);
+
       const hour = new Date(coffee.createdAt).getHours();
       const data = this.coffeeData.datasets[0].data;
       const datum = data[hour];

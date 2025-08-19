@@ -14,6 +14,10 @@ export class PurchaseService {
   ) {
   }
 
+  findOne(id: string) {
+    return this.http.get<Purchase>(`${environment.apiUrl}/purchases/${id}`);
+  }
+
   findAll(dto: FindAllPurchaseDto): Observable<Purchase[]> {
     return this.http.get<Purchase[]>(environment.apiUrl + '/purchases', {params: dto});
   }

@@ -3,6 +3,8 @@ import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {NgbPopover, NgbTooltip} from '@ng-bootstrap/ng-bootstrap';
 import {forkJoin, map, Observable, switchMap} from 'rxjs';
+import {Coffee} from '../../core/model/coffee.interface';
+import {Purchase} from '../../core/model/purchase.interface';
 import {User} from '../../core/model/user.interface';
 import {CoffeeService} from '../../core/service/coffee.service';
 import {PurchaseService} from '../../core/service/purchase.service';
@@ -40,6 +42,14 @@ export class PurchaseListComponent implements OnInit {
   ) {
   }
 
+  addCoffee(coffee: Coffee) {
+    this.items.unshift(coffeeToItem(coffee));
+  }
+
+  addPurchase(purchase: Purchase) {
+    this.items.unshift(purchaseToItem(purchase));
+  }
+
   ngOnInit(): void {
     const userId$ = this.route.params.pipe(map(({user}): string => user));
 
@@ -50,20 +60,8 @@ export class PurchaseListComponent implements OnInit {
       ])),
     ).subscribe(([coffees, purchases]) => {
       this.items = [
-        ...coffees.map(c => ({
-          ...c,
-          description: 'Coffee',
-          type: 'coffee' as const,
-          icon: 'bi-cup',
-          money: -c.price,
-        })),
-        ...purchases.map(p => ({
-          ...p,
-          description: p.description ?? 'Purchase',
-          type: 'purchase' as const,
-          icon: 'bi-shop',
-          money: p.total,
-        })),
+        ...coffees.map(coffeeToItem),
+        ...purchases.map(purchaseToItem),
       ].sort((a, b) => +new Date(b.createdAt) - +new Date(a.createdAt)).slice(0, 20);
     });
   }
@@ -74,4 +72,28 @@ export class PurchaseListComponent implements OnInit {
       this.items = this.items.filter(item => item._id !== res._id);
     });
   }
+}
+
+function coffeeToItem(c: Coffee): Item {
+  return {
+    _id: c._id,
+    createdAt: c.createdAt,
+    userId: c.userId,
+    description: 'Coffee',
+    type: 'coffee' as const,
+    icon: 'bi-cup',
+    money: -c.price,
+  };
+}
+
+function purchaseToItem(p: Purchase): Item {
+  return {
+    _id: p._id,
+    createdAt: p.createdAt,
+    userId: p.userId,
+    description: p.description ?? 'Purchase',
+    type: 'purchase' as const,
+    icon: 'bi-shop',
+    money: p.total,
+  };
 }
