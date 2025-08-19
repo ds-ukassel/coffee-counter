@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router, RouterLink, RouterOutlet} from '@angular/router';
-import {map, switchMap, tap} from 'rxjs';
+import {EMPTY, map, switchMap, tap} from 'rxjs';
 import {User} from '../../../core/model/user.interface';
 import {UserService} from '../../../core/service/user.service';
 import {
@@ -51,6 +51,18 @@ export class UserListComponent implements OnInit {
       switchMap(archived => this.userService.findAll(archived)),
     ).subscribe(users => {
       this.users = users;
+    });
+
+    this.route.queryParams.pipe(
+      switchMap(({newUser}) => newUser ? this.userService.findOne(newUser) : EMPTY),
+    ).subscribe(newUser => {
+      this.users.push(newUser);
+      this.users.sort((a, b) => a.name.localeCompare(b.name));
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: {newUser: null},
+        queryParamsHandling: 'merge',
+      });
     });
   }
 

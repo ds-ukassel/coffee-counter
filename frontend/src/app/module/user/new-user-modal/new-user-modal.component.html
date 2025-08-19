@@ -46,7 +46,7 @@
     <button class="btn btn-secondary" (click)="modal.close()">
       Cancel
     </button>
-    <button class="btn btn-success" (click)="create(modal)" [disabled]="creating">
+    <button class="btn btn-success" (click)="create()" [disabled]="creating">
       {{ creating ? 'Creating...' : 'Create' }}
     </button>
   </ng-container>
