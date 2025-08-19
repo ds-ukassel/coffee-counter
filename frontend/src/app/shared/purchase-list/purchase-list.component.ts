@@ -95,5 +95,5 @@ function purchaseToItem(p: Purchase): Item {
     type: 'purchase' as const,
     icon: 'bi-shop',
     money: p.total,
-  }
+  };
 }
