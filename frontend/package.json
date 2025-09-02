@@ -26,7 +26,7 @@
     "@mean-stream/ngbx": "^0.14.0",
     "@ng-bootstrap/ng-bootstrap": "^19.0.1",
     "@popperjs/core": "^2.11.8",
-    "bootstrap": "^5.3.7",
+    "bootstrap": "^5.3.8",
     "bootstrap-icons": "^1.13.1",
     "chart.js": "^4.5.0",
     "class-validator": "^0.14.2",
