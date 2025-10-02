@@ -1,17 +1,6 @@
 mongodb:
-  image: mongo:8
-  imagePullPolicy: Always
-  replicas: 1
   secret:
-    existingSecret: '' # specify to use an existing secret
-    rootUser: admin
-    rootPassword: '' # if unspecified, will generate a random password
-  persistence:
-    storageClass: ""
-    existingClaim: ""
-    enabled: true
-    accessMode: ReadWriteOnce
-    size: 1Gi
+    existingSecret: 'mongodb-secret' # specify to use an existing secret
 
 imagePullSecrets:
   - name: registry-vs
