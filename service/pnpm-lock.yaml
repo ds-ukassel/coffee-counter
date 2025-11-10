@@ -19,7 +19,7 @@ importers:
         version: 3.0.1(@nestjs/common@11.1.8(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.8)
       '@nestjs/mongoose':
         specifier: ^11.0.3
-        version: 11.0.3(@nestjs/common@11.1.8(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.8)(mongoose@8.19.2(socks@2.8.3))(rxjs@7.8.2)
+        version: 11.0.3(@nestjs/common@11.1.8(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.8)(mongoose@8.19.3(socks@2.8.3))(rxjs@7.8.2)
       '@nestjs/platform-express':
         specifier: ^11.1.8
         version: 11.1.8(@nestjs/common@11.1.8(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.8)
@@ -36,8 +36,8 @@ importers:
         specifier: ^5.1.0
         version: 5.1.0
       mongoose:
-        specifier: ^8.19.2
-        version: 8.19.2(socks@2.8.3)
+        specifier: ^8.19.3
+        version: 8.19.3(socks@2.8.3)
       reflect-metadata:
         specifier: ^0.2.2
         version: 0.2.2
@@ -2471,8 +2471,8 @@ packages:
       socks:
         optional: true
 
-  mongoose@8.19.2:
-    resolution: {integrity: sha512-ww2T4dBV+suCbOfG5YPwj9pLCfUVyj8FEA1D3Ux1HHqutpLxGyOYEPU06iPRBW4cKr3PJfOSYsIpHWPTkz5zig==}
+  mongoose@8.19.3:
+    resolution: {integrity: sha512-fTAGaIohkk8wCggMuBuqTVD4YrM1/J8cBr1ekqzFqtz65qkLjtX2dcy3NH1e+2rk2365dyrrsPAnt4YTxBhEiQ==}
     engines: {node: '>=16.20.1'}
 
   mpath@0.9.0:
@@ -4094,11 +4094,11 @@ snapshots:
       class-transformer: 0.5.1
       class-validator: 0.14.2
 
-  '@nestjs/mongoose@11.0.3(@nestjs/common@11.1.8(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.8)(mongoose@8.19.2(socks@2.8.3))(rxjs@7.8.2)':
+  '@nestjs/mongoose@11.0.3(@nestjs/common@11.1.8(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.8)(mongoose@8.19.3(socks@2.8.3))(rxjs@7.8.2)':
     dependencies:
       '@nestjs/common': 11.1.8(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/core': 11.1.8(@nestjs/common@11.1.8(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@11.1.8)(reflect-metadata@0.2.2)(rxjs@7.8.2)
-      mongoose: 8.19.2(socks@2.8.3)
+      mongoose: 8.19.3(socks@2.8.3)
       rxjs: 7.8.2
 
   '@nestjs/platform-express@11.1.8(@nestjs/common@11.1.8(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.8)':
@@ -6067,7 +6067,7 @@ snapshots:
     optionalDependencies:
       socks: 2.8.3
 
-  mongoose@8.19.2(socks@2.8.3):
+  mongoose@8.19.3(socks@2.8.3):
     dependencies:
       bson: 6.10.4
       kareem: 2.6.3
