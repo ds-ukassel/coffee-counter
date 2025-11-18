@@ -5,11 +5,11 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
   - package-ecosystem: "npm"
     directory: "frontend/"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
     groups:
       # https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/optimizing-pr-creation-version-updates
       angular:
@@ -27,7 +27,7 @@ updates:
   - package-ecosystem: "npm"
     directory: "service/"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
     groups:
       nestjs:
         applies-to: version-updates
