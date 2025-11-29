@@ -14,7 +14,7 @@ export class PulseDirective {
   constructor(private el: ElementRef) {
   }
 
-  @HostListener('click', ['$event.target'])
+  @HostListener('click')
   restartAnimation() {
     this.el.nativeElement.animate(this.keyframes, this.options);
   }
