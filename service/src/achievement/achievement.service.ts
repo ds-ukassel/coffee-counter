@@ -1,7 +1,7 @@
 import {Injectable} from '@nestjs/common';
 import {EventEmitter2} from '@nestjs/event-emitter';
 import {InjectModel} from '@nestjs/mongoose';
-import {FilterQuery, Model, UpdateQuery} from 'mongoose';
+import {Model, QueryFilter, UpdateQuery} from 'mongoose';
 
 import {CreateAchievementDto, UpdateAchievementDto} from './achievement.dto';
 import {Achievement} from './achievement.schema';
@@ -26,7 +26,7 @@ export class AchievementService {
 		return value;
 	}
 
-	async findAll(userId: string, filter?: FilterQuery<Achievement>): Promise<Achievement[]> {
+	async findAll(userId: string, filter?: QueryFilter<Achievement>): Promise<Achievement[]> {
 		return this.model.find({...filter, userId}).exec();
 	}
 

@@ -1,7 +1,8 @@
 import {Injectable} from '@nestjs/common';
 import {EventEmitter2} from '@nestjs/event-emitter';
 import {InjectModel} from '@nestjs/mongoose';
-import {FilterQuery, Model, UpdateQuery} from 'mongoose';
+import {Model, QueryFilter, UpdateQuery} from 'mongoose';
+
 import {CreateUserDto, UpdateUserDto} from './user.dto';
 import {User, UserDocument} from './user.schema';
 
@@ -13,7 +14,7 @@ export class UserService {
 	) {
 	}
 
-	async findAll(filter: FilterQuery<User> = {}): Promise<User[]> {
+	async findAll(filter: QueryFilter<User> = {}): Promise<User[]> {
 		return this.model.find(filter).sort({name: 1}).exec();
 	}
 
