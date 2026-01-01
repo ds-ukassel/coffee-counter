@@ -75,7 +75,7 @@ export class UserController {
 	@NotFound()
 	@ApiOkResponse({type: User})
 	async delete(
-		@Param('id') id: Types.ObjectId,
+		@Param('id', ObjectIdPipe) id: Types.ObjectId,
 	): Promise<User | null> {
 		return this.userService.delete(id);
 	}
