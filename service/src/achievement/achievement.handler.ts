@@ -23,7 +23,7 @@ export class AchievementHandler {
 			await this.awardRepeatable(coffee.userId, 'early-bird', coffee.createdAt);
 		}
 
-		const bestUsers = await this.userService.model.find().sort({coffees: -1}).limit(1).exec();
+		const bestUsers = await this.userService.findAll({}, {sort: {coffees: -1}, limit: 1});
 		if (bestUsers.length) {
 			const bestUserId = bestUsers[0]._id.toString();
 			if (bestUserId === coffee.userId) { // no point in updating if their count did not change
@@ -54,7 +54,7 @@ export class AchievementHandler {
 	}
 
 	private async awardOnce(userId: string, id: string, unlockedAt: Date = new Date()) {
-		await this.achievementService.create(userId, id, {
+		await this.achievementService.upsert({userId, id}, {
 			$setOnInsert: {
 				unlockedAt,
 			},
@@ -62,7 +62,7 @@ export class AchievementHandler {
 	}
 
 	private async awardRepeatable(userId: string, id: string, unlockedAt: Date = new Date()) {
-		await this.achievementService.create(userId, id, {
+		await this.achievementService.upsert({userId, id}, {
 			$setOnInsert: {
 				unlockedAt,
 			},

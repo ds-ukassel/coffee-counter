@@ -1,3 +1,4 @@
+import {NotFound, ObjectIdPipe} from '@mean-stream/nestx';
 import {
   Body,
   ConflictException,
@@ -12,6 +13,8 @@ import {
   Query,
 } from '@nestjs/common';
 import {ApiConflictResponse, ApiCreatedResponse, ApiOkResponse, ApiTags} from '@nestjs/swagger';
+import {MongooseError, Types} from 'mongoose';
+
 import {CreateUserDto, UpdateUserDto} from './user.dto';
 import {User} from './user.schema';
 import {UserService} from './user.service';
@@ -29,42 +32,50 @@ export class UserController {
 	async getUsers(
 		@Query('archived', new DefaultValuePipe(false), ParseBoolPipe) archived: boolean,
 	): Promise<User[]> {
-		return this.userService.findAll({archived: archived ? true : {$ne: true}});
+		return this.userService.findAll({archived: archived ? true : {$ne: true}}, {sort: {name: 1}});
 	}
 
 	@Get(':id')
-	// TODO @NotFound
+	@NotFound()
 	@ApiOkResponse({type: User})
-	async getUser(@Param('id') id: string): Promise<User | null> {
+	async getUser(
+    @Param('id', ObjectIdPipe) id: Types.ObjectId,
+  ): Promise<User | null> {
 		return this.userService.find(id);
 	}
 
 	@Post()
 	@ApiCreatedResponse({type: User})
 	@ApiConflictResponse({type: User, description: 'Username was already taken.'})
-	async create(@Body() dto: CreateUserDto): Promise<User> {
-		const existing = await this.userService.findAll({name: dto.name});
-		if (existing.length) {
-			throw new ConflictException('Username already taken');
-		}
-		return this.userService.create(dto);
+	async create(
+    @Body() dto: CreateUserDto,
+  ): Promise<User> {
+    try {
+      return await this.userService.create(dto);
+    } catch (e: unknown) {
+      if (e instanceof MongooseError && e.message.includes('E11000')) {
+        throw new ConflictException('Username already taken');
+      } else {
+        throw e;
+      }
+    }
 	}
 
 	@Patch(':id')
-	// TODO @NotFound()
+	@NotFound()
 	@ApiOkResponse({type: User})
 	async update(
-		@Param('id') id: string,
+		@Param('id', ObjectIdPipe) id: Types.ObjectId,
 		@Body() dto: UpdateUserDto,
 	): Promise<User | null> {
 		return this.userService.update(id, dto);
 	}
 
 	@Delete(':id')
-	// TODO @NotFound()
+	@NotFound()
 	@ApiOkResponse({type: User})
 	async delete(
-		@Param('id') id: string,
+		@Param('id') id: Types.ObjectId,
 	): Promise<User | null> {
 		return this.userService.delete(id);
 	}

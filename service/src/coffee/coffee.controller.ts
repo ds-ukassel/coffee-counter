@@ -1,6 +1,9 @@
+import {NotFound, ObjectIdPipe} from '@mean-stream/nestx';
 import {Body, Controller, Delete, Get, Param, Patch, Post, Query} from '@nestjs/common';
 import {ApiCreatedResponse, ApiOkResponse, ApiTags} from '@nestjs/swagger';
+import {Types} from 'mongoose';
 
+import {environment} from '../environment';
 import {CoffeeDiagramData, CreateCoffeeDto, FilterCoffeeDto, UpdateCoffeeDto} from './coffee.dto';
 import {Coffee} from './coffee.schema';
 import {CoffeeService} from './coffee.service';
@@ -18,7 +21,7 @@ export class CoffeeController {
 	async create(
 		@Body() dto: CreateCoffeeDto,
 	): Promise<Coffee> {
-		return this.coffeeService.create(dto);
+		return this.coffeeService.create({...dto, price: environment.coffeePrice});
 	}
 
 	@Get()
@@ -26,7 +29,7 @@ export class CoffeeController {
 	async findAll(
 		@Query() filter: FilterCoffeeDto,
 	): Promise<Coffee[]> {
-		return this.coffeeService.findAll(filter);
+		return this.coffeeService.findAll(filter, {sort: {createdAt: -1}, limit: 20});
 	}
 
 	@Get(':id/diagram')
@@ -38,30 +41,30 @@ export class CoffeeController {
 	}
 
 	@Get(':id')
-	// TODO @NotFound()
+	@NotFound()
 	@ApiOkResponse({type: Coffee})
 	async findOne(
-		@Param('id') id: string,
+    @Param('id', ObjectIdPipe) id: Types.ObjectId,
 	): Promise<Coffee | null> {
 		return this.coffeeService.findOne(id);
 	}
 
 	@Patch(':id')
-	// TODO @NotFound()
+	@NotFound()
 	@ApiOkResponse({type: Coffee})
 	async update(
-		@Param('id') id: string,
+    @Param('id', ObjectIdPipe) id: Types.ObjectId,
 		@Body() dto: UpdateCoffeeDto,
 	): Promise<Coffee | null> {
 		return this.coffeeService.update(id, dto);
 	}
 
 	@Delete(':id')
-	// TODO @NotFound()
+	@NotFound()
 	@ApiOkResponse({type: Coffee})
 	async remove(
-		@Param('id') id: string,
+    @Param('id', ObjectIdPipe) id: Types.ObjectId,
 	): Promise<Coffee | null> {
-		return this.coffeeService.remove(id);
+		return this.coffeeService.delete(id);
 	}
 }

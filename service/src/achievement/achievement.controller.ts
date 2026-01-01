@@ -17,7 +17,7 @@ export class AchievementController {
 	async findAll(
 		@Param('userId') userId: string,
 	): Promise<Achievement[]> {
-		return this.achievementService.findAll(userId);
+		return this.achievementService.findAll({userId});
 	}
 
 	@Get(':id')
@@ -26,7 +26,7 @@ export class AchievementController {
 		@Param('userId') userId: string,
 		@Param('id') id: string,
 	): Promise<Achievement | null> {
-		return this.achievementService.findOne(userId, id);
+		return this.achievementService.findOne({userId, id});
 	}
 
 	@Put(':id')
@@ -36,7 +36,7 @@ export class AchievementController {
 		@Param('id') id: string,
 		@Body() achievement: CreateAchievementDto,
 	): Promise<Achievement> {
-		return this.achievementService.create(userId, id, achievement);
+		return this.achievementService.award(userId, id, achievement);
 	}
 
 	@Patch(':id')
@@ -46,7 +46,7 @@ export class AchievementController {
 		@Param('id') id: string,
 		@Body() dto: UpdateAchievementDto,
 	): Promise<Achievement | null> {
-		return this.achievementService.update(userId, id, dto);
+		return this.achievementService.updateOne({userId, id}, dto);
 	}
 
 	@Delete(':id')
@@ -55,6 +55,6 @@ export class AchievementController {
 		@Param('userId') userId: string,
 		@Param('id') id: string,
 	): Promise<Achievement | null> {
-		return this.achievementService.delete(userId, id);
+		return this.achievementService.deleteOne({userId, id});
 	}
 }
