@@ -1,10 +1,11 @@
 import {Injectable} from '@nestjs/common';
 import {EventEmitter2} from '@nestjs/event-emitter';
 import {InjectModel} from '@nestjs/mongoose';
-import {FilterQuery, Model, UpdateQuery} from 'mongoose';
+import {Model, QueryFilter, UpdateQuery} from 'mongoose';
+
+import {environment} from '../environment';
 import {CoffeeDiagramData, CreateCoffeeDto} from './coffee.dto';
 import {Coffee, CoffeeDocument} from './coffee.schema';
-import {environment} from '../environment';
 
 @Injectable()
 export class CoffeeService {
@@ -20,7 +21,7 @@ export class CoffeeService {
 		return coffee;
 	}
 
-	async findAll(where: FilterQuery<Coffee> = {}): Promise<Coffee[]> {
+	async findAll(where: QueryFilter<Coffee> = {}): Promise<Coffee[]> {
 		return this.model.find(where).sort('-createdAt').limit(20).exec();
 	}
 

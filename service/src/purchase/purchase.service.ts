@@ -1,7 +1,8 @@
 import {Injectable} from '@nestjs/common';
 import {EventEmitter2} from '@nestjs/event-emitter';
 import {InjectModel} from '@nestjs/mongoose';
-import {FilterQuery, Model} from 'mongoose';
+import {Model, QueryFilter} from 'mongoose';
+
 import {CreatePurchaseDto} from './purchase.dto';
 import {Purchase, PurchaseDocument} from './purchase.schema';
 
@@ -19,11 +20,11 @@ export class PurchaseService {
 		return purchase;
 	}
 
-	async findAll(where: FilterQuery<Purchase> = {}): Promise<Purchase[]> {
+	async findAll(where: QueryFilter<Purchase> = {}): Promise<Purchase[]> {
 		return this.model.find(where).exec();
 	}
 
-	async unique(field: string, where: FilterQuery<Purchase>): Promise<any[]> {
+	async unique(field: string, where: QueryFilter<Purchase>): Promise<any[]> {
 		return this.model.distinct(field, where).exec();
 	}
 
