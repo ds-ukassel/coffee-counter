@@ -13,7 +13,8 @@ import {
   Query,
 } from '@nestjs/common';
 import {ApiConflictResponse, ApiCreatedResponse, ApiOkResponse, ApiTags} from '@nestjs/swagger';
-import {MongooseError, Types} from 'mongoose';
+import {MongoServerError} from 'mongodb';
+import {Types} from 'mongoose';
 
 import {CreateUserDto, UpdateUserDto} from './user.dto';
 import {User} from './user.schema';
@@ -53,7 +54,7 @@ export class UserController {
     try {
       return await this.userService.create(dto);
     } catch (e: unknown) {
-      if (e instanceof MongooseError && e.message.includes('E11000')) {
+      if (e instanceof MongoServerError && e.code === 11000) {
         throw new ConflictException('Username already taken');
       } else {
         throw e;
