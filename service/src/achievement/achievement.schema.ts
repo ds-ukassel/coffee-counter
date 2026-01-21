@@ -1,8 +1,8 @@
+import {Doc} from '@mean-stream/nestx';
 import {Prop, Schema, SchemaFactory} from '@nestjs/mongoose';
 import {ApiProperty, ApiPropertyOptional} from '@nestjs/swagger';
 import {Transform} from 'class-transformer';
 import {IsDate, IsMongoId, IsNotEmpty, IsNumber, IsOptional, IsString} from 'class-validator';
-import {Document} from 'mongoose';
 
 @Schema({
 	_id: false,
@@ -40,7 +40,7 @@ export class Achievement {
 	progress!: number;
 }
 
-export type AchievementDocument = Achievement & Document<never>;
+export type AchievementDocument = Doc<Achievement, never>;
 
 export const AchievementSchema = SchemaFactory.createForClass(Achievement)
 	.index({userId: 1, id: 1}, {unique: true})

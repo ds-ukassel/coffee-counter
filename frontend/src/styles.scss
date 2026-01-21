@@ -1,8 +1,8 @@
-$primary: #a07150;
-$color-mode-type: media-query;
-
-@import 'bootstrap/scss/bootstrap';
-@import 'bootstrap-icons/font/bootstrap-icons';
+@use 'bootstrap/scss/bootstrap' as * with (
+  $primary: #a07150,
+  $color-mode-type: media-query,
+);
+@use 'bootstrap-icons/font/bootstrap-icons' as *;
 
 .dropdown-toggle[class*=bi-]:empty::after {
   // Remove caret from dropdown toggle buttons that are just icons
@@ -11,11 +11,11 @@ $color-mode-type: media-query;
 
 @include color-mode(light) {
   .bg-light-or-dark {
-    background-color: rgba(var(--bs-light-rgb), var(--bs-bg-opacity)) !important;
+    background-color: var(--bs-light-bg-subtle) !important;
   }
 }
 @include color-mode(dark) {
   .bg-light-or-dark {
-    background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important;
+    background-color: var(--bs-dark-bg-subtle) !important;
   }
 }
