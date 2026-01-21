@@ -5,16 +5,16 @@ import {InjectModel} from '@nestjs/mongoose';
 import {Model, UpdateQuery} from 'mongoose';
 
 import {CreateAchievementDto} from './achievement.dto';
-import {Achievement} from './achievement.schema';
+import {Achievement, AchievementDocument} from './achievement.schema';
 
 @Injectable()
 @EventRepository()
 export class AchievementService extends MongooseRepository<Achievement, never> {
 	constructor(
 		private eventEmitter: EventEmitter2,
-		@InjectModel('achievements') model: Model<Achievement>,
+		@InjectModel('achievements') model: Model<Achievement, object, object, object, AchievementDocument>,
 	) {
-    super(model as any);
+    super(model);
 	}
 
 	async award(userId: string, id: string, achievement: CreateAchievementDto | UpdateQuery<Achievement>): Promise<Achievement> {

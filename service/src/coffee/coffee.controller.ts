@@ -46,7 +46,7 @@ export class CoffeeController {
 	async findOne(
     @Param('id', ObjectIdPipe) id: Types.ObjectId,
 	): Promise<Coffee | null> {
-		return this.coffeeService.findOne(id);
+		return this.coffeeService.find(id);
 	}
 
 	@Patch(':id')
