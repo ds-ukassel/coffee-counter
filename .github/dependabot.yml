@@ -6,11 +6,20 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
+    groups:
+      security:
+        applies-to: security-updates
+        patterns:
+          - "*"
   - package-ecosystem: "npm"
     directory: "frontend/"
     schedule:
       interval: "monthly"
     groups:
+      security:
+        applies-to: security-updates
+        patterns:
+          - "*"
       # https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/optimizing-pr-creation-version-updates
       angular:
         applies-to: version-updates
@@ -29,6 +38,10 @@ updates:
     schedule:
       interval: "monthly"
     groups:
+      security:
+        applies-to: security-updates
+        patterns:
+          - "*"
       nestjs:
         applies-to: version-updates
         patterns:
