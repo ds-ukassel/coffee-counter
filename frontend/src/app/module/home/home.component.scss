@@ -1,6 +1,3 @@
-@import "node_modules/bootstrap/scss/functions";
-@import "node_modules/bootstrap/scss/variables";
-
 $card-min-width: 16rem;
 $card-height: 9rem;
 $pi: 3.1415926535;
@@ -13,7 +10,7 @@ $pi: 3.1415926535;
 }
 
 .card-container:hover {
-  box-shadow: $box-shadow;
+  box-shadow: var(--bs-box-shadow);
 }
 
 .card-container {
