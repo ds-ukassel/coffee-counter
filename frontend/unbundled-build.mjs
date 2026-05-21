@@ -3,6 +3,7 @@ import {glob} from 'node:fs/promises';
 import * as YAML from 'yaml';
 import cli from '@angular/cli';
 import * as jsdom from 'jsdom';
+import {fileURLToPath} from "node:url";
 
 async function main() {
   const frontendDir = './';
@@ -29,7 +30,7 @@ async function main() {
   const allPackages = await loadPackages(frontendDir);
   const allPackageVersions = Object.fromEntries(allPackages);
 
-  const imports = generateImportMap(allPackages);
+  const imports = {};
   await augmentImportMapWithJsImports(frontendDir, imports, allPackageVersions);
 
   for await (const index of await glob(`dist/**/index.html`, {cwd: frontendDir})) {
@@ -93,14 +94,20 @@ function getPackageName(module) {
   }
 }
 
-function import2Unpkg(module, packageName, version) {
-  let url;
+function tryResolve(module, parent) {
   try {
-    url = import.meta.resolve(module);
+    return import.meta.resolve(module, parent);
   } catch (e) {
-    // console.warn(`Import ${packageName} cannot be resolved`);
     return;
   }
+}
+
+function import2Unpkg(module, packageName, version) {
+  const url = tryResolve(module);
+  return url && url2Unpkg(url, packageName, version);
+}
+
+function url2Unpkg(url, packageName, version) {
   const pathNeedle = `node_modules/${packageName}/`;
   const pathStart = url.lastIndexOf(pathNeedle);
   const path = url.substring(pathStart + pathNeedle.length);
@@ -115,26 +122,42 @@ function import2Unpkg(module, packageName, version) {
 async function augmentImportMapWithJsImports(frontendDir, imports, allPackageVersions) {
   for await (const file of await glob('dist/**/*.js', {cwd: frontendDir})) {
     const path = frontendDir + file;
-    const content = await fs.readFile(path, {encoding: 'utf8'});
-    for (const match of content.matchAll(/import\s*(?:(?:{[^}]*}|\w+)\s*from\s*)?"([^"]*)";/g)) {
-      const [, module] = match;
-      if (module.startsWith('./')) {
-        // local import e.g. ./chunk-xy.js
-        continue;
-      }
-      if (module in imports) {
-        // already known
-        continue;
-      }
-      const packageName = getPackageName(module);
-      const version = allPackageVersions[packageName];
-      const unpkgUrl = import2Unpkg(module, packageName, version);
-      if (unpkgUrl) {
-        imports[module] = unpkgUrl;
-      } else {
-        console.warn(`Could not resolve ${module} import in ${file}`);
-      }
+    await collectImports(path, imports, allPackageVersions);
+  }
+}
+
+async function collectImports(path, imports, allPackageVersions) {
+  const content = await fs.readFile(path, {encoding: 'utf8'});
+  const matches = content.matchAll(/import(.*?from)?\s*(?<qmod>"[^"]+"|'[^']+')[;\n]/gms).toArray();
+  // console.log('Collecting', matches.length, 'imports from', path);
+
+  for (const match of matches) {
+    const {qmod} = match.groups;
+    const module = qmod.slice(1, -1);
+    if (module.startsWith('./')) {
+      // local import e.g. ./chunk-xy.js
+      continue;
     }
+    if (module in imports) {
+      // already known
+      continue;
+    }
+    const packageName = getPackageName(module);
+    const version = allPackageVersions[packageName];
+
+    let url = tryResolve(module, path);
+    if (!url) {
+      console.warn(`Could not resolve ${module} import in ${path}`);
+      continue;
+    }
+
+    const unpkgUrl = url2Unpkg(url, packageName, version);
+    if (unpkgUrl) {
+      imports[module] = unpkgUrl;
+    }
+
+    // Recursively collect imports. If a dependency imports another one, we need to find these imports too.
+    await collectImports(fileURLToPath(url), imports, allPackageVersions);
   }
 }
 
