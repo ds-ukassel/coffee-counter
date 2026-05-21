@@ -4,6 +4,7 @@ import * as YAML from 'yaml';
 import cli from '@angular/cli';
 import * as jsdom from 'jsdom';
 import {fileURLToPath} from "node:url";
+import {dirname, join} from "node:path";
 
 async function main() {
   const frontendDir = './';
@@ -134,8 +135,12 @@ async function collectImports(path, imports, allPackageVersions) {
   for (const match of matches) {
     const {qmod} = match.groups;
     const module = qmod.slice(1, -1);
-    if (module.startsWith('./')) {
+    if (module.startsWith('./') || module.startsWith('../')) {
       // local import e.g. ./chunk-xy.js
+      // Don't add this to imports, but recurse anyway
+      const nextPath = join(dirname(path), module);
+      // console.log('Continuing with', nextPath);
+      await collectImports(nextPath, imports, allPackageVersions);
       continue;
     }
     if (module in imports) {
