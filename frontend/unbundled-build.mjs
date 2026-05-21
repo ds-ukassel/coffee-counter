@@ -24,12 +24,13 @@ async function main() {
     throw new Error(`Could not find application project in angular.json.`);
   }
 
-  await buildAngular(projectName, dependencies);
+  // await buildAngular(projectName, dependencies);
 
   const allPackages = await loadPackages(frontendDir);
   const allPackageVersions = Object.fromEntries(allPackages);
 
   const imports = generateImportMap(allPackages);
+  await augmentImportMapWithJsImports(frontendDir, imports, allPackageVersions);
 
   for await (const index of await glob(`dist/**/index.html`, {cwd: frontendDir})) {
     const indexHtmlPath = frontendDir + index;
@@ -109,6 +110,32 @@ function import2Unpkg(module, packageName, version) {
   }
 
   return `https://unpkg.com/${packageName}@${version}/${path}`;
+}
+
+async function augmentImportMapWithJsImports(frontendDir, imports, allPackageVersions) {
+  for await (const file of await glob('dist/**/*.js', {cwd: frontendDir})) {
+    const path = frontendDir + file;
+    const content = await fs.readFile(path, {encoding: 'utf8'});
+    for (const match of content.matchAll(/import\s*(?:(?:{[^}]*}|\w+)\s*from\s*)?"([^"]*)";/g)) {
+      const [, module] = match;
+      if (module.startsWith('./')) {
+        // local import e.g. ./chunk-xy.js
+        continue;
+      }
+      if (module in imports) {
+        // already known
+        continue;
+      }
+      const packageName = getPackageName(module);
+      const version = allPackageVersions[packageName];
+      const unpkgUrl = import2Unpkg(module, packageName, version);
+      if (unpkgUrl) {
+        imports[module] = unpkgUrl;
+      } else {
+        console.warn(`Could not resolve ${module} import in ${file}`);
+      }
+    }
+  }
 }
 
 async function updateIndexHtml(indexHtmlPath, imports, allPackageVersions) {
