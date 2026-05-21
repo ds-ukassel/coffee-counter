@@ -3,8 +3,9 @@ import {glob} from 'node:fs/promises';
 import * as YAML from 'yaml';
 import cli from '@angular/cli';
 import * as jsdom from 'jsdom';
-import {fileURLToPath} from "node:url";
+import {fileURLToPath, pathToFileURL} from "node:url";
 import {dirname, join} from "node:path";
+import {moduleResolve} from 'import-meta-resolve';
 
 async function main() {
   const frontendDir = './';
@@ -97,8 +98,14 @@ function getPackageName(module) {
 
 function tryResolve(module, parent) {
   try {
-    return import.meta.resolve(module, parent);
+    return moduleResolve(module, parent ? pathToFileURL(parent) : undefined, new Set([
+      'module',
+      'import',
+      'browser',
+      'default',
+    ])).toString();
   } catch (e) {
+    console.error(e.message);
     return;
   }
 }

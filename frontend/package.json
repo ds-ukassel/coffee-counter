@@ -30,6 +30,7 @@
     "bootstrap-icons": "^1.13.1",
     "chart.js": "^4.5.1",
     "class-validator": "^0.15.1",
+    "import-meta-resolve": "^4.2.0",
     "ng2-charts": "^9.0.0",
     "ngx-cookie-service": "^21.1.0",
     "rxjs": "~7.8.2",

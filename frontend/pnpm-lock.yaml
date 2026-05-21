@@ -62,6 +62,9 @@ importers:
       class-validator:
         specifier: ^0.15.1
         version: 0.15.1
+      import-meta-resolve:
+        specifier: ^4.2.0
+        version: 4.2.0
       ng2-charts:
         specifier: ^9.0.0
         version: 9.0.0(2e6f91cbdee0478ffdbdbb0b714c50e9)
@@ -2585,6 +2588,9 @@ packages:
 
   immutable@5.1.5:
     resolution: {integrity: sha512-t7xcm2siw+hlUM68I+UEOK+z84RzmN59as9DZ7P1l0994DKUWV7UXBMQZVxaoMSRQ+PBZbHCOoBt7a2wxOMt+A==}
+
+  import-meta-resolve@4.2.0:
+    resolution: {integrity: sha512-Iqv2fzaTQN28s/FwZAoFq0ZSs/7hMAHJVX+w8PZl3cY19Pxk6jFFalxQoIfW2826i/fDLXv8IiEZRIT0lDuWcg==}
 
   imurmurhash@0.1.4:
     resolution: {integrity: sha512-JmXMZ6wuvDmLiHEml9ykzqO6lwFbof0GG4IkcGaENdCRDDmMVnny7s5HsIgHCbaq0w2MyPhDqkhTUgS2LU2PHA==}
@@ -6410,6 +6416,8 @@ snapshots:
     optional: true
 
   immutable@5.1.5: {}
+
+  import-meta-resolve@4.2.0: {}
 
   imurmurhash@0.1.4: {}
 
