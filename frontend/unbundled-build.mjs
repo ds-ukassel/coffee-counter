@@ -24,15 +24,16 @@ async function main() {
     throw new Error(`Could not find application project in angular.json.`);
   }
 
-  // await buildAngular(projectName, dependencies);
+  await buildAngular(projectName, dependencies);
 
   const allPackages = await loadPackages(frontendDir);
+  const allPackageVersions = Object.fromEntries(allPackages);
 
   const imports = generateImportMap(allPackages);
 
   for await (const index of await glob(`dist/**/index.html`, {cwd: frontendDir})) {
     const indexHtmlPath = frontendDir + index;
-    await updateIndexHtml(indexHtmlPath, imports);
+    await updateIndexHtml(indexHtmlPath, imports, allPackageVersions);
     break;
   }
 }
@@ -45,7 +46,7 @@ async function buildAngular(projectName, dependencies) {
     '--source-map', 'false',
     '--external-dependencies', ...dependencies,
   ];
-  console.log(`Building Angular ${cli.VERSION}: ng ${args.join(' ')}`);
+  console.log(`Building Angular ${cli.VERSION.full}: ng ${args.join(' ')}`);
   const status = await cli.default({
     cliArgs: args,
   });
@@ -74,46 +75,84 @@ async function loadPackages(frontendDir) {
 function generateImportMap(allPackages) {
   const imports = {};
   for (const [dependency, version] of allPackages) {
-    let url;
-    try {
-      url = import.meta.resolve(dependency);
-    } catch (e) {
-      // console.warn(`Import ${dependency} cannot be resolved`);
-      continue;
+    const unpkgUrl = import2Unpkg(dependency, dependency, version);
+    if (unpkgUrl) {
+      imports[dependency] = unpkgUrl;
     }
-    const pathNeedle = `node_modules/${dependency}/`;
-    const pathStart = url.lastIndexOf(pathNeedle);
-    const path = url.substring(pathStart + pathNeedle.length);
-    if (pathStart < 0 || !path.endsWith('.js') && !path.endsWith('.mjs')) {
-      console.warn(`Dependency ${url} not found: ${path}`);
-      continue;
-    }
-
-    const unpkgUrl = `https://unpkg.com/${dependency}@${version}/${path}`;
-    imports[dependency] = unpkgUrl;
   }
   return imports;
 }
 
-async function updateIndexHtml(indexHtmlPath, imports) {
+function getPackageName(module) {
+  const [a, b] = module.split('/');
+  if (a.startsWith('@')) {
+    return a + '/' + b;
+  } else {
+    return a;
+  }
+}
+
+function import2Unpkg(module, packageName, version) {
+  let url;
+  try {
+    url = import.meta.resolve(module);
+  } catch (e) {
+    // console.warn(`Import ${packageName} cannot be resolved`);
+    return;
+  }
+  const pathNeedle = `node_modules/${packageName}/`;
+  const pathStart = url.lastIndexOf(pathNeedle);
+  const path = url.substring(pathStart + pathNeedle.length);
+  if (pathStart < 0 || !path.endsWith('.js') && !path.endsWith('.mjs')) {
+    console.warn(`Dependency ${url} not found: ${path}`);
+    return;
+  }
+
+  return `https://unpkg.com/${packageName}@${version}/${path}`;
+}
+
+async function updateIndexHtml(indexHtmlPath, imports, allPackageVersions) {
   const indexHtml = await fs.readFile(indexHtmlPath, {encoding: 'utf-8'});
 
   const jsDom = new jsdom.JSDOM(indexHtml, {});
   const doc = jsDom.window.document;
 
+  for (const preload of doc.querySelectorAll('link[rel="modulepreload"]')) {
+    let module = preload.href;
+    if (module.startsWith('https://')) {
+      // already a non-local preload
+      continue;
+    }
+
+    if (module in imports) {
+      // a package name preload -> replace with import
+      preload.href = imports[module];
+      continue;
+    }
+
+    if (module.startsWith('chunk-') && !module.includes('/')) {
+      // a chunk file
+      continue;
+    }
+
+    const packageName = getPackageName(module);
+    const version = allPackageVersions[packageName];
+    const unpkgUrl = import2Unpkg(module, packageName, version);
+    if (unpkgUrl) {
+      preload.href = unpkgUrl;
+      imports[module] = unpkgUrl;
+    } else {
+      console.warn(`Could not replace ${module} preload`);
+    }
+  }
+
   let importMapScript = doc.querySelector('script[type=importmap]');
   if (!importMapScript) {
     importMapScript = doc.createElement('script');
     importMapScript.type = 'importmap';
-    doc.body.appendChild(importMapScript);
+    doc.body.insertBefore(importMapScript, doc.body.firstChild);
   }
-  importMapScript.innerHTML = JSON.stringify({imports});
-
-  for (const preload of doc.querySelectorAll('link[rel="modulepreload"]')) {
-    if (preload.href in imports) {
-      preload.href = imports[preload.href];
-    }
-  }
+  importMapScript.innerHTML = JSON.stringify({imports}, null, 2);
 
   let newIndexHtml = jsDom.serialize();
   console.log(`Updating ${indexHtmlPath} (${indexHtml.length} -> ${newIndexHtml.length} +${newIndexHtml.length - indexHtml.length})`);
