@@ -7,6 +7,18 @@ import {fileURLToPath, pathToFileURL} from "node:url";
 import {dirname, join, resolve} from "node:path";
 import {moduleResolve} from 'import-meta-resolve';
 
+const CDNS = {
+  'unpkg.com': {
+    url: (packageName, version, path) => `https://unpkg.com/${packageName}@${version}/${path}`,
+    standalone: false,
+  },
+  'esm.sh': {
+    url: (packageName, version, path) => `https://esm.sh/${packageName}@${version}/${path}?standalone`,
+    standalone: true,
+  },
+};
+const cdn = CDNS[process.env.CDN || 'esm.sh'];
+
 async function main() {
   const frontendDir = './';
 
@@ -15,6 +27,19 @@ async function main() {
   const forbiddenDependencies = new Set([
     'bootstrap',
     'bootstrap-icons',
+    '@angular/animations',
+    '@angular/cdk',
+    '@angular/common',
+    '@angular/compiler',
+    '@angular/core',
+    '@angular/forms',
+    '@angular/localize',
+    '@angular/platform-browser',
+    '@angular/platform-browser-dynamic',
+    '@angular/router',
+    '@angular/service-worker',
+    '@ng-bootstrap/ng-bootstrap',
+    '@mean-stream/ngbx',
   ])
   const dependencies = Object.keys(packageJson.dependencies || []).filter(s => !forbiddenDependencies.has(s));
 
@@ -27,12 +52,12 @@ async function main() {
     throw new Error(`Could not find application project in angular.json.`);
   }
 
-  // await buildAngular(projectName, dependencies);
+  await buildAngular(projectName, dependencies);
 
   const allPackages = await loadPackages(frontendDir);
   const allPackageVersions = Object.fromEntries(allPackages);
 
-  const imports = {};
+  const imports = generateImportMap(dependencies, allPackageVersions);
   await augmentImportMapWithJsImports(frontendDir, imports, allPackageVersions);
 
   for await (const index of await glob(`dist/**/index.html`, {cwd: frontendDir})) {
@@ -76,13 +101,12 @@ async function loadPackages(frontendDir) {
   return allPackages;
 }
 
-function generateImportMap(allPackages) {
+function generateImportMap(directDependencies, allPackageVersions) {
   const imports = {};
-  for (const [dependency, version] of allPackages) {
-    const unpkgUrl = import2Unpkg(dependency, dependency, version);
-    if (unpkgUrl) {
-      imports[dependency] = unpkgUrl;
-    }
+  for (const dependency of directDependencies) {
+    const version = allPackageVersions[dependency];
+    // TODO use ?exports=x,y,z for tree shaking
+    imports[dependency] = `https://esm.sh/${dependency}@${version}?standalone`;
   }
   return imports;
 }
@@ -110,12 +134,12 @@ function tryResolve(module, parent) {
   }
 }
 
-function import2Unpkg(module, packageName, version) {
+function import2cdn(module, packageName, version) {
   const url = tryResolve(module);
-  return url && url2Unpkg(url, packageName, version);
+  return url && url2cdn(url, packageName, version);
 }
 
-function url2Unpkg(url, packageName, version) {
+function url2cdn(url, packageName, version) {
   const pathNeedle = `node_modules/${packageName}/`;
   const pathStart = url.lastIndexOf(pathNeedle);
   const path = url.substring(pathStart + pathNeedle.length);
@@ -124,7 +148,7 @@ function url2Unpkg(url, packageName, version) {
     return;
   }
 
-  return `https://unpkg.com/${packageName}@${version}/${path}`;
+  return cdn.url(packageName, version, path);
 }
 
 async function augmentImportMapWithJsImports(frontendDir, imports, allPackageVersions) {
@@ -189,13 +213,15 @@ async function collectImports(path, imports, allPackageVersions, seen = new Set)
       continue;
     }
 
-    const unpkgUrl = url2Unpkg(url, packageName, version);
-    if (unpkgUrl) {
-      imports[module] = unpkgUrl;
+    const cdnUrl = url2cdn(url, packageName, version);
+    if (cdnUrl) {
+      imports[module] = cdnUrl;
     }
 
-    // Recursively collect imports. If a dependency imports another one, we need to find these imports too.
-    await collectImports(fileURLToPath(url), imports, allPackageVersions, seen);
+    if (!cdn.standalone) {
+      // Recursively collect imports. If a dependency imports another one, we need to find these imports too.
+      await collectImports(fileURLToPath(url), imports, allPackageVersions, seen);
+    }
   }
 }
 
@@ -225,10 +251,10 @@ async function updateIndexHtml(indexHtmlPath, imports, allPackageVersions) {
 
     const packageName = getPackageName(module);
     const version = allPackageVersions[packageName];
-    const unpkgUrl = import2Unpkg(module, packageName, version);
-    if (unpkgUrl) {
-      preload.href = unpkgUrl;
-      imports[module] = unpkgUrl;
+    const cdnUrl = import2cdn(module, packageName, version);
+    if (cdnUrl) {
+      preload.href = cdnUrl;
+      imports[module] = cdnUrl;
     } else {
       console.warn(`Could not replace ${module} preload`);
     }
