@@ -4,7 +4,7 @@ import * as YAML from 'yaml';
 import cli from '@angular/cli';
 import * as jsdom from 'jsdom';
 import {fileURLToPath, pathToFileURL} from "node:url";
-import {dirname, join} from "node:path";
+import {dirname, join, resolve} from "node:path";
 import {moduleResolve} from 'import-meta-resolve';
 
 async function main() {
@@ -128,16 +128,22 @@ function url2Unpkg(url, packageName, version) {
 }
 
 async function augmentImportMapWithJsImports(frontendDir, imports, allPackageVersions) {
+  const seen = new Set();
   for await (const file of await glob('dist/**/*.js', {cwd: frontendDir})) {
-    const path = frontendDir + file;
-    await collectImports(path, imports, allPackageVersions);
+    const path = resolve(frontendDir, file);
+    await collectImports(path, imports, allPackageVersions, seen);
   }
 }
 
-async function collectImports(path, imports, allPackageVersions) {
+async function collectImports(path, imports, allPackageVersions, seen = new Set) {
+  if (seen.has(path)) {
+    return;
+  }
+  seen.add(path);
+
   const content = await fs.readFile(path, {encoding: 'utf8'});
-  const matches = content.matchAll(/import(.*?from)?\s*(?<qmod>"[^"]+"|'[^']+')[;\n]/gms).toArray();
-  // console.log('Collecting', matches.length, 'imports from', path);
+  const matches = content.matchAll(/(import(.*?from)?|export.*?from)\s*(?<qmod>"[^"]+"|'[^']+')[;\n]/gms).toArray();
+  console.log('Collecting', matches.length, 'imports from', path);
 
   for (const match of matches) {
     const {qmod} = match.groups;
@@ -145,9 +151,29 @@ async function collectImports(path, imports, allPackageVersions) {
     if (module.startsWith('./') || module.startsWith('../')) {
       // local import e.g. ./chunk-xy.js
       // Don't add this to imports, but recurse anyway
-      const nextPath = join(dirname(path), module);
+      let nextPath = join(dirname(path), module);
       // console.log('Continuing with', nextPath);
-      await collectImports(nextPath, imports, allPackageVersions);
+
+      const stat = await fs.stat(nextPath, {throwIfNoEntry: false});
+      if (!stat) {
+        if (await fs.stat(nextPath + '.mjs', {throwIfNoEntry: false})) {
+          nextPath += '.js';
+        } else if (await fs.stat(nextPath + '.js', {throwIfNoEntry: false})) {
+          nextPath += '.js';
+        }
+      } else if (stat.isDirectory()) {
+        const files = await fs.readdir(nextPath);
+        if (files.includes('index.mjs')) {
+          nextPath = join(nextPath, 'index.mjs');
+        } else if (files.includes('index.js')) {
+          nextPath = join(nextPath, 'index.js');
+        } else {
+          // Don't recurse into the directory.
+          continue;
+        }
+      }
+
+      await collectImports(nextPath, imports, allPackageVersions, seen);
       continue;
     }
     if (module in imports) {
@@ -169,7 +195,7 @@ async function collectImports(path, imports, allPackageVersions) {
     }
 
     // Recursively collect imports. If a dependency imports another one, we need to find these imports too.
-    await collectImports(fileURLToPath(url), imports, allPackageVersions);
+    await collectImports(fileURLToPath(url), imports, allPackageVersions, seen);
   }
 }
 
