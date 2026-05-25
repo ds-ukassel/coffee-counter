@@ -2,7 +2,7 @@ services:
   database:
     image: mongo:8
     ports:
-      - "27017:27017"
+      - '27017:27017'
     volumes:
       - data:/data/db
 
@@ -14,10 +14,12 @@ services:
         - linux/amd64
         - linux/arm64
     ports:
-      - "3000:3000"
+      - '3000:3000'
     environment:
-      MONGO_URI: "mongodb://database:27017/coffee-counter"
-      COFFEE_API_KEY: "super-secret-key" # replace this with any secret
+      PORT: '3000'
+      MONGO_URI: 'mongodb://database:27017/coffee-counter'
+      COFFEE_API_KEY: 'super-secret-key' # replace this with any secret
+      COFFEE_PRICE: '0.40' # pick any Euro amount
     depends_on:
       - database
 
@@ -29,7 +31,7 @@ services:
         - linux/amd64
         - linux/arm64
     ports:
-      - "8080:80"
+      - '8080:80'
     depends_on:
       - backend
 volumes:
