@@ -1,5 +1,5 @@
 import {CurrencyPipe, DatePipe} from '@angular/common';
-import {Component, inject, Input, OnInit} from '@angular/core';
+import {Component, inject, input, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {NgbPopover, NgbTooltip} from '@ng-bootstrap/ng-bootstrap';
 import {forkJoin, map, Observable, switchMap} from 'rxjs';
@@ -36,7 +36,7 @@ export class PurchaseListComponent implements OnInit {
   private readonly coffeeService = inject(CoffeeService);
   private readonly purchaseService = inject(PurchaseService);
 
-  @Input() users?: Record<string, User>;
+  readonly users = input<Record<string, User>>();
 
   items: Item[] = [];
 

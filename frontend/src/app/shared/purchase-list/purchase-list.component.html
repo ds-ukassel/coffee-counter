@@ -3,10 +3,10 @@
     <li class="list-group-item d-flex align-items-center">
       <div class="me-2" [class]="item.icon"></div>
       <div class="ms-2 me-auto">
-        @if (users?.[item.userId]; as user) {
+        @if (users()?.[item.userId]; as user) {
           <div>{{ user.name }}</div>
         }
-        <span [class.text-muted]="users">{{item.description}}</span>
+        <span [class.text-muted]="users()">{{ item.description }}</span>
         <span class="text-muted">
           &bull;
           <time [dateTime]="item.createdAt" [ngbTooltip]="item.createdAt | date:'full'">
@@ -14,7 +14,7 @@
           </time>
         </span>
       </div>
-      @if (!users) {
+      @if (!users()) {
         <div class="me-2">
           {{item.money | currency: 'EUR' : 'symbol': '1.': 'de-DE'}}
         </div>
