@@ -1,16 +1,17 @@
-import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {PercentPipe} from '@angular/common';
+import {Component, inject, OnInit, TemplateRef, viewChild} from '@angular/core';
+import {RouterLink} from '@angular/router';
 import {NgbOffcanvas, NgbTooltip} from '@ng-bootstrap/ng-bootstrap';
 import {switchMap} from 'rxjs';
-import {PurchaseService} from 'src/app/core/service/purchase.service';
+
 import {Shortcut, User} from '../../core/model/user.interface';
 import {CoffeeService} from '../../core/service/coffee.service';
+import {PurchaseService} from '../../core/service/purchase.service';
 import {UserService} from '../../core/service/user.service';
-import {PercentPipe} from '@angular/common';
-import {RouterLink} from '@angular/router';
-import {PulseDirective} from './pulse.directive';
-import {PurchaseListComponent} from '../../shared/purchase-list/purchase-list.component';
-import {LevelPipe} from '../../shared/pipe/level.pipe';
 import {LevelProgressPipe} from '../../shared/pipe/level-progress.pipe';
+import {LevelPipe} from '../../shared/pipe/level.pipe';
+import {PurchaseListComponent} from '../../shared/purchase-list/purchase-list.component';
+import {PulseDirective} from './pulse.directive';
 
 @Component({
   selector: 'app-home',
@@ -27,18 +28,15 @@ import {LevelProgressPipe} from '../../shared/pipe/level-progress.pipe';
   ],
 })
 export class HomeComponent implements OnInit {
-  @ViewChild('purchaseList') private purchaseList!: TemplateRef<unknown>;
+  private readonly userService = inject(UserService);
+  private readonly purchaseService = inject(PurchaseService);
+  private readonly coffeeService = inject(CoffeeService);
+  private readonly offcanvasService = inject(NgbOffcanvas);
+
+  private readonly purchaseList = viewChild.required<TemplateRef<unknown>>('purchaseList');
 
   users: User[] = [];
   userMap: Record<string, User> = {};
-
-  constructor(
-    private userService: UserService,
-    private purchaseService: PurchaseService,
-    private coffeeService: CoffeeService,
-    private offcanvasService: NgbOffcanvas,
-  ) {
-  }
 
   ngOnInit(): void {
     this.userService.findAll().subscribe(users => {
@@ -69,7 +67,7 @@ export class HomeComponent implements OnInit {
   }
 
   openPurchaseList() {
-    this.offcanvasService.open(this.purchaseList, {position: 'end'});
+    this.offcanvasService.open(this.purchaseList(), {position: 'end'});
   }
 
   applyShortcut(user:User, shortcut: Shortcut) {

@@ -1,8 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {CurrencyPipe} from '@angular/common';
+import {Component, inject, OnInit} from '@angular/core';
 import {ActivatedRoute, Router, RouterLink, RouterOutlet} from '@angular/router';
-import {EMPTY, map, switchMap, tap} from 'rxjs';
-import {User} from '../../../core/model/user.interface';
-import {UserService} from '../../../core/service/user.service';
 import {
   NgbDropdown,
   NgbDropdownButtonItem,
@@ -11,9 +9,12 @@ import {
   NgbDropdownToggle,
   NgbTooltip,
 } from '@ng-bootstrap/ng-bootstrap';
-import {CurrencyPipe} from '@angular/common';
-import {LevelPipe} from '../../../shared/pipe/level.pipe';
+import {EMPTY, map, switchMap, tap} from 'rxjs';
+
+import {User} from '../../../core/model/user.interface';
+import {UserService} from '../../../core/service/user.service';
 import {LevelNamePipe} from '../../../shared/pipe/level-name.pipe';
+import {LevelPipe} from '../../../shared/pipe/level.pipe';
 
 @Component({
   selector: 'app-user-list',
@@ -34,15 +35,12 @@ import {LevelNamePipe} from '../../../shared/pipe/level-name.pipe';
   ],
 })
 export class UserListComponent implements OnInit {
+  protected readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly userService = inject(UserService);
+
   users: User[] = [];
   archived = false;
-
-  constructor(
-    public route: ActivatedRoute,
-    private router: Router,
-    private userService: UserService,
-  ) {
-  }
 
   ngOnInit(): void {
     this.route.queryParams.pipe(

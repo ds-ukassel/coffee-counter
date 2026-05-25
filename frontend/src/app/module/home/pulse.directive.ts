@@ -1,7 +1,9 @@
-import {Directive, ElementRef, HostListener} from '@angular/core';
+import {Directive, ElementRef, HostListener, inject} from '@angular/core';
 
 @Directive({selector: '[appClickPulseAnimation]'})
 export class PulseDirective {
+  private readonly el = inject(ElementRef);
+
   private readonly keyframes: Keyframe[] = [
     // (255, 215, 0) is RGB for the html 'gold' color
     {boxShadow: '0 0 0 0 rgba(255, 215, 0, 1)'},
@@ -9,10 +11,7 @@ export class PulseDirective {
   ];
   private readonly options: KeyframeAnimationOptions = {
     duration: 700,
-  }
-
-  constructor(private el: ElementRef) {
-  }
+  };
 
   @HostListener('click')
   restartAnimation() {

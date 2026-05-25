@@ -1,11 +1,12 @@
-import {Component, OnInit} from '@angular/core';
+import {DatePipe} from '@angular/common';
+import {Component, inject, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {switchMap, tap} from 'rxjs';
-import {Achievement, AchievementInfo} from '../../../core/model/achievement.interface';
-import {AchievementService} from '../../../core/service/achievement.service';
 import {ModalModule} from '@mean-stream/ngbx';
 import {NgbTooltip} from '@ng-bootstrap/ng-bootstrap';
-import {DatePipe} from '@angular/common';
+import {switchMap, tap} from 'rxjs';
+
+import {Achievement, AchievementInfo} from '../../../core/model/achievement.interface';
+import {AchievementService} from '../../../core/service/achievement.service';
 import {TrophyTierPipe} from '../../../shared/pipe/trophy-tier.pipe';
 
 @Component({
@@ -20,15 +21,13 @@ import {TrophyTierPipe} from '../../../shared/pipe/trophy-tier.pipe';
   ],
 })
 export class AchievementModalComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+  private achievementService = inject(AchievementService);
+
   info?: AchievementInfo;
   achievement?: Achievement;
 
   showHint = false;
-
-  constructor(
-    private route: ActivatedRoute,
-    private achievementService: AchievementService,
-  ) { }
 
   ngOnInit(): void {
     this.route.params.pipe(
@@ -38,5 +37,4 @@ export class AchievementModalComponent implements OnInit {
       this.achievement = achievement;
     });
   }
-
 }

@@ -1,6 +1,7 @@
-import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {inject, Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
+
 import {environment} from '../../../environments/environment';
 import {CreatePurchaseDto, FindAllPurchaseDto, Purchase} from '../model/purchase.interface';
 
@@ -8,11 +9,7 @@ import {CreatePurchaseDto, FindAllPurchaseDto, Purchase} from '../model/purchase
   providedIn: 'root',
 })
 export class PurchaseService {
-
-  constructor(
-    private http: HttpClient,
-  ) {
-  }
+  private readonly http = inject(HttpClient);
 
   findOne(id: string) {
     return this.http.get<Purchase>(`${environment.apiUrl}/purchases/${id}`);

@@ -1,5 +1,5 @@
 <ul class="list-group">
-  @for (shortcut of shortcuts; track shortcut) {
+  @for (shortcut of shortcuts(); track shortcut) {
     <li class="list-group-item d-flex">
       <div class="me-2">
         <select class="form-select" [(ngModel)]="shortcut.icon">

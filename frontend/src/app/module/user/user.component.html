@@ -93,7 +93,7 @@
       <hr/>
       <h3>Shortcuts</h3>
       @if (user) {
-        <app-shortcut-list [shortcuts]="user.shortcuts!"></app-shortcut-list>
+        <app-shortcut-list [shortcuts]="user.shortcuts!"/>
       }
       <button type="button" class="btn btn-primary" (click)="saveShortcuts()">
         Save
@@ -103,8 +103,8 @@
       <canvas type="bar" [data]="coffeeData" [legend]="false" baseChart></canvas>
       <hr/>
       <h3>Recent Purchases</h3>
-      <app-purchase-list></app-purchase-list>
+      <app-purchase-list/>
     </div>
   </div>
 </div>
-<router-outlet></router-outlet>
+<router-outlet/>

@@ -1,11 +1,28 @@
 import {Routes} from '@angular/router';
-import {HomeComponent} from './module/home/home.component';
-import {SettingsComponent} from './module/settings/settings.component';
-import {AutologComponent} from './module/autolog/autolog.component';
 
 export const routes: Routes = [
-  {path: 'users', loadChildren: () => import('./module/user/user.module').then((m) => m.UserModule)},
-  {path: 'settings', component: SettingsComponent},
-  {path: 'autolog', component: AutologComponent},
-  {path: '', component: HomeComponent},
+  {
+    path: 'users',
+    loadChildren: () =>
+      import('./module/user/user.routes')
+        .then((m) => m.routes),
+  },
+  {
+    path: 'settings',
+    loadComponent: () =>
+      import('./module/settings/settings.component')
+        .then((m) => m.SettingsComponent),
+  },
+  {
+    path: 'autolog',
+    loadComponent: () =>
+      import('./module/autolog/autolog.component')
+        .then((m) => m.AutologComponent),
+  },
+  {
+    path: '',
+    loadComponent: () =>
+      import('./module/home/home.component')
+        .then((m) => m.HomeComponent),
+  },
 ];
