@@ -1,11 +1,11 @@
-import { Routes } from '@angular/router';
+import {Routes} from '@angular/router';
 
 export const routes: Routes = [
   {
     path: 'users',
     loadChildren: () =>
-      import('./module/user/user.module')
-        .then((m) => m.UserModule),
+      import('./module/user/user.routes')
+        .then((m) => m.routes),
   },
   {
     path: 'settings',
