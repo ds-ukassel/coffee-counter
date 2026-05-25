@@ -1,5 +1,5 @@
 import {CurrencyPipe} from '@angular/common';
-import {Component, inject, OnInit, ViewChild} from '@angular/core';
+import {Component, inject, OnInit, viewChild} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {ActivatedRoute, Router, RouterLink, RouterOutlet} from '@angular/router';
 import {ToastService} from '@mean-stream/ngbx';
@@ -49,8 +49,8 @@ export class UserComponent implements OnInit {
   private readonly achievementService = inject(AchievementService);
   private readonly toastService = inject(ToastService);
 
-  @ViewChild(BaseChartDirective) coffeeChart: BaseChartDirective | undefined;
-  @ViewChild(PurchaseListComponent) purchaseList: PurchaseListComponent | undefined;
+  readonly coffeeChart = viewChild(BaseChartDirective);
+  readonly purchaseList = viewChild(PurchaseListComponent);
 
   user?: User;
   editName?: string;
@@ -93,7 +93,7 @@ export class UserComponent implements OnInit {
       for (const {hour, total} of userCoffeeData) {
         this.coffeeData.datasets[0].data[hour] = total;
       }
-      this.coffeeChart?.update();
+      this.coffeeChart()?.update();
     });
 
     this.route.queryParams.pipe(
@@ -102,7 +102,7 @@ export class UserComponent implements OnInit {
       if (this.user) {
         this.user.balance = (+this.user.balance + newPurchase.total).toFixed(2);
       }
-      this.purchaseList?.addPurchase(newPurchase);
+      this.purchaseList()?.addPurchase(newPurchase);
       this.router.navigate([], {
         relativeTo: this.route,
         queryParams: {newPurchase: null},
@@ -120,13 +120,13 @@ export class UserComponent implements OnInit {
     }).subscribe(coffee => {
       this.user!.coffees++;
       this.user!.balance = (+this.user!.balance - coffee.price).toFixed(2);
-      this.purchaseList?.addCoffee(coffee);
+      this.purchaseList()?.addCoffee(coffee);
 
       const hour = new Date(coffee.createdAt).getHours();
       const data = this.coffeeData.datasets[0].data;
       const datum = data[hour];
       data[hour] = (datum && typeof datum === 'number' ? datum : 0) + 1;
-      this.coffeeChart?.update();
+      this.coffeeChart()?.update();
       this.toastService.success('Add Coffee', 'Successfully added coffee');
     }, error => {
       this.toastService.error('Add Coffee', 'Failed to add cofee', error);

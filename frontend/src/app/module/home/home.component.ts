@@ -1,5 +1,5 @@
 import {PercentPipe} from '@angular/common';
-import {Component, inject, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {Component, inject, OnInit, TemplateRef, viewChild} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {NgbOffcanvas, NgbTooltip} from '@ng-bootstrap/ng-bootstrap';
 import {switchMap} from 'rxjs';
@@ -33,7 +33,7 @@ export class HomeComponent implements OnInit {
   private readonly coffeeService = inject(CoffeeService);
   private readonly offcanvasService = inject(NgbOffcanvas);
 
-  @ViewChild('purchaseList') private purchaseList!: TemplateRef<unknown>;
+  private readonly purchaseList = viewChild.required<TemplateRef<unknown>>('purchaseList');
 
   users: User[] = [];
   userMap: Record<string, User> = {};
@@ -67,7 +67,7 @@ export class HomeComponent implements OnInit {
   }
 
   openPurchaseList() {
-    this.offcanvasService.open(this.purchaseList, {position: 'end'});
+    this.offcanvasService.open(this.purchaseList(), {position: 'end'});
   }
 
   applyShortcut(user:User, shortcut: Shortcut) {
