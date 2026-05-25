@@ -1,5 +1,4 @@
-@import "node_modules/bootstrap/scss/functions";
-@import "node_modules/bootstrap/scss/variables";
+@use 'sass:math';
 
 $card-min-width: 16rem;
 $card-height: 9rem;
@@ -13,18 +12,18 @@ $pi: 3.1415926535;
 }
 
 .card-container:hover {
-  box-shadow: $box-shadow;
+  box-shadow: var(--bs-box-shadow);
 }
 
 .card-container {
   position: relative;
-  margin-left: divide($card-height, 2) !important;
+  margin-left: math.div($card-height, 2) !important;
 }
 
 .card-container > .card {
   min-width: $card-min-width;
   height: $card-height;
-  padding-left: divide($card-height, 2);
+  padding-left: math.div($card-height, 2);
 }
 
 .background-image {
@@ -43,7 +42,7 @@ $pi: 3.1415926535;
 .user-avatar {
   position: absolute;
   top: 0;
-  left: divide($card-height, -2);
+  left: math.div($card-height, -2);
   width: $card-height;
   height: $card-height;
   object-fit: cover;

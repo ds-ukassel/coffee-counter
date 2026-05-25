@@ -1,7 +1,8 @@
-import {Component, Input} from '@angular/core';
-import {Shortcut} from '../../../core/model/user.interface';
+import {Component, input} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {NgbPopover} from '@ng-bootstrap/ng-bootstrap';
+
+import {Shortcut} from '../../../core/model/user.interface';
 
 @Component({
   selector: 'app-shortcut-list',
@@ -13,7 +14,7 @@ import {NgbPopover} from '@ng-bootstrap/ng-bootstrap';
   ],
 })
 export class ShortcutListComponent {
-  @Input() shortcuts!: Shortcut[];
+  readonly shortcuts = input.required<Shortcut[]>();
 
   icons = [
     '🍇',
@@ -145,7 +146,7 @@ export class ShortcutListComponent {
   ];
 
   add() {
-    this.shortcuts.push({
+    this.shortcuts().push({
       icon: this.icons[Math.floor(Math.random() * this.icons.length)],
       description: '',
       total: 0,
@@ -153,6 +154,6 @@ export class ShortcutListComponent {
   }
 
   remove(shortcut: Shortcut) {
-    this.shortcuts.splice(this.shortcuts.indexOf(shortcut), 1);
+    this.shortcuts().splice(this.shortcuts().indexOf(shortcut), 1);
   }
 }

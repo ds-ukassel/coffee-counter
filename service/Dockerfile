@@ -1,17 +1,19 @@
 FROM node:lts-slim as builder
-RUN npm install -g pnpm
 WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
-RUN pnpm install
+ENV COREPACK_DEFAULT_TO_LATEST=0
+RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
+    corepack pnpm install
 COPY . .
-RUN pnpm run build
+RUN corepack pnpm run build
 
 FROM node:lts-slim
-RUN npm install -g pnpm
 WORKDIR /app
-ENV NODE_ENV=production
 COPY package.json pnpm-lock.yaml ./
-RUN pnpm install
+ENV NODE_ENV=production \
+    COREPACK_DEFAULT_TO_LATEST=0
+RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
+    corepack pnpm install
 COPY --from=builder /app/dist ./dist
 EXPOSE 3000
-CMD pnpm run start:prod
+CMD ["node", "dist/main.js"]

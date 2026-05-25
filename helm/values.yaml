@@ -7,9 +7,11 @@ mongodb:
     image: registry.uni-kassel.dev/backup/mongodb-s3
     schedule: "0 2 * * *" # every day at 2 am
     timeZone: Europe/Berlin
-    # secret requires keys requires minio-uri (http(s)://accesskey:secretkey@hostname:port)
+    # secret requires keys minio-endpoint (http(s)://hostname:port), minio-access-key and minio-secret-key
+    # optional: discord-webhook-url
     existingSecret: 'backup-minio-secret'
     bucket: 'coffee-backups'
+    path: ''
     # see https://github.com/ds-ukassel/backup-mongodb-s3?tab=readme-ov-file#configuration -> RETENTION_PERIOD
     # and https://min.io/docs/minio/linux/reference/minio-mc/mc-rm.html#mc.rm.-older-than
     keep: 14d

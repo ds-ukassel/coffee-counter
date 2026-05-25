@@ -1,5 +1,7 @@
+import {NotFound, ObjectIdPipe} from '@mean-stream/nestx';
 import {Body, Controller, Delete, Get, Param, Post, Query} from '@nestjs/common';
 import {ApiCreatedResponse, ApiOkResponse, ApiTags} from '@nestjs/swagger';
+import {Types} from 'mongoose';
 
 import {CreatePurchaseDto, FindAllPurchaseDto} from './purchase.dto';
 import {Purchase} from './purchase.schema';
@@ -33,26 +35,26 @@ export class PurchaseController {
 	@ApiOkResponse({type: Array})
 	async findUnique(
 		@Query() dto: FindAllPurchaseDto,
-		@Param('field') field: string,
-	): Promise<any[]> {
-		return this.purchaseService.unique(field, dto);
+		@Param('field') field: keyof Purchase,
+	): Promise<unknown[]> {
+		return this.purchaseService.distinct(field, dto);
 	}
 
 	@Get(':id')
-	// TODO @NotFound()
+	@NotFound()
 	@ApiOkResponse({type: Purchase})
 	async findOne(
-		@Param('id') id: string,
+		@Param('id', ObjectIdPipe) id: Types.ObjectId,
 	): Promise<Purchase | null> {
-		return this.purchaseService.findOne(id);
+		return this.purchaseService.find(id);
 	}
 
 	@Delete(':id')
-	// TODO @NotFound()
+	@NotFound()
 	@ApiOkResponse({type: Purchase})
 	async remove(
-		@Param('id') id: string,
+    @Param('id', ObjectIdPipe) id: Types.ObjectId,
 	): Promise<Purchase | null> {
-		return this.purchaseService.remove(id);
+		return this.purchaseService.delete(id);
 	}
 }

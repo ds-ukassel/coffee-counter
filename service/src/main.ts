@@ -12,7 +12,7 @@ async function bootstrap() {
 	app.setGlobalPrefix(prefix);
 	app.useGlobalPipes(new ValidationPipe({
 		whitelist: true,
-		forbidUnknownValues: true,
+    transform: true,
 	}));
 	app.useGlobalGuards(new ApiKeyGuard());
 

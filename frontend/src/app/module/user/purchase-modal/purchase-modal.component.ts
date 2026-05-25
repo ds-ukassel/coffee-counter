@@ -1,13 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {switchMap} from 'rxjs';
-import {User} from '../../../core/model/user.interface';
-import {UserService} from '../../../core/service/user.service';
-import {CreatePurchaseDto} from '../../../core/model/purchase.interface';
-import {PurchaseService} from '../../../core/service/purchase.service';
-import {ModalModule} from '@mean-stream/ngbx';
 import {CurrencyPipe} from '@angular/common';
+import {Component, inject, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+import {ModalModule} from '@mean-stream/ngbx';
+import {switchMap} from 'rxjs';
+import {CreatePurchaseDto} from '../../../core/model/purchase.interface';
+import {User} from '../../../core/model/user.interface';
+import {PurchaseService} from '../../../core/service/purchase.service';
+import {UserService} from '../../../core/service/user.service';
 
 @Component({
   selector: 'app-purchase-modal',
@@ -20,19 +20,16 @@ import {FormsModule} from '@angular/forms';
   ],
 })
 export class PurchaseModalComponent implements OnInit {
+  protected readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly userService = inject(UserService);
+  private readonly purchaseService = inject(PurchaseService);
+
   user?: User;
 
   purchase: CreatePurchaseDto = {userId: '', total: 1};
 
   descriptions: string[] = [];
-
-  constructor(
-    public route: ActivatedRoute,
-    private router: Router,
-    private userService: UserService,
-    private purchaseService: PurchaseService,
-  ) {
-  }
 
   ngOnInit(): void {
     this.route.params.pipe(

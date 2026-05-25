@@ -1,10 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
+import {ToastService} from '@mean-stream/ngbx';
+import {CookieService} from 'ngx-cookie-service';
+import {switchMap, tap} from 'rxjs';
+
 import {User} from '../../core/model/user.interface';
 import {CoffeeService} from '../../core/service/coffee.service';
-import {CookieService} from 'ngx-cookie-service';
 import {UserService} from '../../core/service/user.service';
-import {switchMap, tap} from 'rxjs';
-import {ToastService} from '@mean-stream/ngbx';
 
 @Component({
   selector: 'app-autolog',
@@ -12,16 +13,13 @@ import {ToastService} from '@mean-stream/ngbx';
   styleUrls: ['./autolog.component.scss'],
 })
 export class AutologComponent implements OnInit {
+  private readonly coffeeService = inject(CoffeeService);
+  private readonly cookieService = inject(CookieService);
+  private readonly userService = inject(UserService);
+  private readonly toastService = inject(ToastService);
+
   infoText: string | undefined;
   user: User | null | undefined;
-
-  constructor(
-    private coffeeService: CoffeeService,
-    private cookieService: CookieService,
-    private userService: UserService,
-    private toastService: ToastService,
-  ) {
-  }
 
   ngOnInit(): void {
     const userId = this.cookieService.get('selectedUserId') || '';

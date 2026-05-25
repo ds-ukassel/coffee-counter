@@ -1,4 +1,4 @@
-import {enableProdMode, isDevMode} from '@angular/core';
+import {enableProdMode, isDevMode, provideZoneChangeDetection} from '@angular/core';
 
 import {environment} from './environments/environment';
 import {registerLocaleData} from '@angular/common';
@@ -23,6 +23,7 @@ registerLocaleData(localeDe, 'de-DE', localeDeExtra);
 
 bootstrapApplication(AppComponent, {
   providers: [
+    provideZoneChangeDetection({eventCoalescing: true}),
     {
       provide: HTTP_INTERCEPTORS,
       multi: true,

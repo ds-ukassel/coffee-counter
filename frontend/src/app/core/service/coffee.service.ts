@@ -1,5 +1,5 @@
 import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
 import {Coffee, CoffeeDiagramData, CreateCoffeeDto, FilterCoffeeDto} from '../model/coffee.interface';
@@ -8,10 +8,7 @@ import {Coffee, CoffeeDiagramData, CreateCoffeeDto, FilterCoffeeDto} from '../mo
   providedIn: 'root',
 })
 export class CoffeeService {
-  constructor(
-    private http: HttpClient,
-  ) {
-  }
+  private readonly http = inject(HttpClient);
 
   findAll(filter?: FilterCoffeeDto): Observable<Coffee[]> {
     return this.http.get<Coffee[]>(environment.apiUrl + '/coffees', {params: filter});
