@@ -13,7 +13,12 @@ import {TrophyTierPipe} from '../../../shared/pipe/trophy-tier.pipe';
   selector: 'app-achievement-modal',
   templateUrl: './achievement-modal.component.html',
   styleUrls: ['./achievement-modal.component.scss'],
-  imports: [ModalModule, NgbTooltip, DatePipe, TrophyTierPipe],
+  imports: [
+    ModalModule,
+    NgbTooltip,
+    DatePipe,
+    TrophyTierPipe,
+  ],
 })
 export class AchievementModalComponent implements OnInit {
   private route = inject(ActivatedRoute);

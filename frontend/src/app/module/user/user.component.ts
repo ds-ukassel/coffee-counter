@@ -45,7 +45,6 @@ export class UserComponent implements OnInit {
   private readonly userService = inject(UserService);
   private readonly coffeeService = inject(CoffeeService);
   private readonly purchaseService = inject(PurchaseService);
-  private readonly activatedRoute = inject(ActivatedRoute);
   private readonly achievementService = inject(AchievementService);
   private readonly toastService = inject(ToastService);
 
@@ -72,7 +71,7 @@ export class UserComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    const userId$ = this.activatedRoute.params.pipe(map(({user}): string => user));
+    const userId$ = this.route.params.pipe(map(({user}): string => user));
 
     userId$.pipe(
       switchMap(id => this.userService.findOne(id)),
