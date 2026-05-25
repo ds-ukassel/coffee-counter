@@ -1,6 +1,7 @@
 import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
+
 import {environment} from '../../../environments/environment';
 import {TrophyTier} from '../../shared/pipe/trophy-tier.pipe';
 import {Achievement, AchievementInfo} from '../model/achievement.interface';
@@ -63,11 +64,7 @@ export const achievements: AchievementInfo[] = [
   providedIn: 'root',
 })
 export class AchievementService {
-
-  constructor(
-    private http: HttpClient,
-  ) {
-  }
+  private readonly http = inject(HttpClient);
 
   getAll(user: string): Observable<Achievement[]> {
     return this.http.get<Achievement[]>(`${environment.apiUrl}/users/${user}/achievements`);

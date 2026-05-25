@@ -1,23 +1,24 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {CurrencyPipe} from '@angular/common';
+import {Component, inject, OnInit, ViewChild} from '@angular/core';
+import {FormsModule} from '@angular/forms';
 import {ActivatedRoute, Router, RouterLink, RouterOutlet} from '@angular/router';
+import {ToastService} from '@mean-stream/ngbx';
 import {NgbPopover, NgbTooltip} from '@ng-bootstrap/ng-bootstrap';
 import {ChartData} from 'chart.js';
-import {ToastService} from '@mean-stream/ngbx';
 import {BaseChartDirective} from 'ng2-charts';
 import {EMPTY, map, switchMap} from 'rxjs';
+
 import {AchievementInfo} from '../../core/model/achievement.interface';
 import {User} from '../../core/model/user.interface';
 import {AchievementService} from '../../core/service/achievement.service';
 import {CoffeeService} from '../../core/service/coffee.service';
 import {PurchaseService} from '../../core/service/purchase.service';
 import {UserService} from '../../core/service/user.service';
-import {CurrencyPipe} from '@angular/common';
-import {FormsModule} from '@angular/forms';
-import {ShortcutListComponent} from './shortcut-list/shortcut-list.component';
-import {PurchaseListComponent} from '../../shared/purchase-list/purchase-list.component';
-import {LevelPipe} from '../../shared/pipe/level.pipe';
 import {LevelNamePipe} from '../../shared/pipe/level-name.pipe';
 import {NextLevelPipe} from '../../shared/pipe/level-progress.pipe';
+import {LevelPipe} from '../../shared/pipe/level.pipe';
+import {PurchaseListComponent} from '../../shared/purchase-list/purchase-list.component';
+import {ShortcutListComponent} from './shortcut-list/shortcut-list.component';
 
 @Component({
   selector: 'app-user',
@@ -39,6 +40,15 @@ import {NextLevelPipe} from '../../shared/pipe/level-progress.pipe';
   ],
 })
 export class UserComponent implements OnInit {
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly userService = inject(UserService);
+  private readonly coffeeService = inject(CoffeeService);
+  private readonly purchaseService = inject(PurchaseService);
+  private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly achievementService = inject(AchievementService);
+  private readonly toastService = inject(ToastService);
+
   @ViewChild(BaseChartDirective) coffeeChart: BaseChartDirective | undefined;
   @ViewChild(PurchaseListComponent) purchaseList: PurchaseListComponent | undefined;
 
@@ -60,18 +70,6 @@ export class UserComponent implements OnInit {
       },
     ],
   };
-
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private userService: UserService,
-    private coffeeService: CoffeeService,
-    private purchaseService: PurchaseService,
-    private activatedRoute: ActivatedRoute,
-    private achievementService: AchievementService,
-    private toastService: ToastService,
-  ) {
-  }
 
   ngOnInit(): void {
     const userId$ = this.activatedRoute.params.pipe(map(({user}): string => user));

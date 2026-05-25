@@ -1,8 +1,9 @@
 import {CurrencyPipe, DatePipe} from '@angular/common';
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, inject, Input, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {NgbPopover, NgbTooltip} from '@ng-bootstrap/ng-bootstrap';
 import {forkJoin, map, Observable, switchMap} from 'rxjs';
+
 import {Coffee} from '../../core/model/coffee.interface';
 import {Purchase} from '../../core/model/purchase.interface';
 import {User} from '../../core/model/user.interface';
@@ -31,16 +32,13 @@ interface Item {
   ],
 })
 export class PurchaseListComponent implements OnInit {
+  private readonly route = inject(ActivatedRoute);
+  private readonly coffeeService = inject(CoffeeService);
+  private readonly purchaseService = inject(PurchaseService);
+
   @Input() users?: Record<string, User>;
 
   items: Item[] = [];
-
-  constructor(
-    private route: ActivatedRoute,
-    private coffeeService: CoffeeService,
-    private purchaseService: PurchaseService,
-  ) {
-  }
 
   addCoffee(coffee: Coffee) {
     this.items.unshift(coffeeToItem(coffee));

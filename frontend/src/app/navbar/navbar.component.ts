@@ -1,4 +1,4 @@
-import {Component, DOCUMENT, Inject} from '@angular/core';
+import {Component, DOCUMENT, inject} from '@angular/core';
 import {RouterLink, RouterLinkActive} from '@angular/router';
 import {NgbCollapse, NgbTooltip} from '@ng-bootstrap/ng-bootstrap';
 
@@ -6,20 +6,12 @@ import {NgbCollapse, NgbTooltip} from '@ng-bootstrap/ng-bootstrap';
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
-  imports: [
-    RouterLink,
-    NgbCollapse,
-    RouterLinkActive,
-    NgbTooltip,
-  ],
+  imports: [RouterLink, NgbCollapse, RouterLinkActive, NgbTooltip],
 })
 export class NavbarComponent {
-  isMenuCollapsed = true;
+  readonly document = inject<Document>(DOCUMENT);
 
-  constructor(
-    @Inject(DOCUMENT) public document: Document,
-  ) {
-  }
+  isMenuCollapsed = true;
 
   toggleFullscreen() {
     if (this.document.fullscreenElement) {

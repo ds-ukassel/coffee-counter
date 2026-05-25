@@ -1,10 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {ApiKeyService} from '../../core/service/api-key.service';
-import {UserService} from '../../core/service/user.service';
+import {Component, inject, OnInit} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {ToastService} from '@mean-stream/ngbx';
 import {CookieService} from 'ngx-cookie-service';
 import {User} from '../../core/model/user.interface';
-import {ToastService} from '@mean-stream/ngbx';
-import {FormsModule} from '@angular/forms';
+import {ApiKeyService} from '../../core/service/api-key.service';
+import {UserService} from '../../core/service/user.service';
 
 @Component({
   selector: 'app-settings',
@@ -13,16 +13,14 @@ import {FormsModule} from '@angular/forms';
   imports: [FormsModule],
 })
 export class SettingsComponent implements OnInit {
+  private readonly apiKeyService = inject(ApiKeyService);
+  private readonly userService = inject(UserService);
+  private readonly cookieService = inject(CookieService);
+  private readonly toastService = inject(ToastService);
+
   apiKey!: string;
   selectedUserId!: string;
   users: User[] = [];
-
-  constructor(
-    private apiKeyService: ApiKeyService,
-    private userService: UserService,
-    private cookieService: CookieService,
-    private toastService: ToastService,
-  ) {}
 
   ngOnInit(): void {
     this.apiKey = this.apiKeyService.apiKey || '';
