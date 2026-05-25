@@ -66,7 +66,7 @@ export class PurchaseListComponent implements OnInit {
     });
   }
 
-  delete(purchase: Item) {
+  deleteItem(purchase: Item) {
     const del: Observable<{ _id: string; }> = purchase.type === 'purchase' ? this.purchaseService.remove(purchase._id) : this.coffeeService.remove(purchase._id);
     del.subscribe(res => {
       this.items = this.items.filter(item => item._id !== res._id);
