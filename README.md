@@ -1,12 +1,14 @@
 # Coffee Counter ☕
 
-A full-stack web application for tracking coffee consumption in a shared environment. Built with NestJS (backend) and Angular (frontend), this application gamifies coffee tracking with achievements, user statistics, and purchase management.
+A full-stack web application for tracking coffee consumption in a shared environment:
+coffee tracking with achievements, user statistics, and purchase management.
+Built with NestJS (backend) and Angular (frontend).
 
 ## 🌟 Features
 
 - **Coffee Tracking**: Log coffee consumption with timestamps
 - **User Management**: Create and manage multiple users
-- **Achievements System**: Unlock achievements based on coffee habits (e.g., "Night Owl" for late-night coffee, "Early Bird" for morning coffee)
+- **Achievements**: Unlock achievements based on coffee habits (e.g., "Night Owl" for late-night coffee, "Early Bird" for morning coffee)
 - **Statistics & Analytics**: Visualize coffee consumption patterns with charts and diagrams
 - **Purchase Tracking**: Record coffee purchases and manage balances
 - **Auto-logging**: Quick coffee logging via cookies/shortcuts
@@ -16,7 +18,7 @@ A full-stack web application for tracking coffee consumption in a shared environ
 ## 📋 Prerequisites
 
 - **Docker & Docker Compose** (recommended for quick start)
-- **Node.js** 18+ and **pnpm** 9.15+ (for local development)
+- **Node.js** 24+ and **pnpm** 11+ (for local development)
 - **MongoDB** 8+ (if running without Docker)
 
 ## 🚀 Quick Start with Docker Compose
@@ -40,9 +42,10 @@ docker-compose up -d
 ### Environment Configuration
 
 Edit `docker-compose.yaml` to customize:
-- `COFFEE_PRICE`: Price per coffee (default: 0.4)
+- `COFFEE_PRICE`: Price per coffee (default: 0.40)
 - `COFFEE_API_KEY`: Secret key for API authentication (change this!)
-- `MONGO_URI`: MongoDB connection string
+
+Other backend environment variables: see [environment.ts](service/src/environment.ts)
 
 ## 💻 Local Development
 
@@ -91,35 +94,6 @@ pnpm test
 pnpm build
 ```
 
-## 🏗️ Architecture
-
-### Backend Structure
-- **NestJS Framework**: Modern Node.js framework with TypeScript
-- **MongoDB**: Document database with Mongoose ODM
-- **Modules**:
-  - `coffee`: Coffee logging and statistics
-  - `user`: User management and profiles
-  - `purchase`: Purchase tracking
-  - `achievement`: Achievement system with event-driven unlocking
-- **API Documentation**: Auto-generated Swagger/OpenAPI docs
-
-### Frontend Structure
-- **Angular 20**: Modern TypeScript-based SPA framework
-- **Bootstrap 5**: Responsive UI components
-- **Chart.js**: Data visualization for statistics
-- **Modules**:
-  - `home`: Main dashboard with quick coffee logging
-  - `user`: User management and detail views
-  - `settings`: Configuration and preferences
-  - `autolog`: Automated logging features
-
-## 🐳 Docker Images
-
-Multi-architecture images are available for both AMD64 and ARM64:
-
-- Backend: `registry.uni-kassel.dev/coffee-counter/backend:latest`
-- Frontend: `registry.uni-kassel.dev/coffee-counter/frontend:latest`
-
 ## ☸️ Kubernetes Deployment
 
 Deploy to Kubernetes using the provided Helm chart:
@@ -135,7 +109,7 @@ helm install coffee-counter . -f custom-values.yaml
 ```
 
 The Helm chart includes:
-- MongoDB deployment with persistent storage
+- Integration with an existing MongoDB instance (MongoDB must be deployed separately; connection details are provided via secrets)
 - Backend deployment and service
 - Frontend deployment and service
 - Ingress configuration
@@ -143,23 +117,11 @@ The Helm chart includes:
 
 ## 📚 API Documentation
 
-Once the backend is running, access the interactive API documentation:
-
-- Swagger UI: `http://localhost:3000/api`
-
-### Main API Endpoints
-
-- `GET /coffees` - List all coffee logs
-- `POST /coffees` - Create a new coffee log
-- `GET /users` - List all users
-- `POST /users` - Create a new user
-- `GET /users/:userId/achievements` - Get user achievements
-- `GET /purchases` - List purchases
-- `POST /purchases` - Record a purchase
+Once the backend is running, access the interactive API documentation: http://localhost:3000/api
 
 ## 🔒 Security
 
-- API key authentication via `COFFEE_API_KEY` environment variable
+- API key authentication via `COFFEE_API_KEY` environment variable (header `X-Coffee-Api-Key`)
 - Input validation using class-validator
 - CORS configuration for production deployments
 
@@ -167,18 +129,27 @@ Once the backend is running, access the interactive API documentation:
 
 ## 🛠️ Development Tools
 
+### Frameworks
+
+- Backend built with [NestJS](https://nestjs.com/)
+- Frontend powered by [Angular](https://angular.io/)
+- UI components from [Bootstrap](https://getbootstrap.com/) and [ng-bootstrap](https://ng-bootstrap.github.io/)
+
+### NodeJS
+Frontend and backend require NodeJS 24+.
+
 ### Package Manager
-This project uses **pnpm** (version 9.15.2+). The package manager is enforced via the `packageManager` field in `package.json`.
+This project uses **pnpm** (version 11+).
+The package manager is enforced via the `packageManager` field in `package.json`.
 
 ### Code Quality
 - **ESLint**: Linting for TypeScript code
 - **Prettier**: Code formatting
 - **Jest**: Testing framework (backend)
-- **Karma/Jasmine**: Testing framework (frontend)
 
 ## 📝 License
 
-This project is licensed under UNLICENSED - see the service/package.json for details.
+[MIT](LICENSE.md)
 
 ## 🤝 Contributing
 
@@ -187,14 +158,3 @@ This project is licensed under UNLICENSED - see the service/package.json for det
 3. Commit your changes (`git commit -m 'Add amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
-
-## 📞 Contact
-
-- Organization: [ds-ukassel](https://github.com/ds-ukassel)
-- Repository: [coffee-counter](https://github.com/ds-ukassel/coffee-counter)
-
-## 🙏 Acknowledgments
-
-- Built with [NestJS](https://nestjs.com/)
-- Frontend powered by [Angular](https://angular.io/)
-- UI components from [Bootstrap](https://getbootstrap.com/) and [ng-bootstrap](https://ng-bootstrap.github.io/)
