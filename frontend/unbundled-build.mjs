@@ -6,6 +6,41 @@ import * as jsdom from 'jsdom';
 import {fileURLToPath, pathToFileURL} from "node:url";
 import {dirname, join, resolve} from "node:path";
 import {moduleResolve} from 'import-meta-resolve';
+import * as esbuild from 'esbuild';
+
+class EsbuildCdn {
+  standalone = true;
+  dependencies = [];
+
+  #promises = [];
+  #seen = new Set;
+
+  url(packageName, version, path) {
+    const fileName = `./${packageName}-${version}-${path.replaceAll('/', '-')}.mjs`;
+    if (!this.#seen.has(fileName)) {
+      this.#seen.add(fileName);
+
+      console.log(`Esbuild: building ${packageName} ${version} ${path}`);
+      this.#promises.push((async () => {
+        await esbuild.build({
+          packages: 'bundle',
+          platform: 'browser',
+          format: 'esm',
+          target: 'es2022',
+          outfile: fileName,
+          bundle: true,
+          external: this.dependencies,
+          entryPoints: [`node_modules/${packageName}/${path}`],
+        });
+      })());
+    }
+    return fileName;
+  }
+
+  async finish() {
+    await Promise.all(this.#promises);
+  }
+}
 
 const CDNS = {
   'unpkg.com': {
@@ -16,8 +51,9 @@ const CDNS = {
     url: (packageName, version, path) => `https://esm.sh/${packageName}@${version}/${path}?standalone`,
     standalone: true,
   },
+  'esbuild': new EsbuildCdn(),
 };
-const cdn = CDNS[process.env.CDN || 'esm.sh'];
+const cdn = CDNS[process.env.CDN || 'esbuild'];
 
 async function main() {
   const frontendDir = './';
@@ -42,6 +78,7 @@ async function main() {
     '@mean-stream/ngbx',
   ])
   const dependencies = Object.keys(packageJson.dependencies || []).filter(s => !forbiddenDependencies.has(s));
+  cdn.dependencies = dependencies;
 
   console.log('Package dependencies: ', dependencies);
 
@@ -57,7 +94,7 @@ async function main() {
   const allPackages = await loadPackages(frontendDir);
   const allPackageVersions = Object.fromEntries(allPackages);
 
-  const imports = generateImportMap(dependencies, allPackageVersions);
+  const imports = {}; // generateImportMap(dependencies, allPackageVersions);
   await augmentImportMapWithJsImports(frontendDir, imports, allPackageVersions);
 
   for await (const index of await glob(`dist/**/index.html`, {cwd: frontendDir})) {
@@ -65,6 +102,8 @@ async function main() {
     await updateIndexHtml(indexHtmlPath, imports, allPackageVersions);
     break;
   }
+
+  await cdn.finish?.();
 }
 
 async function buildAngular(projectName, dependencies) {
@@ -105,8 +144,7 @@ function generateImportMap(directDependencies, allPackageVersions) {
   const imports = {};
   for (const dependency of directDependencies) {
     const version = allPackageVersions[dependency];
-    // TODO use ?exports=x,y,z for tree shaking
-    imports[dependency] = `https://esm.sh/${dependency}@${version}?standalone`;
+    imports[dependency] = cdn.url(dependency, version);
   }
   return imports;
 }
