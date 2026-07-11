@@ -8,6 +8,9 @@ import * as jsdom from 'jsdom';
 const BUILD_CONFIGURATION = process.env.NG_BUILD_CONFIGURATION || 'production';
 const OUTPUT_SUBDIR = process.env.DEP_CHUNKS_OUTDIR || 'vendor';
 const DISABLE_STYLE_EXCLUDES = process.env.DEP_CHUNKS_DISABLE_STYLE_EXCLUDES === '1';
+const FROM_IMPORT_PATTERN = /\b(?:import|export)\b[^"'`]*?\bfrom\s*["']([^"']+)["']/g;
+const SIDE_EFFECT_IMPORT_PATTERN = /\bimport\s*["']([^"']+)["']/g;
+const DYNAMIC_IMPORT_PATTERN = /import\(\s*["']([^"']+)["']\s*\)/g;
 
 function toSet(input) {
   if (!input) {
@@ -33,8 +36,8 @@ function toRelativeWebPath(fromDir, toFile) {
   return path;
 }
 
-function fileNameForPackage(packageName) {
-  return `${packageName.replaceAll('@', '').replaceAll('/', '--')}.mjs`;
+function fileNameForSpecifier(specifier) {
+  return `${specifier.replaceAll('@', '').replaceAll('/', '--')}.mjs`;
 }
 
 function packageNameFromSpecifier(specifier) {
@@ -115,16 +118,14 @@ async function dependenciesUsedInSources(projectDir, dependencies) {
   const sourceFiles = await glob('src/**/*.{ts,js,mts,mjs,cts,cjs}', {
     cwd: projectDir,
   });
-  const staticImportPattern =
-    /(?:import|export)\s+(?:[\s\w{},*$]*\s+from\s+)?["']([^"']+)["']/g;
-  const dynamicImportPattern = /import\(\s*["']([^"']+)["']\s*\)/g;
 
   for await (const file of sourceFiles) {
     const content = await fs.readFile(join(projectDir, file), 'utf-8');
-    const staticMatches = content.matchAll(staticImportPattern);
-    const dynamicMatches = content.matchAll(dynamicImportPattern);
+    const fromMatches = content.matchAll(FROM_IMPORT_PATTERN);
+    const sideEffectMatches = content.matchAll(SIDE_EFFECT_IMPORT_PATTERN);
+    const dynamicMatches = content.matchAll(DYNAMIC_IMPORT_PATTERN);
 
-    for (const match of [...staticMatches, ...dynamicMatches]) {
+    for (const match of [...fromMatches, ...sideEffectMatches, ...dynamicMatches]) {
       const specifier = match[1];
       const packageName = packageNameFromSpecifier(specifier);
       if (packageName && dependencySet.has(packageName)) {
@@ -167,14 +168,56 @@ async function findIndexHtml(projectDir) {
   return join(projectDir, index);
 }
 
-async function buildDependencyBundle(projectDir, dependency, allDependencies, outputDir) {
-  const outputFile = join(outputDir, fileNameForPackage(dependency));
-  const external = allDependencies.filter((candidate) => candidate !== dependency);
+async function collectBareSpecifiersFromDirectory(dirPath) {
+  const specifiers = new Set();
+  const jsFiles = await glob('**/*.{js,mjs}', { cwd: dirPath });
+
+  for await (const file of jsFiles) {
+    const absolutePath = join(dirPath, file);
+    const content = await fs.readFile(absolutePath, 'utf-8');
+    const fromMatches = content.matchAll(FROM_IMPORT_PATTERN);
+    const sideEffectMatches = content.matchAll(SIDE_EFFECT_IMPORT_PATTERN);
+    const dynamicMatches = content.matchAll(DYNAMIC_IMPORT_PATTERN);
+
+    for (const match of [...fromMatches, ...sideEffectMatches, ...dynamicMatches]) {
+      const specifier = match[1];
+      if (!specifier.startsWith('.') && !specifier.startsWith('/')) {
+        specifiers.add(specifier);
+      }
+    }
+  }
+
+  return specifiers;
+}
+
+async function collectBarePreloadSpecifiers(indexHtmlPath) {
+  const indexHtml = await fs.readFile(indexHtmlPath, 'utf-8');
+  const dom = new jsdom.JSDOM(indexHtml);
+  const doc = dom.window.document;
+  const specifiers = new Set();
+
+  for (const preload of doc.querySelectorAll('link[rel="modulepreload"]')) {
+    const href = preload.getAttribute('href');
+    if (!href) {
+      continue;
+    }
+    if (!href.startsWith('.') && !href.startsWith('/') && !href.includes('://')) {
+      specifiers.add(href);
+    }
+  }
+
+  return specifiers;
+}
+
+async function buildSpecifierBundle(projectDir, specifier, dependencies, outputDir) {
+  const packageName = packageNameFromSpecifier(specifier);
+  const outputFile = join(outputDir, fileNameForSpecifier(specifier));
+  const external = dependencies.filter((candidate) => candidate !== packageName);
   await esbuild.build({
     absWorkingDir: projectDir,
     bundle: true,
     conditions: ['browser', 'module', 'import', 'default'],
-    entryPoints: [dependency],
+    entryPoints: [specifier],
     external,
     format: 'esm',
     legalComments: 'none',
@@ -190,18 +233,19 @@ async function buildDependencyBundle(projectDir, dependency, allDependencies, ou
   return outputFile;
 }
 
-async function buildDependencyBundles(projectDir, dependencies, outputDir) {
+async function buildSpecifierBundles(projectDir, specifiers, dependencies, outputDir) {
   await fs.mkdir(outputDir, { recursive: true });
   const imports = {};
+  const orderedSpecifiers = Array.from(specifiers).sort();
 
-  for (const dependency of dependencies) {
-    const outputFile = await buildDependencyBundle(
+  for (const specifier of orderedSpecifiers) {
+    const outputFile = await buildSpecifierBundle(
       projectDir,
-      dependency,
+      specifier,
       dependencies,
       outputDir,
     );
-    imports[dependency] = outputFile;
+    imports[specifier] = outputFile;
   }
 
   return imports;
@@ -226,6 +270,16 @@ async function updateIndexHtml(indexHtmlPath, imports) {
       toRelativeWebPath(indexDir, absoluteFile),
     ]),
   );
+
+  for (const preload of doc.querySelectorAll('link[rel="modulepreload"]')) {
+    const href = preload.getAttribute('href');
+    if (!href) {
+      continue;
+    }
+    if (href in webImports) {
+      preload.setAttribute('href', webImports[href]);
+    }
+  }
 
   let importMapScript = doc.querySelector('script[type="importmap"]');
   let existingImports = {};
@@ -294,12 +348,38 @@ async function main() {
   await buildAngular(projectName, dependencies);
 
   const indexHtmlPath = await findIndexHtml(projectDir);
-  const outputDir = join(dirname(indexHtmlPath), OUTPUT_SUBDIR);
-  const generatedImports = await buildDependencyBundles(
-    projectDir,
-    dependencies,
-    outputDir,
+  const distDir = dirname(indexHtmlPath);
+  const outputDir = join(distDir, OUTPUT_SUBDIR);
+  const usedSpecifiers = await collectBareSpecifiersFromDirectory(distDir);
+  const preloadSpecifiers = await collectBarePreloadSpecifiers(indexHtmlPath);
+  const dependencySet = new Set(dependencies);
+  const selectedSpecifiers = new Set(
+    [...usedSpecifiers, ...preloadSpecifiers].filter((specifier) => {
+      const packageName = packageNameFromSpecifier(specifier);
+      return Boolean(packageName && dependencySet.has(packageName));
+    }),
   );
+  for (const dependency of dependencies) {
+    selectedSpecifiers.add(dependency);
+  }
+  let generatedImports = {};
+  let previousSize = -1;
+  while (selectedSpecifiers.size !== previousSize) {
+    previousSize = selectedSpecifiers.size;
+    generatedImports = await buildSpecifierBundles(
+      projectDir,
+      selectedSpecifiers,
+      dependencies,
+      outputDir,
+    );
+    const vendorSpecifiers = await collectBareSpecifiersFromDirectory(outputDir);
+    for (const specifier of vendorSpecifiers) {
+      const packageName = packageNameFromSpecifier(specifier);
+      if (packageName && dependencySet.has(packageName)) {
+        selectedSpecifiers.add(specifier);
+      }
+    }
+  }
 
   await updateIndexHtml(indexHtmlPath, generatedImports);
 }
