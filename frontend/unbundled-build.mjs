@@ -8,6 +8,7 @@ import * as jsdom from 'jsdom';
 const BUILD_CONFIGURATION = process.env.NG_BUILD_CONFIGURATION || 'production';
 const OUTPUT_SUBDIR = process.env.DEP_CHUNKS_OUTDIR || 'vendor';
 const DISABLE_STYLE_EXCLUDES = process.env.DEP_CHUNKS_DISABLE_STYLE_EXCLUDES === '1';
+const FORCE_JIT_COMPILER = process.env.DEP_CHUNKS_FORCE_JIT_COMPILER !== '0';
 const FROM_IMPORT_PATTERN = /\b(?:import|export)\b[^"'`]*?\bfrom\s*["']([^"']+)["']/g;
 const SIDE_EFFECT_IMPORT_PATTERN = /\bimport\s*["']([^"']+)["']/g;
 const DYNAMIC_IMPORT_PATTERN = /import\(\s*["']([^"']+)["']\s*\)/g;
@@ -85,6 +86,14 @@ async function resolveDependencies(projectDir) {
   }
 
   return selectedDependencies;
+}
+
+function forceIncludedDependencies(dependencies) {
+  const forced = new Set();
+  if (FORCE_JIT_COMPILER && dependencies.includes('@angular/compiler')) {
+    forced.add('@angular/compiler');
+  }
+  return forced;
 }
 
 async function dependenciesUsedInStyles(projectDir, dependencies) {
@@ -296,6 +305,23 @@ async function updateIndexHtml(indexHtmlPath, imports) {
   }
   importMapScript.textContent = `${JSON.stringify({ imports: nextImports }, null, 2)}\n`;
 
+  if (nextImports['@angular/compiler']) {
+    let compilerScript = doc.querySelector('script[data-dep-chunks="jit-compiler"]');
+    if (!compilerScript) {
+      compilerScript = doc.createElement('script');
+      compilerScript.type = 'module';
+      compilerScript.setAttribute('data-dep-chunks', 'jit-compiler');
+      compilerScript.textContent = `import "@angular/compiler";`;
+
+      const firstModuleScript = doc.querySelector('script[type="module"][src]');
+      if (firstModuleScript?.parentNode) {
+        firstModuleScript.parentNode.insertBefore(compilerScript, firstModuleScript);
+      } else {
+        doc.body.appendChild(compilerScript);
+      }
+    }
+  }
+
   await fs.writeFile(indexHtmlPath, dom.serialize(), 'utf-8');
   console.log(`Updated import map in ${indexHtmlPath}`);
 }
@@ -307,12 +333,13 @@ async function main() {
     projectDir,
     allDependencies,
   );
+  const forcedDependencies = forceIncludedDependencies(allDependencies);
   const styleDependencies = await dependenciesUsedInStyles(projectDir, allDependencies);
   const dependencies = allDependencies.filter((dependency) => {
     if (styleDependencies.has(dependency)) {
       return false;
     }
-    return sourceDependencies.has(dependency);
+    return sourceDependencies.has(dependency) || forcedDependencies.has(dependency);
   });
 
   if (!dependencies.length) {
@@ -328,6 +355,11 @@ async function main() {
   if (sourceSkipped.length) {
     console.log(
       `Skipping source-unused dependencies: ${sourceSkipped.join(', ')}`,
+    );
+  }
+  if (forcedDependencies.size) {
+    console.log(
+      `Force-including dependencies: ${Array.from(forcedDependencies).sort().join(', ')}`,
     );
   }
   if (styleDependencies.size) {
