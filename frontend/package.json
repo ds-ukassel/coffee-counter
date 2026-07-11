@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve --port=46307 --open",
     "build": "node ./unbundled-build.mjs",
+    "build:dev": "NG_BUILD_CONFIGURATION=development node ./unbundled-build.mjs",
     "build:angular": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",

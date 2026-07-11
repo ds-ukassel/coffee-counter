@@ -6,6 +6,7 @@ import * as esbuild from 'esbuild';
 import * as jsdom from 'jsdom';
 
 const BUILD_CONFIGURATION = process.env.NG_BUILD_CONFIGURATION || 'production';
+const IS_DEVELOPMENT_BUILD = BUILD_CONFIGURATION === 'development';
 const OUTPUT_SUBDIR = process.env.DEP_CHUNKS_OUTDIR || 'vendor';
 const DISABLE_STYLE_EXCLUDES = process.env.DEP_CHUNKS_DISABLE_STYLE_EXCLUDES === '1';
 const FORCE_JIT_COMPILER = process.env.DEP_CHUNKS_FORCE_JIT_COMPILER !== '0';
@@ -232,10 +233,11 @@ async function buildSpecifierBundle(projectDir, specifier, dependencies, outputD
     legalComments: 'none',
     logLevel: 'warning',
     mainFields: ['browser', 'module', 'main'],
-    minify: true,
+    keepNames: IS_DEVELOPMENT_BUILD,
+    minify: !IS_DEVELOPMENT_BUILD,
     outfile: outputFile,
     platform: 'browser',
-    sourcemap: false,
+    sourcemap: IS_DEVELOPMENT_BUILD,
     target: 'es2022',
     treeShaking: true,
   });
