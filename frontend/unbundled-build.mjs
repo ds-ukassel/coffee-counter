@@ -10,6 +10,7 @@ const IS_DEVELOPMENT_BUILD = BUILD_CONFIGURATION === 'development';
 const OUTPUT_SUBDIR = process.env.DEP_CHUNKS_OUTDIR || 'vendor';
 const DISABLE_STYLE_EXCLUDES = process.env.DEP_CHUNKS_DISABLE_STYLE_EXCLUDES === '1';
 const FORCE_JIT_COMPILER = process.env.DEP_CHUNKS_FORCE_JIT_COMPILER !== '0';
+const INCLUDE_ANGULAR_PACKAGES = process.env.DEP_CHUNKS_INCLUDE_ANGULAR === '1';
 const FROM_IMPORT_PATTERN = /\b(?:import|export)\b[^"'`]*?\bfrom\s*["']([^"']+)["']/g;
 const SIDE_EFFECT_IMPORT_PATTERN = /\bimport\s*["']([^"']+)["']/g;
 const DYNAMIC_IMPORT_PATTERN = /import\(\s*["']([^"']+)["']\s*\)/g;
@@ -53,6 +54,49 @@ function packageNameFromSpecifier(specifier) {
   return parts[0] || null;
 }
 
+function isAngularPackage(dependency) {
+  return dependency.startsWith('@angular/');
+}
+
+function isPackageLikeSpecifier(specifier) {
+  if (
+    specifier.startsWith('.') ||
+    specifier.startsWith('/') ||
+    specifier.includes('://') ||
+    specifier.startsWith('chunk-') ||
+    specifier.startsWith('main') ||
+    specifier.startsWith('polyfills')
+  ) {
+    return false;
+  }
+  if (
+    specifier.endsWith('.js') ||
+    specifier.endsWith('.mjs') ||
+    specifier.endsWith('.css')
+  ) {
+    return false;
+  }
+  return /^(@[a-z0-9_.-]+\/[a-z0-9_.-]+|[a-z0-9_.-]+)(\/[a-z0-9_.-]+)*$/i.test(specifier);
+}
+
+function shouldManageSpecifier(specifier) {
+  const packageName = packageNameFromSpecifier(specifier);
+  if (!packageName) {
+    return false;
+  }
+  if (!INCLUDE_ANGULAR_PACKAGES && isAngularPackage(packageName)) {
+    return false;
+  }
+  return true;
+}
+
+async function readAllDependencies(projectDir) {
+  const packageJson = JSON.parse(
+    await fs.readFile(join(projectDir, 'package.json'), 'utf-8'),
+  );
+  return Object.keys(packageJson.dependencies || {}).sort();
+}
+
 function applicationProjectName(angularJson) {
   const projectName = process.env.NG_BUILD_PROJECT;
   if (projectName) {
@@ -73,6 +117,9 @@ async function resolveDependencies(projectDir) {
   const allDependencies = Object.keys(packageJson.dependencies || {}).sort();
 
   const selectedDependencies = allDependencies.filter((dependency) => {
+    if (!INCLUDE_ANGULAR_PACKAGES && isAngularPackage(dependency)) {
+      return false;
+    }
     if (include.size && !include.has(dependency)) {
       return false;
     }
@@ -91,10 +138,40 @@ async function resolveDependencies(projectDir) {
 
 function forceIncludedDependencies(dependencies) {
   const forced = new Set();
-  if (FORCE_JIT_COMPILER && dependencies.includes('@angular/compiler')) {
+  if (
+    FORCE_JIT_COMPILER &&
+    INCLUDE_ANGULAR_PACKAGES &&
+    dependencies.includes('@angular/compiler')
+  ) {
     forced.add('@angular/compiler');
   }
   return forced;
+}
+
+async function isAngularPeerDependency(projectDir, dependency) {
+  const packageJsonPath = join(projectDir, 'node_modules', dependency, 'package.json');
+  const packageJson = JSON.parse(await fs.readFile(packageJsonPath, 'utf-8'));
+  const peerDeps = packageJson.peerDependencies || {};
+  return Object.keys(peerDeps).some((name) => isAngularPackage(name));
+}
+
+async function filterExternalizableDependencies(projectDir, dependencies) {
+  const kept = [];
+  const skippedAngularPeers = [];
+  for (const dependency of dependencies) {
+    if (isAngularPackage(dependency)) {
+      continue;
+    }
+    const hasAngularPeer = await isAngularPeerDependency(projectDir, dependency).catch(
+      () => false,
+    );
+    if (hasAngularPeer) {
+      skippedAngularPeers.push(dependency);
+      continue;
+    }
+    kept.push(dependency);
+  }
+  return { kept, skippedAngularPeers };
 }
 
 async function dependenciesUsedInStyles(projectDir, dependencies) {
@@ -147,6 +224,29 @@ async function dependenciesUsedInSources(projectDir, dependencies) {
   return usedInSources;
 }
 
+async function collectBareSpecifiersFromSources(projectDir) {
+  const specifiers = new Set();
+  const sourceFiles = await glob('src/**/*.{ts,js,mts,mjs,cts,cjs}', {
+    cwd: projectDir,
+  });
+
+  for await (const file of sourceFiles) {
+    const content = await fs.readFile(join(projectDir, file), 'utf-8');
+    const fromMatches = content.matchAll(FROM_IMPORT_PATTERN);
+    const sideEffectMatches = content.matchAll(SIDE_EFFECT_IMPORT_PATTERN);
+    const dynamicMatches = content.matchAll(DYNAMIC_IMPORT_PATTERN);
+
+    for (const match of [...fromMatches, ...sideEffectMatches, ...dynamicMatches]) {
+      const specifier = match[1];
+      if (isPackageLikeSpecifier(specifier)) {
+        specifiers.add(specifier);
+      }
+    }
+  }
+
+  return specifiers;
+}
+
 async function buildAngular(projectName, dependencies) {
   const args = [
     'build',
@@ -155,9 +255,10 @@ async function buildAngular(projectName, dependencies) {
     BUILD_CONFIGURATION,
     '--source-map',
     'false',
-    '--external-dependencies',
-    ...dependencies,
   ];
+  if (dependencies.length) {
+    args.push('--external-dependencies', ...dependencies);
+  }
   console.log(`Building Angular ${cli.VERSION.full}: ng ${args.join(' ')}`);
   const status = await cli.default({ cliArgs: args });
   if (status) {
@@ -191,7 +292,7 @@ async function collectBareSpecifiersFromDirectory(dirPath) {
 
     for (const match of [...fromMatches, ...sideEffectMatches, ...dynamicMatches]) {
       const specifier = match[1];
-      if (!specifier.startsWith('.') && !specifier.startsWith('/')) {
+      if (isPackageLikeSpecifier(specifier)) {
         specifiers.add(specifier);
       }
     }
@@ -211,7 +312,7 @@ async function collectBarePreloadSpecifiers(indexHtmlPath) {
     if (!href) {
       continue;
     }
-    if (!href.startsWith('.') && !href.startsWith('/') && !href.includes('://')) {
+    if (isPackageLikeSpecifier(href)) {
       specifiers.add(href);
     }
   }
@@ -219,10 +320,13 @@ async function collectBarePreloadSpecifiers(indexHtmlPath) {
   return specifiers;
 }
 
-async function buildSpecifierBundle(projectDir, specifier, dependencies, outputDir) {
+async function buildSpecifierBundle(projectDir, specifier, packageRoots, outputDir) {
   const packageName = packageNameFromSpecifier(specifier);
   const outputFile = join(outputDir, fileNameForSpecifier(specifier));
-  const external = dependencies.filter((candidate) => candidate !== packageName);
+  const isPackageRootEntry = specifier === packageName;
+  const external = packageRoots.filter(
+    (candidate) => !isPackageRootEntry || candidate !== packageName,
+  );
   await esbuild.build({
     absWorkingDir: projectDir,
     bundle: true,
@@ -244,7 +348,7 @@ async function buildSpecifierBundle(projectDir, specifier, dependencies, outputD
   return outputFile;
 }
 
-async function buildSpecifierBundles(projectDir, specifiers, dependencies, outputDir) {
+async function buildSpecifierBundles(projectDir, specifiers, packageRoots, outputDir) {
   await fs.mkdir(outputDir, { recursive: true });
   const imports = {};
   const orderedSpecifiers = Array.from(specifiers).sort();
@@ -253,7 +357,7 @@ async function buildSpecifierBundles(projectDir, specifiers, dependencies, outpu
     const outputFile = await buildSpecifierBundle(
       projectDir,
       specifier,
-      dependencies,
+      packageRoots,
       outputDir,
     );
     imports[specifier] = outputFile;
@@ -299,7 +403,16 @@ async function updateIndexHtml(indexHtmlPath, imports) {
     existingImports = parsed.imports || {};
   }
 
-  const nextImports = mergeImportMaps(existingImports, webImports);
+  const managedPrefix = `./${OUTPUT_SUBDIR}/`;
+  const preservedExistingImports = Object.fromEntries(
+    Object.entries(existingImports).filter(([, value]) => {
+      if (typeof value !== 'string') {
+        return true;
+      }
+      return !value.startsWith(managedPrefix);
+    }),
+  );
+  const nextImports = mergeImportMaps(preservedExistingImports, webImports);
   if (!importMapScript) {
     importMapScript = doc.createElement('script');
     importMapScript.type = 'importmap';
@@ -330,7 +443,11 @@ async function updateIndexHtml(indexHtmlPath, imports) {
 
 async function main() {
   const projectDir = process.cwd();
-  const allDependencies = await resolveDependencies(projectDir);
+  const allDependencyNames = await readAllDependencies(projectDir);
+  const allDependencyNameSet = new Set(allDependencyNames);
+  const selectedDependencies = await resolveDependencies(projectDir);
+  const { kept: allDependencies, skippedAngularPeers } =
+    await filterExternalizableDependencies(projectDir, selectedDependencies);
   const sourceDependencies = await dependenciesUsedInSources(
     projectDir,
     allDependencies,
@@ -369,6 +486,11 @@ async function main() {
       `Skipping style-linked dependencies: ${Array.from(styleDependencies).sort().join(', ')}`,
     );
   }
+  if (skippedAngularPeers.length) {
+    console.log(
+      `Skipping Angular-peer dependencies: ${skippedAngularPeers.sort().join(', ')}`,
+    );
+  }
   console.log(`External dependency chunks: ${dependencies.join(', ')}`);
 
   const angularJson = JSON.parse(
@@ -386,11 +508,14 @@ async function main() {
   const outputDir = join(distDir, OUTPUT_SUBDIR);
   const usedSpecifiers = await collectBareSpecifiersFromDirectory(distDir);
   const preloadSpecifiers = await collectBarePreloadSpecifiers(indexHtmlPath);
-  const dependencySet = new Set(dependencies);
+  const sourceSpecifiers = await collectBareSpecifiersFromSources(projectDir);
   const selectedSpecifiers = new Set(
-    [...usedSpecifiers, ...preloadSpecifiers].filter((specifier) => {
+    [...sourceSpecifiers, ...usedSpecifiers, ...preloadSpecifiers].filter((specifier) => {
+      if (!shouldManageSpecifier(specifier)) {
+        return false;
+      }
       const packageName = packageNameFromSpecifier(specifier);
-      return Boolean(packageName && dependencySet.has(packageName));
+      return Boolean(packageName && allDependencyNameSet.has(packageName));
     }),
   );
   for (const dependency of dependencies) {
@@ -400,16 +525,23 @@ async function main() {
   let previousSize = -1;
   while (selectedSpecifiers.size !== previousSize) {
     previousSize = selectedSpecifiers.size;
+    const packageRoots = Array.from(
+      new Set(
+        Array.from(selectedSpecifiers)
+          .map((specifier) => packageNameFromSpecifier(specifier))
+          .filter(Boolean),
+      ),
+    );
     generatedImports = await buildSpecifierBundles(
       projectDir,
       selectedSpecifiers,
-      dependencies,
+      packageRoots,
       outputDir,
     );
     const vendorSpecifiers = await collectBareSpecifiersFromDirectory(outputDir);
     for (const specifier of vendorSpecifiers) {
       const packageName = packageNameFromSpecifier(specifier);
-      if (packageName && dependencySet.has(packageName)) {
+      if (packageName && shouldManageSpecifier(specifier)) {
         selectedSpecifiers.add(specifier);
       }
     }
