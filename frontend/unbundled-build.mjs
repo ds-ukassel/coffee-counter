@@ -1,317 +1,310 @@
 import * as fs from 'node:fs/promises';
-import {glob} from 'node:fs/promises';
-import * as YAML from 'yaml';
+import { glob } from 'node:fs/promises';
+import { dirname, join, relative } from 'node:path';
 import cli from '@angular/cli';
-import * as jsdom from 'jsdom';
-import {fileURLToPath, pathToFileURL} from "node:url";
-import {dirname, join, resolve} from "node:path";
-import {moduleResolve} from 'import-meta-resolve';
 import * as esbuild from 'esbuild';
+import * as jsdom from 'jsdom';
 
-class EsbuildCdn {
-  standalone = true;
-  dependencies = [];
+const BUILD_CONFIGURATION = process.env.NG_BUILD_CONFIGURATION || 'production';
+const OUTPUT_SUBDIR = process.env.DEP_CHUNKS_OUTDIR || 'vendor';
+const DISABLE_STYLE_EXCLUDES = process.env.DEP_CHUNKS_DISABLE_STYLE_EXCLUDES === '1';
 
-  #promises = [];
-  #seen = new Set;
-
-  url(packageName, version, path) {
-    const fileName = `./${packageName}-${version}-${path.replaceAll('/', '-')}.mjs`;
-    if (!this.#seen.has(fileName)) {
-      this.#seen.add(fileName);
-
-      console.log(`Esbuild: building ${packageName} ${version} ${path}`);
-      this.#promises.push((async () => {
-        await esbuild.build({
-          packages: 'bundle',
-          platform: 'browser',
-          format: 'esm',
-          target: 'es2022',
-          outfile: fileName,
-          bundle: true,
-          external: this.dependencies,
-          entryPoints: [`node_modules/${packageName}/${path}`],
-        });
-      })());
-    }
-    return fileName;
+function toSet(input) {
+  if (!input) {
+    return new Set();
   }
-
-  async finish() {
-    await Promise.all(this.#promises);
-  }
+  return new Set(
+    input
+      .split(',')
+      .map((entry) => entry.trim())
+      .filter(Boolean),
+  );
 }
 
-const CDNS = {
-  'unpkg.com': {
-    url: (packageName, version, path) => `https://unpkg.com/${packageName}@${version}/${path}`,
-    standalone: false,
-  },
-  'esm.sh': {
-    url: (packageName, version, path) => `https://esm.sh/${packageName}@${version}/${path}?standalone`,
-    standalone: true,
-  },
-  'esbuild': new EsbuildCdn(),
-};
-const cdn = CDNS[process.env.CDN || 'esbuild'];
+function toWebPath(path) {
+  return path.replaceAll('\\', '/');
+}
 
-async function main() {
-  const frontendDir = './';
+function toRelativeWebPath(fromDir, toFile) {
+  let path = toWebPath(relative(fromDir, toFile));
+  if (!path.startsWith('.')) {
+    path = `./${path}`;
+  }
+  return path;
+}
 
-  const packageJson = JSON.parse(await fs.readFile(`${frontendDir}package.json`, {encoding: 'utf-8'}));
-  // TODO these are not supported yet. Declaring them as external breaks SCSS.
-  const forbiddenDependencies = new Set([
-    'bootstrap',
-    'bootstrap-icons',
-    '@angular/animations',
-    '@angular/cdk',
-    '@angular/common',
-    '@angular/compiler',
-    '@angular/core',
-    '@angular/forms',
-    '@angular/localize',
-    '@angular/platform-browser',
-    '@angular/platform-browser-dynamic',
-    '@angular/router',
-    '@angular/service-worker',
-    '@ng-bootstrap/ng-bootstrap',
-    '@mean-stream/ngbx',
-  ])
-  const dependencies = Object.keys(packageJson.dependencies || []).filter(s => !forbiddenDependencies.has(s));
-  cdn.dependencies = dependencies;
+function fileNameForPackage(packageName) {
+  return `${packageName.replaceAll('@', '').replaceAll('/', '--')}.mjs`;
+}
 
-  console.log('Package dependencies: ', dependencies);
+function packageNameFromSpecifier(specifier) {
+  if (specifier.startsWith('.') || specifier.startsWith('/')) {
+    return null;
+  }
+  const parts = specifier.split('/');
+  if (parts[0]?.startsWith('@')) {
+    return parts.length > 1 ? `${parts[0]}/${parts[1]}` : parts[0];
+  }
+  return parts[0] || null;
+}
 
-  const angularJson = JSON.parse(await fs.readFile(`${frontendDir}angular.json`, {encoding: 'utf-8'}));
-  const projectName = Object.entries(angularJson.projects).find(([, v]) => v.projectType === 'application')?.[0];
-  if (!projectName) {
-    console.log(angularJson);
-    throw new Error(`Could not find application project in angular.json.`);
+function applicationProjectName(angularJson) {
+  const projectName = process.env.NG_BUILD_PROJECT;
+  if (projectName) {
+    return projectName;
+  }
+  const appProject = Object.entries(angularJson.projects || {}).find(
+    ([, config]) => config?.projectType === 'application',
+  );
+  return appProject?.[0];
+}
+
+async function resolveDependencies(projectDir) {
+  const packageJson = JSON.parse(
+    await fs.readFile(join(projectDir, 'package.json'), 'utf-8'),
+  );
+  const include = toSet(process.env.DEP_CHUNKS_INCLUDE);
+  const exclude = toSet(process.env.DEP_CHUNKS_EXCLUDE);
+  const allDependencies = Object.keys(packageJson.dependencies || {}).sort();
+
+  const selectedDependencies = allDependencies.filter((dependency) => {
+    if (include.size && !include.has(dependency)) {
+      return false;
+    }
+    return !exclude.has(dependency);
+  });
+
+  if (!selectedDependencies.length) {
+    throw new Error(
+      'No dependencies selected for external chunk generation. ' +
+        'Check package.json dependencies and DEP_CHUNKS_INCLUDE/DEP_CHUNKS_EXCLUDE.',
+    );
   }
 
-  await buildAngular(projectName, dependencies);
+  return selectedDependencies;
+}
 
-  const allPackages = await loadPackages(frontendDir);
-  const allPackageVersions = Object.fromEntries(allPackages);
-
-  const imports = {}; // generateImportMap(dependencies, allPackageVersions);
-  await augmentImportMapWithJsImports(frontendDir, imports, allPackageVersions);
-
-  for await (const index of await glob(`dist/**/index.html`, {cwd: frontendDir})) {
-    const indexHtmlPath = frontendDir + index;
-    await updateIndexHtml(indexHtmlPath, imports, allPackageVersions);
-    break;
+async function dependenciesUsedInStyles(projectDir, dependencies) {
+  if (DISABLE_STYLE_EXCLUDES) {
+    return new Set();
   }
 
-  await cdn.finish?.();
+  const dependencySet = new Set(dependencies);
+  const usedInStyles = new Set();
+  const styleImportPattern = /@(use|import)\s+["']([^"']+)["']/g;
+  const styleFiles = await glob('src/**/*.{scss,sass,css,less}', { cwd: projectDir });
+
+  for await (const file of styleFiles) {
+    const content = await fs.readFile(join(projectDir, file), 'utf-8');
+    const matches = content.matchAll(styleImportPattern);
+    for (const match of matches) {
+      const specifier = match[2];
+      const packageName = packageNameFromSpecifier(specifier);
+      if (packageName && dependencySet.has(packageName)) {
+        usedInStyles.add(packageName);
+      }
+    }
+  }
+
+  return usedInStyles;
+}
+
+async function dependenciesUsedInSources(projectDir, dependencies) {
+  const dependencySet = new Set(dependencies);
+  const usedInSources = new Set();
+  const sourceFiles = await glob('src/**/*.{ts,js,mts,mjs,cts,cjs}', {
+    cwd: projectDir,
+  });
+  const staticImportPattern =
+    /(?:import|export)\s+(?:[\s\w{},*$]*\s+from\s+)?["']([^"']+)["']/g;
+  const dynamicImportPattern = /import\(\s*["']([^"']+)["']\s*\)/g;
+
+  for await (const file of sourceFiles) {
+    const content = await fs.readFile(join(projectDir, file), 'utf-8');
+    const staticMatches = content.matchAll(staticImportPattern);
+    const dynamicMatches = content.matchAll(dynamicImportPattern);
+
+    for (const match of [...staticMatches, ...dynamicMatches]) {
+      const specifier = match[1];
+      const packageName = packageNameFromSpecifier(specifier);
+      if (packageName && dependencySet.has(packageName)) {
+        usedInSources.add(packageName);
+      }
+    }
+  }
+
+  return usedInSources;
 }
 
 async function buildAngular(projectName, dependencies) {
   const args = [
     'build',
     projectName,
-    '--configuration', 'production',
-    '--source-map', 'false',
-    '--external-dependencies', ...dependencies,
+    '--configuration',
+    BUILD_CONFIGURATION,
+    '--source-map',
+    'false',
+    '--external-dependencies',
+    ...dependencies,
   ];
   console.log(`Building Angular ${cli.VERSION.full}: ng ${args.join(' ')}`);
-  const status = await cli.default({
-    cliArgs: args,
-  });
-
+  const status = await cli.default({ cliArgs: args });
   if (status) {
     throw new Error(`Angular build failed with status ${status}`);
   }
 }
 
-async function loadPackages(frontendDir) {
-  const pnpmLock = YAML.parse(await fs.readFile(`${frontendDir}pnpm-lock.yaml`, {encoding: 'utf-8'}));
-  const allPackages = Object.entries(pnpmLock.packages)
-    // ignore all os-specific packages.
-    .filter(([, v]) => !v.os)
-    .map(([packageAtVersion]) => {
-      if (!packageAtVersion.startsWith('@')) {
-        return packageAtVersion.split('@', 2);
-      }
-      const [p, v] = packageAtVersion.slice(1).split('@', 2);
-      return [`@${p}`, v];
-    });
-  console.log('All packages: ', allPackages.length, /* allPackages */);
-  return allPackages;
+async function findIndexHtml(projectDir) {
+  const indices = [];
+  for await (const file of await glob('dist/**/index.html', { cwd: projectDir })) {
+    indices.push(file);
+  }
+  indices.sort();
+  const index = indices[0];
+  if (!index) {
+    throw new Error('Could not find index.html in dist output.');
+  }
+  return join(projectDir, index);
 }
 
-function generateImportMap(directDependencies, allPackageVersions) {
+async function buildDependencyBundle(projectDir, dependency, allDependencies, outputDir) {
+  const outputFile = join(outputDir, fileNameForPackage(dependency));
+  const external = allDependencies.filter((candidate) => candidate !== dependency);
+  await esbuild.build({
+    absWorkingDir: projectDir,
+    bundle: true,
+    conditions: ['browser', 'module', 'import', 'default'],
+    entryPoints: [dependency],
+    external,
+    format: 'esm',
+    legalComments: 'none',
+    logLevel: 'warning',
+    mainFields: ['browser', 'module', 'main'],
+    minify: true,
+    outfile: outputFile,
+    platform: 'browser',
+    sourcemap: false,
+    target: 'es2022',
+    treeShaking: true,
+  });
+  return outputFile;
+}
+
+async function buildDependencyBundles(projectDir, dependencies, outputDir) {
+  await fs.mkdir(outputDir, { recursive: true });
   const imports = {};
-  for (const dependency of directDependencies) {
-    const version = allPackageVersions[dependency];
-    imports[dependency] = cdn.url(dependency, version);
+
+  for (const dependency of dependencies) {
+    const outputFile = await buildDependencyBundle(
+      projectDir,
+      dependency,
+      dependencies,
+      outputDir,
+    );
+    imports[dependency] = outputFile;
   }
+
   return imports;
 }
 
-function getPackageName(module) {
-  const [a, b] = module.split('/');
-  if (a.startsWith('@')) {
-    return a + '/' + b;
-  } else {
-    return a;
-  }
+function mergeImportMaps(existing, generated) {
+  return {
+    ...existing,
+    ...generated,
+  };
 }
 
-function tryResolve(module, parent) {
-  try {
-    return moduleResolve(module, parent ? pathToFileURL(parent) : undefined, new Set([
-      'module',
-      'import',
-      'browser',
-      'default',
-    ])).toString();
-  } catch (e) {
-    console.error(e.message);
-    return;
-  }
-}
+async function updateIndexHtml(indexHtmlPath, imports) {
+  const indexHtml = await fs.readFile(indexHtmlPath, 'utf-8');
+  const dom = new jsdom.JSDOM(indexHtml);
+  const doc = dom.window.document;
+  const indexDir = dirname(indexHtmlPath);
 
-function import2cdn(module, packageName, version) {
-  const url = tryResolve(module);
-  return url && url2cdn(url, packageName, version);
-}
+  const webImports = Object.fromEntries(
+    Object.entries(imports).map(([key, absoluteFile]) => [
+      key,
+      toRelativeWebPath(indexDir, absoluteFile),
+    ]),
+  );
 
-function url2cdn(url, packageName, version) {
-  const pathNeedle = `node_modules/${packageName}/`;
-  const pathStart = url.lastIndexOf(pathNeedle);
-  const path = url.substring(pathStart + pathNeedle.length);
-  if (pathStart < 0 || !path.endsWith('.js') && !path.endsWith('.mjs')) {
-    console.warn(`Dependency ${url} not found: ${path}`);
-    return;
+  let importMapScript = doc.querySelector('script[type="importmap"]');
+  let existingImports = {};
+  if (importMapScript?.textContent?.trim()) {
+    const parsed = JSON.parse(importMapScript.textContent);
+    existingImports = parsed.imports || {};
   }
 
-  return cdn.url(packageName, version, path);
-}
-
-async function augmentImportMapWithJsImports(frontendDir, imports, allPackageVersions) {
-  const seen = new Set();
-  for await (const file of await glob('dist/**/*.js', {cwd: frontendDir})) {
-    const path = resolve(frontendDir, file);
-    await collectImports(path, imports, allPackageVersions, seen);
-  }
-}
-
-async function collectImports(path, imports, allPackageVersions, seen = new Set) {
-  if (seen.has(path)) {
-    return;
-  }
-  seen.add(path);
-
-  const content = await fs.readFile(path, {encoding: 'utf8'});
-  const matches = content.matchAll(/(import(.*?from)?|export.*?from)\s*(?<qmod>"[^"]+"|'[^']+')[;\n]/gms).toArray();
-  console.log('Collecting', matches.length, 'imports from', path);
-
-  for (const match of matches) {
-    const {qmod} = match.groups;
-    const module = qmod.slice(1, -1);
-    if (module.startsWith('./') || module.startsWith('../')) {
-      // local import e.g. ./chunk-xy.js
-      // Don't add this to imports, but recurse anyway
-      let nextPath = join(dirname(path), module);
-      // console.log('Continuing with', nextPath);
-
-      const stat = await fs.stat(nextPath, {throwIfNoEntry: false});
-      if (!stat) {
-        if (await fs.stat(nextPath + '.mjs', {throwIfNoEntry: false})) {
-          nextPath += '.js';
-        } else if (await fs.stat(nextPath + '.js', {throwIfNoEntry: false})) {
-          nextPath += '.js';
-        }
-      } else if (stat.isDirectory()) {
-        const files = await fs.readdir(nextPath);
-        if (files.includes('index.mjs')) {
-          nextPath = join(nextPath, 'index.mjs');
-        } else if (files.includes('index.js')) {
-          nextPath = join(nextPath, 'index.js');
-        } else {
-          // Don't recurse into the directory.
-          continue;
-        }
-      }
-
-      await collectImports(nextPath, imports, allPackageVersions, seen);
-      continue;
-    }
-    if (module in imports) {
-      // already known
-      continue;
-    }
-    const packageName = getPackageName(module);
-    const version = allPackageVersions[packageName];
-
-    let url = tryResolve(module, path);
-    if (!url) {
-      console.warn(`Could not resolve ${module} import in ${path}`);
-      continue;
-    }
-
-    const cdnUrl = url2cdn(url, packageName, version);
-    if (cdnUrl) {
-      imports[module] = cdnUrl;
-    }
-
-    if (!cdn.standalone) {
-      // Recursively collect imports. If a dependency imports another one, we need to find these imports too.
-      await collectImports(fileURLToPath(url), imports, allPackageVersions, seen);
-    }
-  }
-}
-
-async function updateIndexHtml(indexHtmlPath, imports, allPackageVersions) {
-  const indexHtml = await fs.readFile(indexHtmlPath, {encoding: 'utf-8'});
-
-  const jsDom = new jsdom.JSDOM(indexHtml, {});
-  const doc = jsDom.window.document;
-
-  for (const preload of doc.querySelectorAll('link[rel="modulepreload"]')) {
-    let module = preload.href;
-    if (module.startsWith('https://')) {
-      // already a non-local preload
-      continue;
-    }
-
-    if (module in imports) {
-      // a package name preload -> replace with import
-      preload.href = imports[module];
-      continue;
-    }
-
-    if (module.startsWith('chunk-') && !module.includes('/')) {
-      // a chunk file
-      continue;
-    }
-
-    const packageName = getPackageName(module);
-    const version = allPackageVersions[packageName];
-    const cdnUrl = import2cdn(module, packageName, version);
-    if (cdnUrl) {
-      preload.href = cdnUrl;
-      imports[module] = cdnUrl;
-    } else {
-      console.warn(`Could not replace ${module} preload`);
-    }
-  }
-
-  let importMapScript = doc.querySelector('script[type=importmap]');
+  const nextImports = mergeImportMaps(existingImports, webImports);
   if (!importMapScript) {
     importMapScript = doc.createElement('script');
     importMapScript.type = 'importmap';
-    doc.body.insertBefore(importMapScript, doc.body.firstChild);
+    doc.head.prepend(importMapScript);
   }
-  importMapScript.innerHTML = JSON.stringify({imports}, null, 2);
+  importMapScript.textContent = `${JSON.stringify({ imports: nextImports }, null, 2)}\n`;
 
-  let newIndexHtml = jsDom.serialize();
-  console.log(`Updating ${indexHtmlPath} (${indexHtml.length} -> ${newIndexHtml.length} +${newIndexHtml.length - indexHtml.length})`);
-  await fs.writeFile(indexHtmlPath, newIndexHtml, {encoding: 'utf-8'});
+  await fs.writeFile(indexHtmlPath, dom.serialize(), 'utf-8');
+  console.log(`Updated import map in ${indexHtmlPath}`);
 }
 
-main().catch(err => {
-  console.error(err);
+async function main() {
+  const projectDir = process.cwd();
+  const allDependencies = await resolveDependencies(projectDir);
+  const sourceDependencies = await dependenciesUsedInSources(
+    projectDir,
+    allDependencies,
+  );
+  const styleDependencies = await dependenciesUsedInStyles(projectDir, allDependencies);
+  const dependencies = allDependencies.filter((dependency) => {
+    if (styleDependencies.has(dependency)) {
+      return false;
+    }
+    return sourceDependencies.has(dependency);
+  });
+
+  if (!dependencies.length) {
+    throw new Error(
+      'No source-used dependencies remain for chunk generation after filtering. ' +
+        'Check DEP_CHUNKS_INCLUDE/DEP_CHUNKS_EXCLUDE and style exclusions.',
+    );
+  }
+
+  const sourceSkipped = allDependencies.filter(
+    (dependency) => !sourceDependencies.has(dependency),
+  );
+  if (sourceSkipped.length) {
+    console.log(
+      `Skipping source-unused dependencies: ${sourceSkipped.join(', ')}`,
+    );
+  }
+  if (styleDependencies.size) {
+    console.log(
+      `Skipping style-linked dependencies: ${Array.from(styleDependencies).sort().join(', ')}`,
+    );
+  }
+  console.log(`External dependency chunks: ${dependencies.join(', ')}`);
+
+  const angularJson = JSON.parse(
+    await fs.readFile(join(projectDir, 'angular.json'), 'utf-8'),
+  );
+  const projectName = applicationProjectName(angularJson);
+  if (!projectName) {
+    throw new Error('Could not find Angular application project in angular.json.');
+  }
+
+  await buildAngular(projectName, dependencies);
+
+  const indexHtmlPath = await findIndexHtml(projectDir);
+  const outputDir = join(dirname(indexHtmlPath), OUTPUT_SUBDIR);
+  const generatedImports = await buildDependencyBundles(
+    projectDir,
+    dependencies,
+    outputDir,
+  );
+
+  await updateIndexHtml(indexHtmlPath, generatedImports);
+}
+
+main().catch((error) => {
+  console.error(error);
   process.exit(1);
 });

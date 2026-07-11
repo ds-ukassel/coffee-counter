@@ -4,7 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --port=46307 --open",
-    "build": "ng build",
+    "build": "node ./unbundled-build.mjs",
+    "build:angular": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint"
