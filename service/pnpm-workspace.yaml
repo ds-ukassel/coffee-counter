@@ -2,13 +2,6 @@ allowBuilds:
   '@nestjs/core': true
   '@scarf/scarf': false
   unrs-resolver: true
-minimumReleaseAgeExclude:
-  - '@nestjs/common@11.1.24'
-  - '@nestjs/core@11.1.24'
-  - '@nestjs/microservices@11.1.24'
-  - '@nestjs/platform-express@11.1.24'
-  - '@nestjs/testing@11.1.24'
-  - '@nestjs/websockets@11.1.24'
-onlyBuiltDependencies:
-  - '@nestjs/core'
-  - unrs-resolver
+overrides:
+  '@babel/core@<=7.29.0': ^7.29.1
+  js-yaml@>=5.0.0 <=5.2.1: ^5.2.2

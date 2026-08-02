@@ -20,7 +20,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
-  "packageManager": "pnpm@11.3.0+sha512.2c403d6594527287672b1f7056343a1f7c3634036a67ffabfcc2b3d7595d843768f8787148d1b57cf7956c90606bbd192857c363af19e96d2d0ec9ec5741d215",
+  "packageManager": "pnpm@11.19.0+sha512.7881f3ed590d472c4a955e2b88b2121791116066dcc88cbca3849ec9b60f1bbaa6d2ccb221fa91da4e1c65bef2bcbe379365aea7ac539c7bf86dedc3a1b22dce",
   "dependencies": {
     "@mean-stream/nestx": "^0.15.0",
     "@nestjs/common": "^11.1.28",
@@ -65,7 +65,7 @@
     "ts-loader": "^9.6.2",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^7.0.2",
+    "typescript": "^6.0.3",
     "typescript-eslint": "^8.65.0",
     "webpack": "^5.109.2"
   }
