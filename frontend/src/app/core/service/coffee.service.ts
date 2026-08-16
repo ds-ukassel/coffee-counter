@@ -22,7 +22,7 @@ export class CoffeeService {
     return this.http.delete<Coffee>(environment.apiUrl + '/coffees/' + id);
   }
 
-  findDiagramData(userId: string): Observable<CoffeeDiagramData[]> {
-    return this.http.get<CoffeeDiagramData[]>(environment.apiUrl + '/coffees/' + userId + '/diagram');
+  findDiagramData(userId: string): Observable<CoffeeDiagramData> {
+    return this.http.get<CoffeeDiagramData>(environment.apiUrl + '/coffees/' + userId + '/diagram');
   }
 }

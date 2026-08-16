@@ -9,6 +9,6 @@ export type CreateCoffeeDto = Omit<Coffee, '_id' | 'createdAt' | 'price'>;
 export type FilterCoffeeDto = Partial<Coffee>;
 
 export interface CoffeeDiagramData {
-  hour: number;
-  total: number;
+  hours: Record<number, number>;
+  days: Record<number, number>;
 }
