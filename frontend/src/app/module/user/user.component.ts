@@ -1,9 +1,9 @@
 import {CurrencyPipe} from '@angular/common';
-import {Component, inject, OnInit, viewChild} from '@angular/core';
+import {Component, inject, OnInit, viewChild, viewChildren} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {ActivatedRoute, Router, RouterLink, RouterOutlet} from '@angular/router';
 import {ToastService} from '@mean-stream/ngbx';
-import {NgbPopover, NgbTooltip} from '@ng-bootstrap/ng-bootstrap';
+import {NgbNavModule, NgbPopover, NgbTooltip} from '@ng-bootstrap/ng-bootstrap';
 import {ChartData} from 'chart.js';
 import {BaseChartDirective} from 'ng2-charts';
 import {EMPTY, map, switchMap} from 'rxjs';
@@ -37,6 +37,7 @@ import {ShortcutListComponent} from './shortcut-list/shortcut-list.component';
     LevelPipe,
     LevelNamePipe,
     NextLevelPipe,
+    NgbNavModule,
   ],
 })
 export class UserComponent implements OnInit {
@@ -48,7 +49,7 @@ export class UserComponent implements OnInit {
   private readonly achievementService = inject(AchievementService);
   private readonly toastService = inject(ToastService);
 
-  readonly coffeeChart = viewChild(BaseChartDirective);
+  readonly coffeeCharts = viewChildren(BaseChartDirective);
   readonly purchaseList = viewChild(PurchaseListComponent);
 
   user?: User;
@@ -57,15 +58,29 @@ export class UserComponent implements OnInit {
 
   achievements: AchievementInfo[] = [];
 
-  coffeeData: ChartData<'bar'> = {
-    labels: Array(24).fill(0).map((x, i) => `${i} Uhr`),
+  coffeeDataHours: ChartData<'bar'> = {
+    labels: Array(24).fill(0).map((x, i) => `${i}:00`),
     datasets: [
       {
         label: 'Coffees',
+        animation: false,
         backgroundColor: '#a07150',
         borderColor: 'none',
         hoverBackgroundColor: '#a0715099',
         data: Array(24).fill(0),
+      },
+    ],
+  };
+  coffeeDataDays: ChartData<'bar'> = {
+    labels: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+    datasets: [
+      {
+        label: 'Coffees',
+        animation: false,
+        backgroundColor: '#a07150',
+        borderColor: 'none',
+        hoverBackgroundColor: '#a0715099',
+        data: Array(7).fill(0),
       },
     ],
   };
@@ -89,10 +104,15 @@ export class UserComponent implements OnInit {
     userId$.pipe(
       switchMap(id => this.coffeeService.findDiagramData(id)),
     ).subscribe(userCoffeeData => {
-      for (const {hour, total} of userCoffeeData) {
-        this.coffeeData.datasets[0].data[hour] = total;
+      for (const [hour, total] of Object.entries(userCoffeeData.hours)) {
+        this.coffeeDataHours.datasets[0].data[+hour] = total;
       }
-      this.coffeeChart()?.update();
+      for (const [day, total] of Object.entries(userCoffeeData.days)) {
+        this.coffeeDataDays.datasets[0].data[+day] = total;
+      }
+      for (const chart of this.coffeeCharts()) {
+        chart.update();
+      }
     });
 
     this.route.queryParams.pipe(
@@ -121,11 +141,19 @@ export class UserComponent implements OnInit {
       this.user!.balance = (+this.user!.balance - coffee.price).toFixed(2);
       this.purchaseList()?.addCoffee(coffee);
 
-      const hour = new Date(coffee.createdAt).getHours();
-      const data = this.coffeeData.datasets[0].data;
-      const datum = data[hour];
-      data[hour] = (datum && typeof datum === 'number' ? datum : 0) + 1;
-      this.coffeeChart()?.update();
+      const date = new Date(coffee.createdAt);
+      const hour = date.getHours();
+      const day = date.getDay();
+
+      const hourData = this.coffeeDataHours.datasets[0].data;
+      hourData[hour] = (hourData[hour] && typeof hourData[hour] === 'number' ? hourData[hour] : 0) + 1;
+
+      const dayData = this.coffeeDataDays.datasets[0].data;
+      dayData[day] = (dayData[day] && typeof dayData[day] === 'number' ? dayData[day] : 0) + 1;
+
+      for (const chart of this.coffeeCharts()) {
+        chart.update();
+      }
       this.toastService.success('Add Coffee', 'Successfully added coffee');
     }, error => {
       this.toastService.error('Add Coffee', 'Failed to add cofee', error);

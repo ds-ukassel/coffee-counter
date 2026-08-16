@@ -33,10 +33,10 @@ export class CoffeeController {
 	}
 
 	@Get(':id/diagram')
-	@ApiOkResponse({type: [CoffeeDiagramData]})
+	@ApiOkResponse({type: CoffeeDiagramData})
 	async findDiagramData(
 		@Param('id') id: string,
-	): Promise<CoffeeDiagramData[]> {
+	): Promise<CoffeeDiagramData> {
 		return this.coffeeService.findDiagramData(id);
 	}
 

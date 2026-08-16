@@ -99,8 +99,24 @@
         Save
       </button>
       <hr/>
-      <h3>Coffees by Hour of Day</h3>
-      <canvas type="bar" [data]="coffeeData" [legend]="false" baseChart></canvas>
+      <ul ngbNav #nav="ngbNav" class="nav-pills" activeId="1">
+        <li ngbNavItem class="h3 me-auto">
+            Statistics
+        </li>
+        <li ngbNavItem="1">
+          <button ngbNavLink>Hour</button>
+          <ng-template ngbNavContent>
+            <canvas type="bar" [data]="coffeeDataHours" [legend]="false" baseChart height="100%"></canvas>
+          </ng-template>
+        </li>
+        <li ngbNavItem="2">
+          <button ngbNavLink>Weekday</button>
+          <ng-template ngbNavContent>
+            <canvas type="bar" [data]="coffeeDataDays" [legend]="false" baseChart height="100%"></canvas>
+          </ng-template>
+        </li>
+      </ul>
+      <div [ngbNavOutlet]="nav" style="min-height: 320px"></div>
       <hr/>
       <h3>Recent Purchases</h3>
       <app-purchase-list/>
