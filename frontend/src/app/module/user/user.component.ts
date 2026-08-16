@@ -149,7 +149,7 @@ export class UserComponent implements OnInit {
       hourData[hour] = (hourData[hour] && typeof hourData[hour] === 'number' ? hourData[hour] : 0) + 1;
 
       const dayData = this.coffeeDataDays.datasets[0].data;
-      dayData[day] = (dayData[hour] && typeof dayData[hour] === 'number' ? dayData[hour] : 0) + 1;
+      dayData[day] = (dayData[day] && typeof dayData[day] === 'number' ? dayData[day] : 0) + 1;
 
       for (const chart of this.coffeeCharts()) {
         chart.update();
