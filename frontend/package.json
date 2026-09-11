@@ -13,9 +13,9 @@
   "packageManager": "pnpm@11.19.0+sha512.7881f3ed590d472c4a955e2b88b2121791116066dcc88cbca3849ec9b60f1bbaa6d2ccb221fa91da4e1c65bef2bcbe379365aea7ac539c7bf86dedc3a1b22dce",
   "dependencies": {
     "@angular/cdk": "^21.2.14",
-    "@angular/common": "^21.2.19",
-    "@angular/compiler": "^21.2.19",
-    "@angular/core": "^21.2.19",
+    "@angular/common": "^21.2.20",
+    "@angular/compiler": "^22.1.6",
+    "@angular/core": "^21.2.20",
     "@angular/forms": "^21.2.19",
     "@angular/localize": "^21.2.19",
     "@angular/platform-browser": "^21.2.19",
