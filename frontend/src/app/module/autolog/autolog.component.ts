@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {ToastService} from '@mean-stream/ngbx';
 import {CookieService} from 'ngx-cookie-service';
 import {switchMap, tap} from 'rxjs';
@@ -10,6 +10,7 @@ import {UserService} from '../../core/service/user.service';
 @Component({
   selector: 'app-autolog',
   templateUrl: './autolog.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./autolog.component.scss'],
 })
 export class AutologComponent implements OnInit {

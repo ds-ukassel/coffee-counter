@@ -1,5 +1,5 @@
 import {CurrencyPipe} from '@angular/common';
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {ActivatedRoute, Router, RouterLink, RouterOutlet} from '@angular/router';
 import {
   NgbDropdown,
@@ -20,6 +20,7 @@ import {LevelPipe} from '../../../shared/pipe/level.pipe';
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     NgbTooltip,
     RouterLink,

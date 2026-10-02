@@ -1,5 +1,5 @@
 import {CurrencyPipe} from '@angular/common';
-import {Component, inject, OnInit, viewChild, viewChildren} from '@angular/core';
+import {Component, inject, OnInit, viewChild, viewChildren, ChangeDetectionStrategy} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {ActivatedRoute, Router, RouterLink, RouterOutlet} from '@angular/router';
 import {ToastService} from '@mean-stream/ngbx';
@@ -24,6 +24,7 @@ import {ShortcutListComponent} from './shortcut-list/shortcut-list.component';
   selector: 'app-user',
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     NgbTooltip,
     NgbPopover,

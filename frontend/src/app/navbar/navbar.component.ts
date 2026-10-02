@@ -1,4 +1,4 @@
-import {Component, DOCUMENT, inject} from '@angular/core';
+import {Component, DOCUMENT, inject, ChangeDetectionStrategy} from '@angular/core';
 import {RouterLink, RouterLinkActive} from '@angular/router';
 import {NgbCollapse, NgbTooltip} from '@ng-bootstrap/ng-bootstrap';
 
@@ -6,6 +6,7 @@ import {NgbCollapse, NgbTooltip} from '@ng-bootstrap/ng-bootstrap';
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [RouterLink, NgbCollapse, RouterLinkActive, NgbTooltip],
 })
 export class NavbarComponent {

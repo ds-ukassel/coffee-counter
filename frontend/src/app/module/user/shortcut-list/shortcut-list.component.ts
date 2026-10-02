@@ -1,4 +1,4 @@
-import {Component, input} from '@angular/core';
+import {Component, input, ChangeDetectionStrategy} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {NgbPopover} from '@ng-bootstrap/ng-bootstrap';
 
@@ -8,6 +8,7 @@ import {Shortcut} from '../../../core/model/user.interface';
   selector: 'app-shortcut-list',
   templateUrl: './shortcut-list.component.html',
   styleUrls: ['./shortcut-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     FormsModule,
     NgbPopover,
