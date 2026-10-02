@@ -1,19 +1,19 @@
-import {enableProdMode, isDevMode, provideZoneChangeDetection} from '@angular/core';
-
-import {environment} from './environments/environment';
 import {registerLocaleData} from '@angular/common';
+import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import localeDe from '@angular/common/locales/de';
 import localeDeExtra from '@angular/common/locales/extra/de';
-import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
-import {ApiKeyInterceptor} from './app/core/service/api-key.interceptor';
-import {CookieService} from 'ngx-cookie-service';
-import {provideCharts, withDefaultRegisterables} from 'ng2-charts';
-import {BarController, Colors, Legend} from 'chart.js';
+import {enableProdMode, isDevMode, provideZoneChangeDetection} from '@angular/core';
 import {bootstrapApplication} from '@angular/platform-browser';
-import {routes} from './app/app.routes';
-import {provideServiceWorker} from '@angular/service-worker';
-import {AppComponent} from './app/app.component';
 import {provideRouter, withRouterConfig} from '@angular/router';
+import {provideServiceWorker} from '@angular/service-worker';
+import {BarController, Colors, Legend} from 'chart.js';
+import {provideCharts, withDefaultRegisterables} from 'ng2-charts';
+import {CookieService} from 'ngx-cookie-service';
+
+import {AppComponent} from './app/app.component';
+import {routes} from './app/app.routes';
+import {ApiKeyInterceptor} from './app/core/service/api-key.interceptor';
+import {environment} from './environments/environment';
 
 if (environment.production) {
   enableProdMode();

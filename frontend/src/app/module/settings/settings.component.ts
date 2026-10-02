@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {ToastService} from '@mean-stream/ngbx';
 import {CookieService} from 'ngx-cookie-service';
@@ -10,6 +10,7 @@ import {UserService} from '../../core/service/user.service';
   selector: 'app-settings',
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [FormsModule],
 })
 export class SettingsComponent implements OnInit {

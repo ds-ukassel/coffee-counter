@@ -1,5 +1,5 @@
 import {DatePipe} from '@angular/common';
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {ModalModule} from '@mean-stream/ngbx';
 import {NgbTooltip} from '@ng-bootstrap/ng-bootstrap';
@@ -13,6 +13,7 @@ import {TrophyTierPipe} from '../../../shared/pipe/trophy-tier.pipe';
   selector: 'app-achievement-modal',
   templateUrl: './achievement-modal.component.html',
   styleUrls: ['./achievement-modal.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ModalModule,
     NgbTooltip,

@@ -1,5 +1,5 @@
 import {CurrencyPipe, DatePipe} from '@angular/common';
-import {Component, inject, input, OnInit} from '@angular/core';
+import {Component, inject, input, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {NgbPopover, NgbTooltip} from '@ng-bootstrap/ng-bootstrap';
 import {forkJoin, map, Observable, switchMap} from 'rxjs';
@@ -24,6 +24,7 @@ interface Item {
   selector: 'app-purchase-list',
   templateUrl: './purchase-list.component.html',
   styleUrls: ['./purchase-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     NgbTooltip,
     NgbPopover,

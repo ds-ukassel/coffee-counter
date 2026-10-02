@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, ChangeDetectionStrategy} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ModalModule} from '@mean-stream/ngbx';
@@ -11,6 +11,7 @@ import {UserService} from '../../../core/service/user.service';
   selector: 'app-new-user-modal',
   templateUrl: './new-user-modal.component.html',
   styleUrls: ['./new-user-modal.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ModalModule,
     FormsModule,

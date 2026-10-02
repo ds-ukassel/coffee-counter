@@ -1,5 +1,5 @@
 import {PercentPipe} from '@angular/common';
-import {Component, inject, OnInit, TemplateRef, viewChild} from '@angular/core';
+import {Component, inject, OnInit, TemplateRef, viewChild, ChangeDetectionStrategy} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {NgbOffcanvas, NgbTooltip} from '@ng-bootstrap/ng-bootstrap';
 import {switchMap} from 'rxjs';
@@ -17,6 +17,7 @@ import {PulseDirective} from './pulse.directive';
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     RouterLink,
     NgbTooltip,

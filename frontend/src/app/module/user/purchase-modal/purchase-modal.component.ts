@@ -1,5 +1,5 @@
 import {CurrencyPipe} from '@angular/common';
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ModalModule} from '@mean-stream/ngbx';
@@ -13,6 +13,7 @@ import {UserService} from '../../../core/service/user.service';
   selector: 'app-purchase-modal',
   templateUrl: './purchase-modal.component.html',
   styleUrls: ['./purchase-modal.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ModalModule,
     FormsModule,
