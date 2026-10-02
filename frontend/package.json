@@ -13,14 +13,14 @@
   "packageManager": "pnpm@12.8.2+sha512.a5941679663d952c5f0ecc38ba98af98b4dc01b95780354f6894f2f873973cef2f7e2989d7db3ee5393938ae21f62fe06bcdf685d475ddad829a62095d2b8b11",
   "dependencies": {
     "@angular/cdk": "^21.2.14",
-    "@angular/common": "^21.2.20",
-    "@angular/compiler": "^22.1.6",
-    "@angular/core": "^21.2.20",
-    "@angular/forms": "^21.2.19",
-    "@angular/localize": "^21.2.19",
-    "@angular/platform-browser": "^21.2.19",
-    "@angular/router": "^21.2.24",
-    "@angular/service-worker": "^21.2.19",
+    "@angular/common": "^21.2.25",
+    "@angular/compiler": "^22.2.1",
+    "@angular/core": "^21.2.25",
+    "@angular/forms": "^21.2.25",
+    "@angular/localize": "^21.2.25",
+    "@angular/platform-browser": "^21.2.25",
+    "@angular/router": "^21.2.25",
+    "@angular/service-worker": "^21.2.25",
     "@mean-stream/ngbx": "^0.15.0",
     "@ng-bootstrap/ng-bootstrap": "^20.0.0",
     "@popperjs/core": "^2.11.8",
@@ -32,19 +32,19 @@
     "ngx-cookie-service": "^21.3.1",
     "rxjs": "~7.8.2",
     "tslib": "^2.8.1",
-    "zone.js": "~0.16.2"
+    "zone.js": "~0.16.3"
   },
   "devDependencies": {
-    "@angular/build": "^21.2.19",
-    "@angular/cli": "^21.2.19",
-    "@angular/compiler-cli": "^21.2.19",
+    "@angular/build": "^21.2.24",
+    "@angular/cli": "^21.2.24",
+    "@angular/compiler-cli": "^21.2.25",
     "@eslint/js": "^10.0.1",
-    "@types/node": "^25.9.5",
+    "@types/node": "^25.9.8",
     "angular-eslint": "^21.4.0",
-    "eslint": "^10.8.0",
+    "eslint": "^10.11.0",
     "jsdom": "^29.1.1",
     "typescript": "~5.9.3",
-    "typescript-eslint": "^8.65.0",
-    "vitest": "^5.0.0"
+    "typescript-eslint": "^8.71.0",
+    "vitest": "^5.0.3"
   }
 }
