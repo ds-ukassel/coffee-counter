@@ -3,7 +3,7 @@ import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from '@ang
 import localeDe from '@angular/common/locales/de';
 import localeDeExtra from '@angular/common/locales/extra/de';
 import {enableProdMode, isDevMode, provideZoneChangeDetection} from '@angular/core';
-import {bootstrapApplication} from '@angular/platform-browser';
+import {bootstrapApplication, provideCssVarNamespacing} from '@angular/platform-browser';
 import {provideRouter, withRouterConfig} from '@angular/router';
 import {provideServiceWorker} from '@angular/service-worker';
 import {BarController, Colors, Legend} from 'chart.js';
@@ -30,6 +30,7 @@ bootstrapApplication(AppComponent, {
       useClass: ApiKeyInterceptor,
     },
     CookieService,
+    provideCssVarNamespacing(),
     provideRouter(routes, withRouterConfig({
       paramsInheritanceStrategy: 'always',
     })),
